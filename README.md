@@ -54,3 +54,204 @@ Built on 3-6-9 Matrix · Electromagnetic Pulse Counting
 ---
 
 ## File Structure
+
+
+---
+
+## How to Use
+
+### Quick Start
+1. Open `index.html` in any browser
+2. Press **Space** to start auto-mining
+3. Watch blocks appear
+
+### Save to Folder
+1. Enter folder name in the input box
+2. Click **SAVE CHAIN**
+3. JSON file downloads to your Downloads folder
+4. Move it anywhere you want
+
+### Load from Folder
+1. Click **LOAD CHAIN**
+2. Select your JSON file
+3. Chain restores immediately
+
+### Add Block
+- Click **ADD BLOCK** (adds one block)
+- Press **Space** (toggles auto-mining)
+
+### Export Chain
+- Click **EXPORT JSON**
+- Or press **Ctrl+S**
+- Saves as JSON file
+
+### Import Chain
+- Click **IMPORT JSON**
+- Select your JSON file
+- Chain restores
+
+### Clear Chain
+- Click **CLEAR ALL**
+- Or press **Ctrl+C**
+- Confirms before clearing
+
+---
+
+## Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| **Space** | Toggle auto-mining |
+| **Ctrl+S** | Export chain |
+| **Ctrl+C** | Clear chain |
+
+---
+
+## The 3-6-9 Matrix
+
+| Number | Role | Description |
+|--------|------|-------------|
+| **3** | Creator | Input pulses from sensors |
+| **6** | Preserver | Pulse interaction/processing |
+| **9** | Destroyer | Block creation/output |
+
+---
+
+## Block Structure
+
+```json
+{
+  "index": 0,
+  "timestamp": 1234567890,
+  "pulseCount": 3492,
+  "decision": true,
+  "prevHash": "0000000000000000",
+  "hash": "3a7f8b2c9d4e5f01",
+  "data": {
+    "values": [3162, 2880, 1244, ...],
+    "winners": [true, true, false, ...]
+  }
+}
+
+
+
+---
+
+## How to Use
+
+### Quick Start
+1. Open `index.html` in any browser
+2. Press **Space** to start auto-mining
+3. Watch blocks appear
+
+### Save to Folder
+1. Enter folder name in the input box
+2. Click **SAVE CHAIN**
+3. JSON file downloads to your Downloads folder
+4. Move it anywhere you want
+
+### Load from Folder
+1. Click **LOAD CHAIN**
+2. Select your JSON file
+3. Chain restores immediately
+
+### Add Block
+- Click **ADD BLOCK** (adds one block)
+- Press **Space** (toggles auto-mining)
+
+### Export Chain
+- Click **EXPORT JSON**
+- Or press **Ctrl+S**
+- Saves as JSON file
+
+### Import Chain
+- Click **IMPORT JSON**
+- Select your JSON file
+- Chain restores
+
+### Clear Chain
+- Click **CLEAR ALL**
+- Or press **Ctrl+C**
+- Confirms before clearing
+
+---
+
+## Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| **Space** | Toggle auto-mining |
+| **Ctrl+S** | Export chain |
+| **Ctrl+C** | Clear chain |
+
+---
+
+## The 3-6-9 Matrix
+
+| Number | Role | Description |
+|--------|------|-------------|
+| **3** | Creator | Input pulses from sensors |
+| **6** | Preserver | Pulse interaction/processing |
+| **9** | Destroyer | Block creation/output |
+
+---
+
+## Block Structure
+
+```json
+{
+  "index": 0,
+  "timestamp": 1234567890,
+  "pulseCount": 3492,
+  "decision": true,
+  "prevHash": "0000000000000000",
+  "hash": "3a7f8b2c9d4e5f01",
+  "data": {
+    "values": [3162, 2880, 1244, ...],
+    "winners": [true, true, false, ...]
+  }
+}
+## The 3-6-9 Matrix
+
+| Number | Role | Description |
+|--------|------|-------------|
+| **3** | Creator | Input pulses from sensors |
+| **6** | Preserver | Pulse interaction/processing |
+| **9** | Destroyer | Block creation/output |
+
+---
+
+## Block Structure
+
+```json
+{
+  "index": 0,
+  "timestamp": 1234567890,
+  "pulseCount": 3492,
+  "decision": true,
+  "prevHash": "0000000000000000",
+  "hash": "3a7f8b2c9d4e5f01",
+  "data": {
+    "values": [3162, 2880, 1244, ...],
+    "winners": [true, true, false, ...]
+  }
+}
+```
+
+---
+
+Folder Save Format
+
+```json
+{
+  "name": "medussa_chain",
+  "version": "1.0",
+  "matrix": "3-6-9",
+  "created": 1234567890,
+  "blockchain": [...],
+  "totalPulses": 12345,
+  "blockCount": 100
+}
+```
+
+---
