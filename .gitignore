@@ -1,20 +1,11 @@
+# MEDUSSA COSMIC .gitignore
 
----
-
-## FILE 3: `.gitignore`
-
-```gitignore
-# dotcalculation .gitignore
-
-# Temporary files
 *.tmp
 *.temp
 *.log
 *.bak
 *.old
 *.orig
-
-# IDE files
 .DS_Store
 Thumbs.db
 *.swp
@@ -23,27 +14,18 @@ Thumbs.db
 .idea/
 .vscode/
 .vs/
-
-# Build files
 *.exe
 *.out
 *.app
 *.dll
 *.so
 *.dylib
-
-# Node modules (if any)
-node_modules/
-package-lock.json
-
-# Environment
 .env
 .env.local
-secrets.h
-config.h
 
-# Keep essential files
 !index.html
 !README.md
 !*.html
 !*.md
+*.json
+!package.json
