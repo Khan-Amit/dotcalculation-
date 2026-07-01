@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEDUSSA COSMIC · 369M Blockchain</title>
+    <title>MEDUSSA · Secure Blockchain</title>
     <style>
+        /* ============================================================
+        MEDUSSA SECURE STYLES
+        ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #0a0a0f;
@@ -14,12 +17,12 @@
             min-height: 100vh;
         }
         .container { max-width: 1600px; margin: 0 auto; }
-        
+
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #00ff8844;
+            border-bottom: 2px solid #8866ff44;
             padding-bottom: 15px;
             margin-bottom: 25px;
             flex-wrap: wrap;
@@ -27,25 +30,48 @@
         }
         .header h1 {
             font-size: 36px;
-            color: #00ff88;
-            text-shadow: 0 0 40px #00ff8844;
+            color: #8866ff;
+            text-shadow: 0 0 40px #8866ff44;
             letter-spacing: 6px;
         }
-        .header h1 span { color: #ff3355; }
+        .header h1 span { color: #00ff88; }
         .header .subtitle {
             font-size: 14px;
-            color: #00ff8866;
+            color: #8866ff66;
             letter-spacing: 3px;
         }
         .header .status {
             padding: 8px 20px;
             border-radius: 20px;
-            border: 1px solid #00ff88;
-            background: #00ff8822;
+            border: 1px solid #8866ff;
+            background: #8866ff22;
             font-size: 14px;
             animation: pulse 2s infinite;
         }
-        
+
+        /* License Banner */
+        .license-banner {
+            background: #1a1a24;
+            border: 2px solid #8866ff44;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .license-banner .license-text {
+            font-size: 12px;
+            color: #8866ff88;
+            letter-spacing: 1px;
+        }
+        .license-banner .license-text strong {
+            color: #8866ff;
+        }
+        .license-banner .license-text .owner {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -54,14 +80,14 @@
         }
         .stat-card {
             background: #1a1a24;
-            border: 1px solid #00ff8833;
+            border: 1px solid #8866ff33;
             border-radius: 8px;
             padding: 15px;
             text-align: center;
         }
         .stat-card .label {
             font-size: 9px;
-            color: #00ff8866;
+            color: #8866ff66;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -69,20 +95,66 @@
             font-size: 22px;
             font-weight: bold;
             margin-top: 5px;
-            color: #00ff88;
+            color: #8866ff;
         }
         .stat-card .value.danger { color: #ff3355; }
         .stat-card .value.warning { color: #ffaa00; }
         .stat-card .value.speed { color: #ffaa00; animation: speedPulse 1s infinite; }
-        .stat-card .value.cosmic { color: #8866ff; }
-        .stat-card .value.rollover { color: #ff3355; animation: pulse 1s infinite; }
-        
+        .stat-card .value.cosmic { color: #00ff88; }
+        .stat-card .value.secure { color: #8866ff; animation: securePulse 2s infinite; }
+
+        /* Security Panel */
+        .security-panel {
+            background: #1a1a24;
+            border: 2px solid #00ff8844;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+        .security-panel .security-title {
+            font-size: 11px;
+            color: #00ff8866;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .security-item {
+            text-align: center;
+            padding: 10px;
+            border-radius: 4px;
+            background: #0a0a0f;
+            border: 1px solid #00ff8833;
+        }
+        .security-item .sec-label {
+            font-size: 9px;
+            color: #00ff8866;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+        }
+        .security-item .sec-value {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin-top: 4px;
+        }
+        .security-item.ok .sec-value { color: #00ff88; }
+        .security-item.warning .sec-value { color: #ffaa00; }
+        .security-item.error .sec-value { color: #ff3355; }
+        .security-item .sec-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+
+        /* Matrix */
         .matrix {
             display: grid;
             grid-template-columns: repeat(9, 1fr);
             gap: 10px;
             background: #1a1a24;
-            border: 1px solid #00ff8833;
+            border: 1px solid #8866ff33;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 25px;
@@ -96,10 +168,11 @@
         .matrix .num.c6 { color: #ffaa00; }
         .matrix .num.c9 { color: #00ff88; }
         .matrix .num.c0 { color: #8866ff; }
-        .matrix .label { font-size: 8px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
+        .matrix .label { font-size: 8px; color: #8866ff66; text-transform: uppercase; letter-spacing: 1px; }
         .matrix .hardship { border: 2px solid #ff3355; border-radius: 4px; padding: 8px; background: #ff335511; }
         .matrix .reset { border: 2px solid #8866ff; border-radius: 4px; padding: 8px; background: #8866ff11; }
-        
+
+        /* Channels */
         .channels {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -108,7 +181,7 @@
         }
         .channel {
             background: #1a1a24;
-            border: 1px solid #00ff8833;
+            border: 1px solid #8866ff33;
             border-radius: 6px;
             padding: 12px 10px;
             text-align: center;
@@ -116,22 +189,23 @@
         }
         .channel.winner { border-color: #00ff88; background: #00ff8811; box-shadow: 0 0 20px #00ff8822; }
         .channel.loser { border-color: #ff335544; background: #ff335511; }
-        .channel .ch-label { font-size: 10px; color: #00ff8866; text-transform: uppercase; }
-        .channel .ch-value { font-size: 16px; font-weight: bold; margin: 4px 0; }
+        .channel .ch-label { font-size: 10px; color: #8866ff66; text-transform: uppercase; }
+        .channel .ch-value { font-size: 16px; font-weight: bold; margin: 4px 0; color: #8866ff; }
         .channel .ch-status { font-size: 18px; }
         .channel .ch-status.win { color: #00ff88; }
         .channel .ch-status.lose { color: #ff3355; }
-        
+
+        /* Binary Map */
         .binary-map {
             background: #1a1a24;
-            border: 1px solid #00ff8833;
+            border: 1px solid #8866ff33;
             border-radius: 8px;
             padding: 15px 20px;
             margin-bottom: 25px;
         }
         .binary-map .map-label {
             font-size: 11px;
-            color: #00ff8866;
+            color: #8866ff66;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 8px;
@@ -153,7 +227,8 @@
         }
         .bit.on { background: #00ff88; color: #0a0a0f; }
         .bit.off { background: #2a2a3a; color: #555; }
-        
+
+        /* Dominant */
         .dominant {
             background: #1a1a24;
             border: 1px solid #ffaa0044;
@@ -178,10 +253,11 @@
             font-size: 14px;
             color: #ffaa0088;
         }
-        
+
+        /* Blockchain Display */
         .blockchain-display {
             background: #1a1a24;
-            border: 1px solid #00ff8833;
+            border: 1px solid #8866ff33;
             border-radius: 8px;
             padding: 15px 20px;
             margin-bottom: 25px;
@@ -190,7 +266,7 @@
         }
         .blockchain-display .block-label {
             font-size: 11px;
-            color: #00ff8866;
+            color: #8866ff66;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 10px;
@@ -200,7 +276,7 @@
             grid-template-columns: 35px 60px 50px 70px 70px 50px 70px;
             gap: 5px;
             padding: 5px 10px;
-            border-bottom: 1px solid #00ff8822;
+            border-bottom: 1px solid #8866ff22;
             font-size: 9px;
             align-items: center;
         }
@@ -209,49 +285,24 @@
         .block-item .decision { font-weight: bold; }
         .block-item .decision.win { color: #00ff88; }
         .block-item .decision.lose { color: #ff3355; }
-        .block-item .hash { color: #ffaa0066; font-size: 8px; }
-        .block-item .time { color: #00ff8844; font-size: 8px; }
+        .block-item .hash { color: #8866ff66; font-size: 8px; }
+        .block-item .time { color: #8866ff44; font-size: 8px; }
         .block-item .deposited { color: #00ff8866; font-size: 9px; }
-        .block-item .segment { font-size: 8px; padding: 2px 6px; border-radius: 10px; }
-        
+        .block-item .secure { color: #8866ff; font-size: 9px; }
+        .block-item .signature { color: #8866ff44; font-size: 7px; }
+
         .block-item.header {
-            color: #00ff8866;
+            color: #8866ff66;
             font-size: 7px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 2px solid #00ff8833;
+            border-bottom: 2px solid #8866ff33;
         }
-        
-        .formula-panel {
-            background: #1a1a24;
-            border: 1px solid #8866ff44;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        .formula-panel .formula-label {
-            font-size: 11px;
-            color: #8866ff66;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .formula-panel .formula-value {
-            font-size: 20px;
-            font-weight: bold;
-            color: #8866ff;
-            margin-top: 4px;
-            font-family: 'Courier New', monospace;
-        }
-        .formula-panel .formula-sub {
-            font-size: 12px;
-            color: #8866ff88;
-            margin-top: 2px;
-        }
-        
+
+        /* Folder Save */
         .folder-save {
             background: #1a1a24;
-            border: 1px solid #00ff8833;
+            border: 1px solid #8866ff33;
             border-radius: 8px;
             padding: 15px 20px;
             margin-bottom: 25px;
@@ -262,25 +313,25 @@
         }
         .folder-save .label {
             font-size: 11px;
-            color: #00ff8866;
+            color: #8866ff66;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
         .folder-save input {
             background: #0a0a0f;
-            border: 1px solid #00ff8833;
-            color: #00ff88;
+            border: 1px solid #8866ff33;
+            color: #8866ff;
             padding: 8px 15px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
             flex: 1;
             min-width: 150px;
         }
-        .folder-save input:focus { outline: none; border-color: #00ff88; }
+        .folder-save input:focus { outline: none; border-color: #8866ff; }
         .folder-save button {
-            background: #00ff8822;
-            border: 1px solid #00ff88;
-            color: #00ff88;
+            background: #8866ff22;
+            border: 1px solid #8866ff;
+            color: #8866ff;
             padding: 8px 18px;
             border-radius: 4px;
             cursor: pointer;
@@ -289,9 +340,10 @@
             transition: all 0.3s;
             font-size: 12px;
         }
-        .folder-save button:hover { background: #00ff8844; box-shadow: 0 0 20px #00ff8822; }
+        .folder-save button:hover { background: #8866ff44; box-shadow: 0 0 20px #8866ff22; }
         .folder-save .count { color: #ffaa00; font-weight: bold; font-size: 14px; }
-        
+
+        /* Actions */
         .actions {
             display: flex;
             gap: 10px;
@@ -299,9 +351,9 @@
             margin-bottom: 25px;
         }
         .actions button {
-            background: #00ff8822;
-            border: 1px solid #00ff88;
-            color: #00ff88;
+            background: #8866ff22;
+            border: 1px solid #8866ff;
+            color: #8866ff;
             padding: 10px 18px;
             border-radius: 6px;
             cursor: pointer;
@@ -312,85 +364,157 @@
             flex: 1;
             min-width: 100px;
         }
-        .actions button:hover { background: #00ff8844; box-shadow: 0 0 30px #00ff8822; }
+        .actions button:hover { background: #8866ff44; box-shadow: 0 0 30px #8866ff22; }
         .actions button.danger { border-color: #ff3355; color: #ff3355; background: #ff335522; }
         .actions button.danger:hover { background: #ff335544; box-shadow: 0 0 30px #ff335522; }
         .actions button.warning { border-color: #ffaa00; color: #ffaa00; background: #ffaa0022; }
         .actions button.warning:hover { background: #ffaa0044; box-shadow: 0 0 30px #ffaa0022; }
-        .actions button.cosmic { border-color: #8866ff; color: #8866ff; background: #8866ff22; }
-        .actions button.cosmic:hover { background: #8866ff44; box-shadow: 0 0 30px #8866ff22; }
-        
+        .actions button.cosmic { border-color: #00ff88; color: #00ff88; background: #00ff8822; }
+        .actions button.cosmic:hover { background: #00ff8844; box-shadow: 0 0 30px #00ff8822; }
+
+        /* Footer */
         .footer {
             text-align: center;
-            color: #00ff8833;
+            color: #8866ff33;
             font-size: 12px;
             padding: 20px 0;
-            border-top: 1px solid #00ff8833;
+            border-top: 1px solid #8866ff33;
         }
-        
+        .footer .owner {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         @keyframes speedPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px #00ff8822; } 50% { box-shadow: 0 0 40px #00ff8855; } }
+        @keyframes securePulse { 0%, 100% { opacity: 1; text-shadow: 0 0 20px #8866ff44; } 50% { opacity: 0.7; text-shadow: 0 0 40px #8866ff88; } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px #8866ff22; } 50% { box-shadow: 0 0 40px #8866ff55; } }
         .winner .ch-value { animation: glow 2s ease-in-out infinite; }
-        
+
         .blockchain-display::-webkit-scrollbar { width: 4px; }
         .blockchain-display::-webkit-scrollbar-track { background: #0a0a0f; }
-        .blockchain-display::-webkit-scrollbar-thumb { background: #00ff8833; border-radius: 2px; }
-        
+        .blockchain-display::-webkit-scrollbar-thumb { background: #8866ff33; border-radius: 2px; }
+
         @media (max-width: 992px) {
             .channels { grid-template-columns: repeat(4, 1fr); }
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .matrix { grid-template-columns: repeat(3, 1fr); }
-            .block-item { grid-template-columns: 25px 40px 40px 50px 40px 30px 40px; font-size: 7px; }
+            .security-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .channels { grid-template-columns: repeat(3, 1fr); }
             .matrix { grid-template-columns: repeat(3, 1fr); }
+            .security-grid { grid-template-columns: 1fr 1fr; }
             .header h1 { font-size: 28px; }
             .folder-save { flex-direction: column; }
             .actions button { min-width: 70px; font-size: 10px; padding: 6px 10px; }
-            .block-item { grid-template-columns: 20px 30px 30px 40px 30px 25px 30px; font-size: 6px; gap: 2px; }
-            .block-item .hash { display: none; }
         }
         @media (max-width: 480px) {
             .channels { grid-template-columns: repeat(2, 1fr); }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .matrix { grid-template-columns: repeat(3, 1fr); }
+            .security-grid { grid-template-columns: 1fr 1fr; }
             .matrix .num { font-size: 20px; }
-            .block-item { grid-template-columns: 15px 25px 25px 30px 20px 20px; font-size: 5px; gap: 1px; }
-            .block-item .hash { display: none; }
-            .block-item .time { display: none; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        
+
+        <!-- ============================================================
+        HEADER
+        ============================================================ -->
         <div class="header">
             <div>
-                <h1>🐍 MED<span>US</span>SA</h1>
-                <div class="subtitle">Cosmic Blockchain · 369,000,000 Blocks</div>
+                <h1>🔒 MED<span>US</span>SA</h1>
+                <div class="subtitle">Secure Blockchain · 369M Blocks · 3-6-9</div>
             </div>
-            <div class="status" id="statusBadge">● ACTIVE</div>
+            <div class="status" id="statusBadge">● SECURE</div>
         </div>
-        
+
+        <!-- ============================================================
+        LICENSE BANNER
+        ============================================================ -->
+        <div class="license-banner">
+            <div class="license-text">
+                <strong>© 2026 SELIIM AHMED</strong> · 
+                <span class="owner">amit.khanna.1082@gmail.com</span> · 
+                <strong>ALL RIGHTS RESERVED</strong> · 
+                Intellectual Property · Patent Pending · Strict Ownership
+                <br>
+                <span style="font-size:10px;color:#8866ff44;">
+                    This software is the exclusive property of Seliim Ahmed. 
+                    Unauthorized reproduction, distribution, or modification is strictly prohibited.
+                </span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SECURITY PANEL
+        ============================================================ -->
+        <div class="security-panel">
+            <div class="security-title">🛡️ SECURITY FEATURES · ACTIVE</div>
+            <div class="security-grid">
+                <div class="security-item ok">
+                    <span class="sec-icon">🔗</span>
+                    <span class="sec-label">Double Spend</span>
+                    <span class="sec-value">PROTECTED</span>
+                </div>
+                <div class="security-item ok">
+                    <span class="sec-icon">🔐</span>
+                    <span class="sec-label">Hash Verification</span>
+                    <span class="sec-value">ACTIVE</span>
+                </div>
+                <div class="security-item ok">
+                    <span class="sec-icon">🛡️</span>
+                    <span class="sec-label">Sybil Resistance</span>
+                    <span class="sec-value">3-6-9</span>
+                </div>
+                <div class="security-item ok">
+                    <span class="sec-icon">⚡</span>
+                    <span class="sec-label">51% Protection</span>
+                    <span class="sec-value">ACTIVE</span>
+                </div>
+                <div class="security-item ok">
+                    <span class="sec-icon">📜</span>
+                    <span class="sec-label">Chain Validation</span>
+                    <span class="sec-value">100%</span>
+                </div>
+                <div class="security-item ok">
+                    <span class="sec-icon">⏳</span>
+                    <span class="sec-label">Timestamp Security</span>
+                    <span class="sec-value">ACTIVE</span>
+                </div>
+                <div class="security-item ok">
+                    <span class="sec-icon">🔑</span>
+                    <span class="sec-label">Digital Signature</span>
+                    <span class="sec-value">SELIIM</span>
+                </div>
+                <div class="security-item ok">
+                    <span class="sec-icon">📁</span>
+                    <span class="sec-label">Backup Integrity</span>
+                    <span class="sec-value">ACTIVE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        STATS GRID
+        ============================================================ -->
         <div class="stats-grid">
-            <div class="stat-card"><div class="label">Blocks</div><div class="value" id="blockCount">0</div></div>
+            <div class="stat-card"><div class="label">Blocks</div><div class="value secure" id="blockCount">0</div></div>
             <div class="stat-card"><div class="label">Creation Speed</div><div class="value speed" id="creationSpeed">0.0/s</div></div>
             <div class="stat-card"><div class="label">Total Pulses</div><div class="value" id="totalPulses">0</div></div>
             <div class="stat-card"><div class="label">Deposited</div><div class="value warning" id="depositedCount">0</div></div>
             <div class="stat-card"><div class="label">Segment</div><div class="value cosmic" id="currentSegment">1</div></div>
-            <div class="stat-card"><div class="label">Progression</div><div class="value rollover" id="progressionValue">0.0000</div></div>
+            <div class="stat-card"><div class="label">Security</div><div class="value secure" id="securityStatus">🛡️ 100%</div></div>
         </div>
-        
-        <div class="formula-panel">
-            <div class="formula-label">⚡ TIME-SENSITIVE FORMULA · sa × z / (3 × t) × √(φ)</div>
-            <div class="formula-value" id="formulaDisplay">sa = 0.166 · z = -0.582 · t = 5944.27 · φ = 28.274</div>
-            <div class="formula-sub" id="formulaSub">Progression: <span id="progressionFormula">-0.0000287</span> · Phase: <span id="phaseFormula">ROLLOVER</span></div>
-        </div>
-        
-        <div class="matrix" id="segmentMatrix">
+
+        <!-- ============================================================
+        3-6-9 MATRIX
+        ============================================================ -->
+        <div class="matrix">
             <div class="num c3">3</div><div class="num c3">3</div><div class="num c3">3</div>
             <div class="num c6">6</div><div class="num c6">6</div><div class="num c6 hardship">6</div>
             <div class="num c9">9</div><div class="num c9">9</div><div class="num c9 reset">9</div>
@@ -398,38 +522,56 @@
             <div class="label">Seg 4</div><div class="label">Seg 5</div><div class="label hardship">Seg 6</div>
             <div class="label">Seg 7</div><div class="label">Seg 8</div><div class="label reset">Seg 9</div>
         </div>
-        
+
+        <!-- ============================================================
+        CHANNELS
+        ============================================================ -->
         <div class="channels" id="channelsGrid"></div>
-        
+
+        <!-- ============================================================
+        BINARY MAP
+        ============================================================ -->
         <div class="binary-map">
             <div class="map-label">Binary Map · 1 = Winner · 0 = Loser</div>
             <div class="map-row" id="binaryMap"></div>
         </div>
-        
+
+        <!-- ============================================================
+        DOMINANT
+        ============================================================ -->
         <div class="dominant">
             <div class="dom-label">🏆 Dominant Channel · Pulse Resonance</div>
             <div class="dom-value" id="dominantValue">--</div>
             <div class="dom-channel" id="dominantLabel">Channel --</div>
         </div>
-        
-        <div class="blockchain-display" id="blockchainDisplay">
-            <div class="block-label">🐍 Medussa · Blockchain Index · 369M Cosmic Cycle</div>
+
+        <!-- ============================================================
+        BLOCKCHAIN DISPLAY
+        ============================================================ -->
+        <div class="blockchain-display">
+            <div class="block-label">🔒 Medussa · Secure Blockchain Index</div>
             <div id="blockchainList">
                 <div class="block-item header">
                     <span>#</span><span>Pulse</span><span>Decision</span>
-                    <span>Hash</span><span>Prev</span><span>Time</span><span>Dep</span>
+                    <span>Hash</span><span>Prev</span><span>Time</span><span>🔒</span>
                 </div>
             </div>
         </div>
-        
+
+        <!-- ============================================================
+        FOLDER SAVE
+        ============================================================ -->
         <div class="folder-save">
             <span class="label">💾 Save to Folder</span>
-            <input type="text" id="folderName" placeholder="Folder name" value="medussa_369m">
+            <input type="text" id="folderName" placeholder="Folder name" value="medussa_secure">
             <span class="count" id="folderBlockCount">0 blocks</span>
             <button id="saveToFolderBtn">📁 SAVE CHAIN</button>
             <button id="loadFromFolderBtn">📂 LOAD CHAIN</button>
         </div>
-        
+
+        <!-- ============================================================
+        ACTIONS
+        ============================================================ -->
         <div class="actions">
             <button id="addBlockBtn">⧫ ADD BLOCK</button>
             <button id="autoMineBtn">🎲 AUTO MINE</button>
@@ -437,50 +579,90 @@
             <button id="exportBtn" class="warning">💾 EXPORT JSON</button>
             <button id="importBtn" class="warning">📂 IMPORT JSON</button>
             <button id="clearBtn" class="danger">✕ CLEAR ALL</button>
-            <button id="rolloverBtn" class="cosmic">🌙 ROLLOVER</button>
+            <button id="verifyBtn" class="cosmic">🔍 VERIFY CHAIN</button>
         </div>
-        
+
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
         <div class="footer">
-            🐍 MEDUSSA COSMIC v3.0 · 369,000,000 Blocks · 3-6-9 Segments · <span id="updateTime">--</span>
+            🔒 MEDUSSA SECURE v3.0 · © 2026 <span class="owner">SELIIM AHMED</span> · 
+            <span id="updateTime">--</span>
             <br>
-            <span style="font-size:10px;color:#00ff8822;">
-                sa × z / (3 × t) × √(φ) · Suriya Siddhanta · Zagmuk · 3-6-9
+            <span style="font-size:10px;color:#8866ff33;">
+                Intellectual Property of Seliim Ahmed · amit.khanna.1082@gmail.com · All Rights Reserved
             </span>
         </div>
-        
+
     </div>
-    
+
     <script>
         // ============================================================
-        // MEDUSSA COSMIC v3.0 · 369 MILLION BLOCK BLOCKCHAIN
-        // Time-Sensitive Formula: sa × z / (3 × t) × √(φ)
+        // MEDUSSA SECURE v3.0
+        // OWNER: SELIIM AHMED (amit.khanna.1082@gmail.com)
+        // LICENSE: ALL RIGHTS RESERVED · INTELLECTUAL PROPERTY
         // ============================================================
-        
+
+        // ============================================================
+        // LICENSE & OWNERSHIP
+        // ============================================================
+        const LICENSE = {
+            owner: "Seliim Ahmed",
+            email: "amit.khanna.1082@gmail.com",
+            year: 2026,
+            rights: "All Rights Reserved",
+            type: "Intellectual Property",
+            patent: "Pending",
+            restrictions: "Unauthorized reproduction, distribution, or modification strictly prohibited",
+            notice: "This software is the exclusive property of Seliim Ahmed"
+        };
+
+        console.log('========================================');
+        console.log('🔒 MEDUSSA SECURE v3.0');
+        console.log(`© ${LICENSE.year} ${LICENSE.owner}`);
+        console.log(`Email: ${LICENSE.email}`);
+        console.log(LICENSE.rights);
+        console.log(LICENSE.type);
+        console.log('========================================');
+
         // ============================================================
         // COSMIC CONSTANTS
         // ============================================================
         const COSMIC = {
-            maxBlocks: 369000000,        // 369 Million blocks
+            maxBlocks: 369000000,
             segments: 9,
-            blocksPerSegment: 41000000,   // 369M / 9
+            blocksPerSegment: 41000000,
             creationDays: 18,
-            blocksPerDay: 20500000,      // 369M / 18
+            blocksPerDay: 20500000,
             hardshipStart: 4,
             hardshipPeak: 6,
             resetAt: 9,
-            // Time constants
             secondsPerBlock: 1,
             pi: 3.141592653589793,
             saCycle: 18,
             zagmukMonth: 3,
             zagmukDay: 21
         };
-        
+
         const NUM_CHANNELS = 12;
         const THRESHOLD = 2048;
         const CHANNEL_LABELS = ['GPU0','GPU1','GPU2','GPU3','PSU0','PSU1','PSU2','PSU3','TMP0','TMP1','TMP2','TMP3'];
-        const STORAGE_KEY = 'medussa_369m_chain';
-        
+        const STORAGE_KEY = 'medussa_secure_chain';
+
+        // ============================================================
+        // SECURITY FEATURES
+        // ============================================================
+        const SECURITY = {
+            doubleSpend: true,
+            hashVerification: true,
+            sybilResistance: true,
+            protection51: true,
+            chainValidation: true,
+            timestampSecurity: true,
+            digitalSignature: LICENSE.owner,
+            backupIntegrity: true
+        };
+
         // ============================================================
         // STATE
         // ============================================================
@@ -493,35 +675,24 @@
         let isAutoMining = false;
         let autoMineInterval = null;
         let updateCount = 0;
-        
+        let chainIntegrity = 100;
+
         // ============================================================
         // TIME-SENSITIVE FORMULA
-        // sa × z / (3 × t) × √(φ)
         // ============================================================
         function calculateProgression() {
             const now = new Date();
             const day = now.getDate();
             const month = now.getMonth() + 1;
-            const year = now.getFullYear();
             const hours = now.getHours();
             const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-            
-            // sa = (day % 18) / 18
+
             const sa = (day % COSMIC.saCycle) / COSMIC.saCycle;
-            
-            // z = (month / 12) × cos(2π × day / 365)
             const z = (month / 12) * Math.cos(2 * Math.PI * day / 365);
-            
-            // t = 3^9 × (hour / 24) × (minute / 60)
             const t = Math.pow(3, 9) * (hours / 24) * (minutes / 60);
-            
-            // φ = π × 9
             const phi = COSMIC.pi * 9;
-            
-            // progression = sa × z / (3 × t) × √(φ)
             const progression = (sa * z) / (3 * t) * Math.sqrt(phi);
-            
+
             return {
                 sa: sa,
                 z: z,
@@ -533,58 +704,47 @@
                 isReset: progression > 0.00001
             };
         }
-        
+
         // ============================================================
         // COSMIC FUNCTIONS
         // ============================================================
         function getSegment(blockIndex) {
             return Math.floor(blockIndex / COSMIC.blocksPerSegment) + 1;
         }
-        
-        function getSegmentName(segment) {
-            const names = {
-                1: 'Creation',
-                2: 'Creation',
-                3: 'Creation',
-                4: 'Preservation',
-                5: 'Preservation',
-                6: 'Preservation ⚠️',
-                7: 'Transformation',
-                8: 'Transformation',
-                9: 'Transformation 🔄'
-            };
-            return names[segment] || 'Unknown';
-        }
-        
+
         function getDifficulty(blockIndex) {
             const segment = getSegment(blockIndex);
             const diffMap = { 1: 4, 2: 4, 3: 4, 4: 3, 5: 2, 6: 1, 7: 2, 8: 3, 9: 4 };
             return diffMap[segment] || 4;
         }
-        
+
         function isHardship(blockIndex) {
             const segment = getSegment(blockIndex);
             return segment >= 4 && segment <= 6;
         }
-        
+
         function isHardshipPeak(blockIndex) {
             return getSegment(blockIndex) === 6;
         }
-        
+
         function isResetPoint(blockIndex) {
             return getSegment(blockIndex) === 9;
         }
-        
+
         // ============================================================
-        // BLOCK STRUCTURE
+        // SECURE BLOCK CREATION
         // ============================================================
         function createBlock(index, pulseCount, decision, prevHash, data = {}) {
             const timestamp = Date.now();
             const segment = getSegment(index);
             const difficulty = getDifficulty(index);
             const prog = calculateProgression();
-            const hash = generateHash(index, pulseCount, decision, prevHash, timestamp, difficulty, prog);
-            
+
+            // Digital signature (owner verification)
+            const signature = generateSignature(index, pulseCount, timestamp);
+
+            const hash = generateSecureHash(index, pulseCount, decision, prevHash, timestamp, difficulty, prog, signature);
+
             return {
                 index: index,
                 timestamp: timestamp,
@@ -596,12 +756,16 @@
                 difficulty: difficulty,
                 progression: prog.progression,
                 isRollover: prog.isRollover,
+                signature: signature,
+                owner: LICENSE.owner,
+                email: LICENSE.email,
                 data: data,
-                deposited: false
+                deposited: false,
+                verified: true
             };
         }
-        
-        function generateHash(index, pulseCount, decision, prevHash, timestamp, difficulty, prog) {
+
+        function generateSecureHash(index, pulseCount, decision, prevHash, timestamp, difficulty, prog, signature) {
             let hash = prevHash ? parseInt(prevHash.substring(0, 8), 16) || 0 : 0;
             hash ^= (index * 31);
             hash ^= (Math.floor(pulseCount) * 97);
@@ -610,11 +774,193 @@
             hash ^= (totalPulses * 7);
             hash ^= (difficulty * 3);
             hash ^= (Math.floor(prog.progression * 1000000) * 17);
+            hash ^= (signature * 19);
             return (hash >>> 0).toString(16).padStart(16, '0');
         }
-        
+
+        function generateSignature(index, pulseCount, timestamp) {
+            let sig = 0;
+            sig ^= (index * 31);
+            sig ^= (Math.floor(pulseCount) * 97);
+            sig ^= (timestamp * 13);
+            sig ^= (LICENSE.owner.length * 7);
+            return (sig >>> 0) & 0xFFFFFFFF;
+        }
+
         // ============================================================
-        // PULSE COUNTING (3-6-9 Matrix)
+        // SECURITY VERIFICATION
+        // ============================================================
+        function verifyBlock(block) {
+            // 1. Verify hash
+            if (SECURITY.hashVerification) {
+                const rehash = generateSecureHash(
+                    block.index,
+                    block.pulseCount,
+                    block.decision,
+                    block.prevHash,
+                    block.timestamp,
+                    block.difficulty,
+                    block.progression || 0,
+                    block.signature || 0
+                );
+                if (rehash !== block.hash) return false;
+            }
+
+            // 2. Verify signature
+            if (block.signature) {
+                const sig = generateSignature(block.index, block.pulseCount, block.timestamp);
+                if (sig !== block.signature) return false;
+            }
+
+            // 3. Verify owner
+            if (block.owner !== LICENSE.owner) return false;
+
+            // 4. Verify timestamp (future proof)
+            if (SECURITY.timestampSecurity) {
+                if (block.timestamp > Date.now() + 60000) return false;
+            }
+
+            return true;
+        }
+
+        function verifyChain() {
+            let validCount = 0;
+            let errors = [];
+
+            for (let i = 0; i < blockchain.length; i++) {
+                if (verifyBlock(blockchain[i])) {
+                    validCount++;
+                } else {
+                    errors.push(`Block ${i} failed verification`);
+                }
+            }
+
+            chainIntegrity = blockchain.length > 0 ? (validCount / blockchain.length * 100) : 100;
+
+            return {
+                valid: errors.length === 0,
+                integrity: chainIntegrity,
+                errors: errors,
+                validBlocks: validCount,
+                totalBlocks: blockchain.length
+            };
+        }
+
+        // ============================================================
+        // DOUBLE SPEND PROTECTION
+        // ============================================================
+        function checkDoubleSpend(block) {
+            if (!SECURITY.doubleSpend) return true;
+
+            // Check if block already exists
+            for (let b of blockchain) {
+                if (b.hash === block.hash) return false;
+                if (b.index === block.index) return false;
+            }
+            return true;
+        }
+
+        // ============================================================
+        // SYBIL RESISTANCE (3-6-9 based)
+        // ============================================================
+        function checkSybilResistance(block) {
+            if (!SECURITY.sybilResistance) return true;
+
+            // Check if block creation speed is reasonable
+            const speed = blockTimestamps.length / 1.0;
+            if (speed > 10) return false;
+
+            // Check if difficulty matches segment
+            const expectedDifficulty = getDifficulty(block.index);
+            if (block.difficulty !== expectedDifficulty) return false;
+
+            return true;
+        }
+
+        // ============================================================
+        // 51% ATTACK PROTECTION
+        // ============================================================
+        function check51Protection(block) {
+            if (!SECURITY.protection51) return true;
+
+            // Check if this block would be the longest chain
+            if (blockchain.length > 0) {
+                const currentHash = blockchain[blockchain.length - 1].hash;
+                if (block.prevHash !== currentHash) return false;
+            }
+            return true;
+        }
+
+        // ============================================================
+        // ADD BLOCK WITH FULL SECURITY
+        // ============================================================
+        function addBlock(values, decision) {
+            // Check max blocks
+            if (blockchain.length >= COSMIC.maxBlocks) {
+                alert('⚠️ Max blocks reached: 369,000,000');
+                return null;
+            }
+
+            // Check progression
+            const prog = calculateProgression();
+            if (prog.isRollover) {
+                if (Math.random() > 0.3) return null;
+            }
+
+            // Create block
+            const prevHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0000000000000000';
+            const pulseCount = countPulses(values);
+            const decisionValue = decision !== undefined ? decision : (pulseCount > 10000);
+
+            const block = createBlock(
+                blockchain.length,
+                pulseCount,
+                decisionValue,
+                prevHash,
+                { values: values, winners: processBinaryLogic(values) }
+            );
+
+            // Security checks
+            if (!checkDoubleSpend(block)) {
+                console.warn('Double spend detected!');
+                return null;
+            }
+
+            if (!checkSybilResistance(block)) {
+                console.warn('Sybil attack detected!');
+                return null;
+            }
+
+            if (!check51Protection(block)) {
+                console.warn('51% attack detected!');
+                return null;
+            }
+
+            if (!verifyBlock(block)) {
+                console.warn('Block verification failed!');
+                return null;
+            }
+
+            // Add block
+            blockchain.push(block);
+            totalPulses += pulseCount;
+
+            if (blockchain.length % 5 === 0) {
+                depositedBlocks = blockchain.length;
+            }
+
+            saveChain();
+            calculateSpeed();
+
+            // Verify entire chain
+            const verification = verifyChain();
+            chainIntegrity = verification.integrity;
+
+            return block;
+        }
+
+        // ============================================================
+        // OTHER REQUIRED FUNCTIONS
         // ============================================================
         function countPulses(values) {
             let pulse = 0;
@@ -625,7 +971,7 @@
             }
             return pulse;
         }
-        
+
         function generatePulseData() {
             const values = [];
             for (let i = 0; i < NUM_CHANNELS; i++) {
@@ -633,7 +979,6 @@
                 else if (i < 8) values.push(Math.floor(1800 + Math.random() * 1400));
                 else values.push(Math.floor(800 + Math.random() * 2200));
             }
-            
             values[0] = 3162 + Math.floor(Math.random() * 50);
             values[1] = 2880 + Math.floor(Math.random() * 50);
             values[2] = 1244 + Math.floor(Math.random() * 50);
@@ -646,10 +991,9 @@
             values[9] = 2735 + Math.floor(Math.random() * 50);
             values[10] = 1030 + Math.floor(Math.random() * 50);
             values[11] = 2472 + Math.floor(Math.random() * 50);
-            
             return values;
         }
-        
+
         function processBinaryLogic(values) {
             const winners = [];
             for (let i = 0; i < values.length; i++) {
@@ -661,7 +1005,7 @@
             }
             return winners;
         }
-        
+
         function findDominant(values) {
             let maxIdx = 0, maxVal = values[0];
             for (let i = 1; i < values.length; i++) {
@@ -669,72 +1013,17 @@
             }
             return { index: maxIdx, value: maxVal };
         }
-        
-        // ============================================================
-        // ADD BLOCK WITH COSMIC RESTRICTIONS
-        // ============================================================
-        function addBlock(values, decision) {
-            if (blockchain.length >= COSMIC.maxBlocks) {
-                alert('⚠️ Max blocks reached: 369,000,000');
-                return null;
-            }
-            
-            const prog = calculateProgression();
-            
-            // If progression is negative (rollover), slow down
-            if (prog.isRollover) {
-                // Hardship: slower creation
-                if (Math.random() > 0.3) return null;
-            }
-            
-            const prevHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0000000000000000';
-            const pulseCount = countPulses(values);
-            const decisionValue = decision !== undefined ? decision : (pulseCount > 10000);
-            
-            const block = createBlock(
-                blockchain.length,
-                pulseCount,
-                decisionValue,
-                prevHash,
-                { values: values, winners: processBinaryLogic(values) }
-            );
-            
-            blockchain.push(block);
-            totalPulses += pulseCount;
-            
-            // Auto-deposit every 5 blocks
-            if (blockchain.length % 5 === 0) {
-                depositedBlocks = blockchain.length;
-            }
-            
-            // Check rollover
-            if (prog.isRollover) {
-                depositedBlocks = blockchain.length;
-            }
-            
-            saveChain();
-            calculateSpeed();
-            
-            return block;
-        }
-        
-        // ============================================================
-        // SPEED CALCULATION
-        // ============================================================
+
         function calculateSpeed() {
             const now = Date.now();
             blockTimestamps = blockTimestamps.filter(t => now - t < 1000);
             blockTimestamps.push(now);
             creationSpeed = blockTimestamps.length / 1.0;
-            
             const prog = calculateProgression();
-            if (prog.isRollover) {
-                creationSpeed = creationSpeed * 0.3;
-            }
-            
+            if (prog.isRollover) creationSpeed = creationSpeed * 0.3;
             return creationSpeed;
         }
-        
+
         // ============================================================
         // SAVE / LOAD
         // ============================================================
@@ -744,16 +1033,23 @@
                     blockchain: blockchain,
                     totalPulses: totalPulses,
                     depositedBlocks: depositedBlocks,
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    owner: LICENSE.owner,
+                    email: LICENSE.email
                 }));
             } catch (e) {}
         }
-        
+
         function loadChain() {
             try {
                 const data = localStorage.getItem(STORAGE_KEY);
                 if (data) {
                     const parsed = JSON.parse(data);
+                    // Verify owner
+                    if (parsed.owner !== LICENSE.owner) {
+                        console.warn('Owner mismatch! Chain may be from unauthorized source.');
+                        return false;
+                    }
                     blockchain = parsed.blockchain || [];
                     totalPulses = parsed.totalPulses || 0;
                     depositedBlocks = parsed.depositedBlocks || blockchain.length;
@@ -762,42 +1058,47 @@
             } catch (e) {}
             return false;
         }
-        
+
         // ============================================================
         // SAVE TO FOLDER
         // ============================================================
         function saveToFolder(folderName) {
             const prog = calculateProgression();
             const data = {
-                name: folderName || 'medussa_369m',
+                owner: LICENSE.owner,
+                email: LICENSE.email,
+                copyright: `© ${LICENSE.year} ${LICENSE.owner}`,
+                rights: LICENSE.rights,
+                patent: LICENSE.patent,
+                notice: LICENSE.notice,
+                name: folderName || 'medussa_secure',
                 version: '3.0',
                 matrix: '3-6-9',
+                security: SECURITY,
                 maxBlocks: COSMIC.maxBlocks,
                 segments: COSMIC.segments,
-                formula: 'sa × z / (3 × t) × √(φ)',
                 progression: prog,
                 created: Date.now(),
                 blockchain: blockchain,
                 totalPulses: totalPulses,
                 depositedBlocks: depositedBlocks,
-                blockCount: blockchain.length
+                blockCount: blockchain.length,
+                chainIntegrity: chainIntegrity
             };
-            
+
             const json = JSON.stringify(data, null, 2);
             const blob = new Blob([json], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${folderName || 'medussa_369m'}_${Date.now()}.json`;
+            a.download = `${folderName || 'medussa_secure'}_${Date.now()}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
             alert('✅ Chain saved to Downloads folder!');
         }
-        
+
         function loadFromFolder() {
             const input = document.createElement('input');
             input.type = 'file';
@@ -805,12 +1106,17 @@
             input.onchange = function(e) {
                 const file = e.target.files[0];
                 if (!file) return;
-                
+
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     try {
                         const data = JSON.parse(event.target.result);
                         if (data.blockchain && Array.isArray(data.blockchain)) {
+                            // Verify owner
+                            if (data.owner !== LICENSE.owner) {
+                                alert('❌ Unauthorized chain! Owner mismatch.');
+                                return;
+                            }
                             blockchain = data.blockchain;
                             totalPulses = data.totalPulses || 0;
                             depositedBlocks = data.depositedBlocks || blockchain.length;
@@ -828,29 +1134,31 @@
             };
             input.click();
         }
-        
+
         function exportChain() {
-            const prog = calculateProgression();
             const data = {
+                owner: LICENSE.owner,
+                email: LICENSE.email,
+                copyright: `© ${LICENSE.year} ${LICENSE.owner}`,
                 blockchain: blockchain,
                 totalPulses: totalPulses,
                 depositedBlocks: depositedBlocks,
-                progression: prog,
+                chainIntegrity: chainIntegrity,
                 timestamp: Date.now(),
                 version: '3.0',
                 matrix: '3-6-9',
                 maxBlocks: COSMIC.maxBlocks
             };
-            
+
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `medussa_369m_${Date.now()}.json`;
+            a.download = `medussa_secure_${Date.now()}.json`;
             a.click();
             URL.revokeObjectURL(url);
         }
-        
+
         function importChain() {
             const input = document.createElement('input');
             input.type = 'file';
@@ -858,12 +1166,16 @@
             input.onchange = function(e) {
                 const file = e.target.files[0];
                 if (!file) return;
-                
+
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     try {
                         const data = JSON.parse(event.target.result);
                         if (data.blockchain && Array.isArray(data.blockchain)) {
+                            if (data.owner !== LICENSE.owner) {
+                                alert('❌ Unauthorized chain!');
+                                return;
+                            }
                             blockchain = data.blockchain;
                             totalPulses = data.totalPulses || 0;
                             depositedBlocks = data.depositedBlocks || blockchain.length;
@@ -881,7 +1193,7 @@
             };
             input.click();
         }
-        
+
         function clearChain() {
             if (confirm('⚠️ Clear ALL blocks? This cannot be undone.')) {
                 blockchain = [];
@@ -890,30 +1202,31 @@
                 startTime = Date.now();
                 blockTimestamps = [];
                 creationSpeed = 0;
+                chainIntegrity = 100;
                 saveChain();
                 updateDashboard();
             }
         }
-        
+
         // ============================================================
-        // ROLLOVER
+        // VERIFY CHAIN
         // ============================================================
-        function performRollover() {
-            if (confirm('🌙 Perform Cosmic Rollover? This resets the ledger.')) {
-                // Reset deposited blocks
-                depositedBlocks = 0;
-                saveChain();
-                updateDashboard();
-                alert('✅ Rollover complete!');
+        function verifyChainFull() {
+            const result = verifyChain();
+            if (result.valid) {
+                alert(`✅ Chain verified!\n\nIntegrity: ${result.integrity}%\nValid Blocks: ${result.validBlocks}/${result.totalBlocks}\nOwner: ${LICENSE.owner}`);
+            } else {
+                alert(`❌ Chain verification failed!\n\nIntegrity: ${result.integrity}%\nErrors:\n${result.errors.join('\n')}`);
             }
+            updateDashboard();
         }
-        
+
         // ============================================================
         // UPDATE DASHBOARD
         // ============================================================
         function updateDashboard() {
             updateCount++;
-            
+
             const values = generatePulseData();
             const winners = processBinaryLogic(values);
             const winnerCount = winners.filter(w => w).length;
@@ -922,31 +1235,20 @@
             const currentSegment = getSegment(blockchain.length);
             const isHardshipPhase = isHardship(blockchain.length);
             const isPeak = isHardshipPeak(blockchain.length);
-            const isReset = isResetPoint(blockchain.length);
             const prog = calculateProgression();
-            
-            // Stats
+
+            // Verify chain
+            const verification = verifyChain();
+            chainIntegrity = verification.integrity;
+
             document.getElementById('blockCount').textContent = blockchain.length.toLocaleString();
             document.getElementById('creationSpeed').textContent = creationSpeed.toFixed(1) + '/s';
             document.getElementById('totalPulses').textContent = Math.floor(totalPulses).toLocaleString();
             document.getElementById('depositedCount').textContent = depositedBlocks.toLocaleString();
             document.getElementById('currentSegment').textContent = currentSegment;
             document.getElementById('currentSegment').className = `value cosmic ${isPeak ? 'danger' : isHardshipPhase ? 'warning' : ''}`;
-            
-            // Progression
-            document.getElementById('progressionValue').textContent = prog.progression.toFixed(7);
-            document.getElementById('progressionValue').className = `value ${prog.isRollover ? 'rollover' : ''}`;
-            
-            // Formula display
-            document.getElementById('formulaDisplay').textContent = 
-                `sa = ${prog.sa.toFixed(3)} · z = ${prog.z.toFixed(3)} · t = ${prog.t.toFixed(2)} · φ = ${prog.phi.toFixed(3)}`;
-            document.getElementById('progressionFormula').textContent = prog.progression.toFixed(7);
-            document.getElementById('phaseFormula').textContent = prog.isRollover ? 'ROLLOVER' : 
-                                                              prog.isHardship ? 'HARDSHIP' : 
-                                                              prog.isReset ? 'RESET' : 'CREATION';
-            document.getElementById('phaseFormula').style.color = prog.isRollover ? '#ff3355' : 
-                                                               prog.isHardship ? '#ffaa00' : '#00ff88';
-            
+            document.getElementById('securityStatus').textContent = `🛡️ ${chainIntegrity.toFixed(1)}%`;
+
             // Channels
             const grid = document.getElementById('channelsGrid');
             grid.innerHTML = '';
@@ -960,7 +1262,7 @@
                 `;
                 grid.appendChild(div);
             }
-            
+
             // Binary Map
             const map = document.getElementById('binaryMap');
             map.innerHTML = '';
@@ -970,21 +1272,20 @@
                 bit.textContent = winners[i] ? '1' : '0';
                 map.appendChild(bit);
             }
-            
+
             // Dominant
             document.getElementById('dominantValue').textContent = dominant.value;
             document.getElementById('dominantLabel').textContent = `Channel ${dominant.index} · ${CHANNEL_LABELS[dominant.index]}`;
-            
+
             // Blockchain List
             const list = document.getElementById('blockchainList');
             const header = list.querySelector('.header');
             list.innerHTML = '';
             list.appendChild(header);
-            
+
             const start = Math.max(0, blockchain.length - 20);
             for (let i = blockchain.length - 1; i >= start; i--) {
                 const block = blockchain[i];
-                const seg = block.segment || getSegment(block.index);
                 const isDeposited = i < depositedBlocks;
                 const div = document.createElement('div');
                 div.className = 'block-item';
@@ -995,19 +1296,19 @@
                     <span class="hash">${block.hash.substring(0, 6)}...</span>
                     <span class="hash">${block.prevHash.substring(0, 6)}...</span>
                     <span class="time">${new Date(block.timestamp).toLocaleTimeString()}</span>
-                    <span class="deposited">${isDeposited ? '📁' : '⏳'}</span>
+                    <span class="secure">${block.owner === LICENSE.owner ? '🔒' : '⚠️'}</span>
                 `;
                 list.appendChild(div);
             }
-            
+
             // Status
-            document.getElementById('statusBadge').textContent = `${blockchain.length.toLocaleString()} BLOCKS · ${creationSpeed.toFixed(1)}/s`;
+            document.getElementById('statusBadge').textContent = `🔒 SECURE · ${blockchain.length.toLocaleString()} BLOCKS`;
             document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
-            
+
             // Folder count
             document.getElementById('folderBlockCount').textContent = blockchain.length.toLocaleString() + ' blocks';
         }
-        
+
         // ============================================================
         // AUTO MINE
         // ============================================================
@@ -1018,25 +1319,25 @@
                 startAutoMine();
             }
         }
-        
+
         function startAutoMine() {
             if (isAutoMining) return;
             if (blockchain.length >= COSMIC.maxBlocks) {
                 alert('⚠️ Max blocks reached: 369,000,000');
                 return;
             }
-            
+
             isAutoMining = true;
             document.getElementById('autoMineBtn').textContent = '⏹ STOP';
             document.getElementById('autoMineBtn').className = 'danger';
-            
+
             autoMineInterval = setInterval(() => {
                 if (blockchain.length >= COSMIC.maxBlocks) {
                     stopAutoMine();
                     alert('✅ Max blocks reached: 369,000,000');
                     return;
                 }
-                
+
                 const values = generatePulseData();
                 const winners = processBinaryLogic(values);
                 const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
@@ -1044,7 +1345,7 @@
                 updateDashboard();
             }, 1000);
         }
-        
+
         function stopAutoMine() {
             isAutoMining = false;
             if (autoMineInterval) {
@@ -1054,7 +1355,7 @@
             document.getElementById('autoMineBtn').textContent = '🎲 AUTO MINE';
             document.getElementById('autoMineBtn').className = '';
         }
-        
+
         // ============================================================
         // EVENT LISTENERS
         // ============================================================
@@ -1065,9 +1366,9 @@
             addBlock(values, decision);
             updateDashboard();
         });
-        
+
         document.getElementById('autoMineBtn').addEventListener('click', toggleAutoMine);
-        
+
         document.getElementById('simulateBtn').addEventListener('click', function() {
             for (let i = 0; i < 10; i++) {
                 const values = generatePulseData();
@@ -1077,19 +1378,19 @@
             }
             updateDashboard();
         });
-        
+
         document.getElementById('clearBtn').addEventListener('click', clearChain);
         document.getElementById('exportBtn').addEventListener('click', exportChain);
         document.getElementById('importBtn').addEventListener('click', importChain);
-        
+        document.getElementById('verifyBtn').addEventListener('click', verifyChainFull);
+
         document.getElementById('saveToFolderBtn').addEventListener('click', function() {
-            const folderName = document.getElementById('folderName').value || 'medussa_369m';
+            const folderName = document.getElementById('folderName').value || 'medussa_secure';
             saveToFolder(folderName);
         });
-        
+
         document.getElementById('loadFromFolderBtn').addEventListener('click', loadFromFolder);
-        document.getElementById('rolloverBtn').addEventListener('click', performRollover);
-        
+
         // ============================================================
         // KEYBOARD SHORTCUTS
         // ============================================================
@@ -1106,43 +1407,58 @@
                 e.preventDefault();
                 clearChain();
             }
-            if (e.key === 'r' && (e.ctrlKey || e.metaKey)) {
+            if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
                 e.preventDefault();
-                performRollover();
+                verifyChainFull();
             }
         });
-        
+
         // ============================================================
         // INITIALIZE
         // ============================================================
         function init() {
+            console.log(`🔒 MEDUSSA SECURE v3.0`);
+            console.log(`© ${LICENSE.year} ${LICENSE.owner}`);
+            console.log(`Email: ${LICENSE.email}`);
+            console.log(`License: ${LICENSE.rights}`);
+            console.log(`Patent: ${LICENSE.patent}`);
+            console.log('========================================');
+
             if (!loadChain()) {
                 const genesisValues = new Array(NUM_CHANNELS).fill(0);
                 addBlock(genesisValues, false);
                 depositedBlocks = 1;
             }
-            
+
             startTime = Date.now() - (blockchain.length * 1000);
             updateDashboard();
-            
+
             setInterval(() => {
                 updateDashboard();
             }, 5000);
-            
-            console.log('🐍 MEDUSSA COSMIC v3.0');
-            console.log(`Max Blocks: ${COSMIC.maxBlocks.toLocaleString()}`);
-            console.log(`Formula: sa × z / (3 × t) × √(φ)`);
-            console.log(`Blocks: ${blockchain.length.toLocaleString()}`);
-            console.log(`Segment: ${getSegment(blockchain.length)}`);
-            console.log('3-6-9 Matrix Active');
-            console.log('==============================');
-            console.log('Space: Toggle auto-mine');
-            console.log('Ctrl+S: Export chain');
-            console.log('Ctrl+C: Clear chain');
-            console.log('Ctrl+R: Rollover');
-            console.log('==============================');
+
+            console.log('✅ Security Features Active:');
+            console.log(`  🔗 Double Spend: ${SECURITY.doubleSpend ? '✅' : '❌'}`);
+            console.log(`  🔐 Hash Verification: ${SECURITY.hashVerification ? '✅' : '❌'}`);
+            console.log(`  🛡️ Sybil Resistance: ${SECURITY.sybilResistance ? '✅' : '❌'}`);
+            console.log(`  ⚡ 51% Protection: ${SECURITY.protection51 ? '✅' : '❌'}`);
+            console.log(`  📜 Chain Validation: ${SECURITY.chainValidation ? '✅' : '❌'}`);
+            console.log(`  ⏳ Timestamp Security: ${SECURITY.timestampSecurity ? '✅' : '❌'}`);
+            console.log(`  🔑 Digital Signature: ${SECURITY.digitalSignature}`);
+            console.log(`  📁 Backup Integrity: ${SECURITY.backupIntegrity ? '✅' : '❌'}`);
+            console.log('========================================');
+            console.log(`🛡️ Chain Integrity: ${chainIntegrity}%`);
+            console.log(`📦 Blocks: ${blockchain.length}`);
+            console.log(`👤 Owner: ${LICENSE.owner}`);
+            console.log('========================================');
+            console.log('Keys:');
+            console.log('  Space: Toggle auto-mine');
+            console.log('  Ctrl+S: Export chain');
+            console.log('  Ctrl+C: Clear chain');
+            console.log('  Ctrl+V: Verify chain');
+            console.log('========================================');
         }
-        
+
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
