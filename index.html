@@ -921,4 +921,458 @@
             const now = Date.now();
             blockTimestamps = blockTimestamps.filter(t => now - t < 1000);
             blockTimestamps.push(now);
-            creationSpeed = blockTimestamps.length / 
+            creationSpeed = blockTimestamps.length / 1.0;
+            
+            // Cosmic speed limit based on segment
+            const currentSegment = getSegment(blockchain.length);
+            let maxSpeed = 10;
+            if (currentSegment >= 4 && currentSegment <= 6) {
+                maxSpeed = 5; // Hardship: slower
+            }
+            if (currentSegment === 6) {
+                maxSpeed = 2; // Peak hardship: very slow
+            }
+            
+            if (creationSpeed > maxSpeed) {
+                creationSpeed = maxSpeed;
+            }
+            
+            return creationSpeed;
+        }
+        
+        // ============================================================
+        // SAVE / LOAD
+        // ============================================================
+        function saveChain() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    blockchain: blockchain,
+                    totalPulses: totalPulses,
+                    depositedBlocks: depositedBlocks,
+                    timestamp: Date.now()
+                }));
+            } catch (e) {}
+        }
+        
+        function loadChain() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    blockchain = parsed.blockchain || [];
+                    totalPulses = parsed.totalPulses || 0;
+                    depositedBlocks = parsed.depositedBlocks || blockchain.length;
+                    return true;
+                }
+            } catch (e) {}
+            return false;
+        }
+        
+        // ============================================================
+        // SAVE TO FOLDER
+        // ============================================================
+        function saveToFolder(folderName) {
+            const data = {
+                name: folderName || 'medussa_cosmic',
+                version: '2.0',
+                matrix: '3-6-9',
+                maxBlocks: COSMIC.maxBlocks,
+                segments: COSMIC.segments,
+                created: Date.now(),
+                blockchain: blockchain,
+                totalPulses: totalPulses,
+                depositedBlocks: depositedBlocks,
+                blockCount: blockchain.length
+            };
+            
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${folderName || 'medussa_cosmic'}_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Chain saved to Downloads folder!');
+        }
+        
+        function loadFromFolder() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (data.blockchain && Array.isArray(data.blockchain)) {
+                            blockchain = data.blockchain;
+                            totalPulses = data.totalPulses || 0;
+                            depositedBlocks = data.depositedBlocks || blockchain.length;
+                            saveChain();
+                            updateDashboard();
+                            alert(`✅ Loaded ${blockchain.length} blocks!`);
+                        } else {
+                            alert('❌ Invalid chain data');
+                        }
+                    } catch (err) {
+                        alert('❌ Failed to parse file');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        function exportChain() {
+            const data = {
+                blockchain: blockchain,
+                totalPulses: totalPulses,
+                depositedBlocks: depositedBlocks,
+                timestamp: Date.now(),
+                version: '2.0',
+                matrix: '3-6-9',
+                maxBlocks: COSMIC.maxBlocks
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `medussa_cosmic_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function importChain() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (data.blockchain && Array.isArray(data.blockchain)) {
+                            blockchain = data.blockchain;
+                            totalPulses = data.totalPulses || 0;
+                            depositedBlocks = data.depositedBlocks || blockchain.length;
+                            saveChain();
+                            updateDashboard();
+                            alert('✅ Chain imported successfully!');
+                        } else {
+                            alert('❌ Invalid chain data');
+                        }
+                    } catch (err) {
+                        alert('❌ Failed to parse file');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        function clearChain() {
+            if (confirm('⚠️ Clear ALL blocks? This cannot be undone.')) {
+                blockchain = [];
+                totalPulses = 0;
+                depositedBlocks = 0;
+                startTime = Date.now();
+                blockTimestamps = [];
+                creationSpeed = 0;
+                saveChain();
+                updateDashboard();
+            }
+        }
+        
+        // ============================================================
+        // ROLLOVER
+        // ============================================================
+        function performRollover() {
+            if (confirm('🌙 Perform Cosmic Rollover? This resets the ledger.')) {
+                const rollovers = checkRollover();
+                if (rollovers.length === 0) {
+                    alert('No rollover date today. Forcing rollover...');
+                }
+                
+                // Reset deposited blocks
+                depositedBlocks = 0;
+                saveChain();
+                updateDashboard();
+                
+                const msg = rollovers.length > 0 ? 
+                    `✅ Rollover complete! ${rollovers.join(', ')}` :
+                    '✅ Rollover complete!';
+                alert(msg);
+            }
+        }
+        
+        // ============================================================
+        // UPDATE DASHBOARD
+        // ============================================================
+        function updateDashboard() {
+            updateCount++;
+            
+            const values = generatePulseData();
+            const winners = processBinaryLogic(values);
+            const winnerCount = winners.filter(w => w).length;
+            const selectionRatio = (winnerCount / NUM_CHANNELS * 100);
+            const dominant = findDominant(values);
+            const currentSegment = getSegment(blockchain.length);
+            const isHardshipPhase = isHardship(blockchain.length);
+            const isPeak = isHardshipPeak(blockchain.length);
+            const isReset = isResetPoint(blockchain.length);
+            const timeCycle = getTimeCycle(blockchain.length);
+            const nextRollover = getNextRollover();
+            
+            // Stats
+            document.getElementById('blockCount').textContent = blockchain.length;
+            document.getElementById('creationSpeed').textContent = creationSpeed.toFixed(1) + '/s';
+            document.getElementById('totalPulses').textContent = Math.floor(totalPulses);
+            document.getElementById('depositedCount').textContent = depositedBlocks;
+            document.getElementById('depositDisplay').textContent = depositedBlocks;
+            document.getElementById('nextRollover').textContent = nextRollover;
+            
+            document.getElementById('winnersCount').textContent = `${winnerCount}/${NUM_CHANNELS}`;
+            document.getElementById('winnersCount').className = `value ${winnerCount < 4 ? 'danger' : winnerCount < 6 ? 'warning' : ''}`;
+            document.getElementById('selectionPower').textContent = `${selectionRatio.toFixed(1)}%`;
+            
+            // Segment
+            document.getElementById('currentSegment').textContent = currentSegment;
+            document.getElementById('currentSegment').className = `value cosmic ${isPeak ? 'danger' : isHardshipPhase ? 'warning' : ''}`;
+            
+            // Rollover status
+            const rollovers = checkRollover();
+            document.getElementById('rolloverStatus').textContent = rollovers.length > 0 ? `✅ ${rollovers.join(', ')}` : '--';
+            document.getElementById('rolloverStatus').className = `value ${rollovers.length > 0 ? 'warning' : ''}`;
+            
+            // Restriction status
+            const integrity = blockchain.length > 0 ? 
+                (blockchain.filter(b => b.hash).length / blockchain.length * 100) : 100;
+            document.getElementById('chainIntegrity').textContent = integrity.toFixed(1) + '%';
+            document.getElementById('chainIntegrity').className = `rest-value ${integrity > 95 ? '' : integrity > 80 ? 'warning' : 'error'}`;
+            
+            document.getElementById('speedStatus').textContent = creationSpeed < 10 ? 'OK' : 'WARNING';
+            document.getElementById('speedStatus').className = `rest-value ${creationSpeed < 10 ? '' : 'warning'}`;
+            
+            document.getElementById('depositReady').textContent = blockchain.length % 5 === 0 ? '✅' : '⏳';
+            document.getElementById('depositReady').className = `rest-value ${blockchain.length % 5 === 0 ? '' : 'warning'}`;
+            
+            document.getElementById('matrixStatus').textContent = '✅ ACTIVE';
+            document.getElementById('matrixStatus').className = `rest-value ${isPeak ? 'warning' : ''}`;
+            
+            // Folder block count
+            document.getElementById('folderBlockCount').textContent = blockchain.length + ' blocks';
+            
+            // Channels
+            const grid = document.getElementById('channelsGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < NUM_CHANNELS; i++) {
+                const div = document.createElement('div');
+                div.className = `channel ${winners[i] ? 'winner' : 'loser'}`;
+                div.innerHTML = `
+                    <div class="ch-label">${CHANNEL_LABELS[i]}</div>
+                    <div class="ch-value">${values[i]}</div>
+                    <div class="ch-status ${winners[i] ? 'win' : 'lose'}">${winners[i] ? '▼ WIN' : '▲ LOSE'}</div>
+                `;
+                grid.appendChild(div);
+            }
+            
+            // Binary Map
+            const map = document.getElementById('binaryMap');
+            map.innerHTML = '';
+            for (let i = 0; i < NUM_CHANNELS; i++) {
+                const bit = document.createElement('div');
+                bit.className = `bit ${winners[i] ? 'on' : 'off'}`;
+                bit.textContent = winners[i] ? '1' : '0';
+                map.appendChild(bit);
+            }
+            
+            // Dominant
+            document.getElementById('dominantValue').textContent = dominant.value;
+            document.getElementById('dominantLabel').textContent = `Channel ${dominant.index} · ${CHANNEL_LABELS[dominant.index]}`;
+            
+            // Blockchain List
+            const list = document.getElementById('blockchainList');
+            const header = list.querySelector('.header');
+            list.innerHTML = '';
+            list.appendChild(header);
+            
+            const start = Math.max(0, blockchain.length - 20);
+            for (let i = blockchain.length - 1; i >= start; i--) {
+                const block = blockchain[i];
+                const seg = block.segment || getSegment(block.index);
+                const isDeposited = i < depositedBlocks;
+                const div = document.createElement('div');
+                div.className = 'block-item';
+                div.innerHTML = `
+                    <span class="idx">#${block.index}</span>
+                    <span class="pulse">${Math.floor(block.pulseCount)}</span>
+                    <span class="decision ${block.decision ? 'win' : 'lose'}">${block.decision ? 'WIN' : 'LOSE'}</span>
+                    <span class="hash">${block.hash.substring(0, 6)}...</span>
+                    <span class="hash">${block.prevHash.substring(0, 6)}...</span>
+                    <span class="time">${new Date(block.timestamp).toLocaleTimeString()}</span>
+                    <span class="deposited">${isDeposited ? '📁' : '⏳'}</span>
+                `;
+                list.appendChild(div);
+            }
+            
+            // Status
+            const statusText = isPeak ? '⚠️ PEAK HARDSHIP' : 
+                              isHardshipPhase ? '⚠️ HARDSHIP' : 
+                              isReset ? '🔄 RESET' : '● ACTIVE';
+            document.getElementById('statusBadge').textContent = `${statusText} · ${blockchain.length} BLOCKS`;
+            document.getElementById('statusBadge').className = `status ${isPeak ? 'danger' : isHardshipPhase ? 'warning' : ''}`;
+            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
+        }
+        
+        // ============================================================
+        // AUTO MINE
+        // ============================================================
+        function toggleAutoMine() {
+            if (isAutoMining) {
+                stopAutoMine();
+            } else {
+                startAutoMine();
+            }
+        }
+        
+        function startAutoMine() {
+            if (isAutoMining) return;
+            if (blockchain.length >= COSMIC.maxBlocks) {
+                alert('⚠️ Max blocks reached!');
+                return;
+            }
+            
+            isAutoMining = true;
+            document.getElementById('autoMineBtn').textContent = '⏹ STOP';
+            document.getElementById('autoMineBtn').className = 'danger';
+            
+            autoMineInterval = setInterval(() => {
+                if (blockchain.length >= COSMIC.maxBlocks) {
+                    stopAutoMine();
+                    alert('✅ Max blocks reached: 9,000,000');
+                    return;
+                }
+                
+                const values = generatePulseData();
+                const winners = processBinaryLogic(values);
+                const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
+                addBlock(values, decision);
+                updateDashboard();
+            }, 1000);
+        }
+        
+        function stopAutoMine() {
+            isAutoMining = false;
+            if (autoMineInterval) {
+                clearInterval(autoMineInterval);
+                autoMineInterval = null;
+            }
+            document.getElementById('autoMineBtn').textContent = '🎲 AUTO MINE';
+            document.getElementById('autoMineBtn').className = '';
+        }
+        
+        // ============================================================
+        // EVENT LISTENERS
+        // ============================================================
+        document.getElementById('addBlockBtn').addEventListener('click', function() {
+            const values = generatePulseData();
+            const winners = processBinaryLogic(values);
+            const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
+            addBlock(values, decision);
+            updateDashboard();
+        });
+        
+        document.getElementById('autoMineBtn').addEventListener('click', toggleAutoMine);
+        
+        document.getElementById('simulateBtn').addEventListener('click', function() {
+            for (let i = 0; i < 10; i++) {
+                const values = generatePulseData();
+                const winners = processBinaryLogic(values);
+                const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
+                addBlock(values, decision);
+            }
+            updateDashboard();
+        });
+        
+        document.getElementById('clearBtn').addEventListener('click', clearChain);
+        document.getElementById('exportBtn').addEventListener('click', exportChain);
+        document.getElementById('importBtn').addEventListener('click', importChain);
+        
+        document.getElementById('saveToFolderBtn').addEventListener('click', function() {
+            const folderName = document.getElementById('folderName').value || 'medussa_cosmic';
+            saveToFolder(folderName);
+        });
+        
+        document.getElementById('loadFromFolderBtn').addEventListener('click', loadFromFolder);
+        document.getElementById('rolloverBtn').addEventListener('click', performRollover);
+        
+        // ============================================================
+        // KEYBOARD SHORTCUTS
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                toggleAutoMine();
+            }
+            if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                exportChain();
+            }
+            if (e.key === 'c' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                clearChain();
+            }
+            if (e.key === 'r' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                performRollover();
+            }
+        });
+        
+        // ============================================================
+        // INITIALIZE
+        // ============================================================
+        function init() {
+            if (!loadChain()) {
+                const genesisValues = new Array(NUM_CHANNELS).fill(0);
+                addBlock(genesisValues, false);
+                depositedBlocks = 1;
+            }
+            
+            startTime = Date.now() - (blockchain.length * 1000);
+            updateDashboard();
+            
+            setInterval(() => {
+                updateDashboard();
+            }, 5000);
+            
+            console.log('🐍 MEDUSSA COSMIC v2.0');
+            console.log(`Max Blocks: ${COSMIC.maxBlocks.toLocaleString()}`);
+            console.log(`Segments: ${COSMIC.segments}`);
+            console.log(`Blocks: ${blockchain.length}`);
+            console.log(`Segment: ${getSegment(blockchain.length)}`);
+            console.log(`Hardship: ${isHardship(blockchain.length) ? '⚠️ ACTIVE' : '✅ NONE'}`);
+            console.log('3-6-9 Matrix Active');
+            console.log('==============================');
+            console.log('Space: Toggle auto-mine');
+            console.log('Ctrl+S: Export chain');
+            console.log('Ctrl+C: Clear chain');
+            console.log('Ctrl+R: Rollover');
+            console.log('==============================');
+        }
+        
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
