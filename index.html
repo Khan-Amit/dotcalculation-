@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dotcalculation · Blockchain</title>
+    <title>MEDUSSA · Blockchain</title>
     <style>
         /* ============================================================
-        DOTCALCULATION STYLES
+        MEDUSSA STYLES
         ============================================================ */
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,16 +34,18 @@
         }
         
         .header h1 {
-            font-size: 32px;
+            font-size: 36px;
             color: #00ff88;
             text-shadow: 0 0 40px #00ff8844;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
         }
+        
+        .header h1 span { color: #ff3355; }
         
         .header .subtitle {
             font-size: 14px;
             color: #00ff8866;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
         }
         
         .header .status {
@@ -83,6 +85,9 @@
             margin-top: 5px;
             color: #00ff88;
         }
+        
+        .stat-card .value.danger { color: #ff3355; }
+        .stat-card .value.warning { color: #ffaa00; }
         
         /* 3-6-9 Matrix */
         .matrix {
@@ -213,7 +218,7 @@
             border-radius: 8px;
             padding: 15px 20px;
             margin-bottom: 25px;
-            max-height: 300px;
+            max-height: 350px;
             overflow-y: auto;
         }
         
@@ -227,11 +232,11 @@
         
         .block-item {
             display: grid;
-            grid-template-columns: 60px 1fr 1fr 1fr 1fr;
-            gap: 10px;
-            padding: 8px 12px;
+            grid-template-columns: 50px 1fr 1fr 1fr 1fr 80px;
+            gap: 8px;
+            padding: 6px 12px;
             border-bottom: 1px solid #00ff8822;
-            font-size: 12px;
+            font-size: 11px;
             align-items: center;
         }
         
@@ -240,11 +245,11 @@
         .block-item .decision { font-weight: bold; }
         .block-item .decision.win { color: #00ff88; }
         .block-item .decision.lose { color: #ff3355; }
-        .block-item .hash { color: #ffaa0066; font-size: 10px; }
+        .block-item .hash { color: #ffaa0066; font-size: 9px; }
         
         .block-item.header {
             color: #00ff8866;
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 1px;
             border-bottom: 2px solid #00ff8833;
@@ -253,7 +258,7 @@
         /* Actions */
         .actions {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
             margin-bottom: 25px;
         }
@@ -262,13 +267,15 @@
             background: #00ff8822;
             border: 1px solid #00ff88;
             color: #00ff88;
-            padding: 10px 25px;
+            padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             transition: all 0.3s;
+            flex: 1;
+            min-width: 120px;
         }
         
         .actions button:hover {
@@ -285,6 +292,70 @@
         .actions button.danger:hover {
             background: #ff335544;
             box-shadow: 0 0 30px #ff335522;
+        }
+        
+        .actions button.warning {
+            border-color: #ffaa00;
+            color: #ffaa00;
+            background: #ffaa0022;
+        }
+        
+        .actions button.warning:hover {
+            background: #ffaa0044;
+            box-shadow: 0 0 30px #ffaa0022;
+        }
+        
+        /* Folder Save */
+        .folder-save {
+            background: #1a1a24;
+            border: 1px solid #00ff8833;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .folder-save .label {
+            font-size: 11px;
+            color: #00ff8866;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .folder-save input {
+            background: #0a0a0f;
+            border: 1px solid #00ff8833;
+            color: #00ff88;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .folder-save input:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+        
+        .folder-save button {
+            background: #00ff8822;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .folder-save button:hover {
+            background: #00ff8844;
+            box-shadow: 0 0 20px #00ff8822;
         }
         
         /* Footer */
@@ -306,14 +377,16 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .channels { grid-template-columns: repeat(3, 1fr); }
             .matrix { grid-template-columns: 1fr; }
-            .block-item { grid-template-columns: 40px 1fr 1fr; font-size: 10px; }
-            .header h1 { font-size: 24px; }
+            .block-item { grid-template-columns: 35px 1fr 1fr; font-size: 10px; }
+            .block-item .hash { display: none; }
+            .header h1 { font-size: 28px; }
+            .folder-save { flex-direction: column; }
         }
         
         @media (max-width: 480px) {
             .channels { grid-template-columns: repeat(2, 1fr); }
             .stats-grid { grid-template-columns: 1fr 1fr; }
-            .block-item { grid-template-columns: 30px 1fr; }
+            .actions button { min-width: 80px; font-size: 11px; padding: 8px 12px; }
         }
         
         @keyframes pulse {
@@ -321,12 +394,24 @@
             50% { opacity: 0.5; }
         }
         
-        .updating { animation: pulse 0.3s ease; }
-        .winner .ch-value { animation: glow 2s ease-in-out infinite; }
-        
         @keyframes glow {
             0%, 100% { box-shadow: 0 0 20px #00ff8822; }
             50% { box-shadow: 0 0 40px #00ff8855; }
+        }
+        
+        .updating { animation: pulse 0.3s ease; }
+        .winner .ch-value { animation: glow 2s ease-in-out infinite; }
+        
+        /* Scrollbar */
+        .blockchain-display::-webkit-scrollbar {
+            width: 4px;
+        }
+        .blockchain-display::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        .blockchain-display::-webkit-scrollbar-thumb {
+            background: #00ff8833;
+            border-radius: 2px;
         }
     </style>
 </head>
@@ -338,7 +423,7 @@
         ============================================================ -->
         <div class="header">
             <div>
-                <h1>⧫ DOTCALCULATION</h1>
+                <h1>🐍 MED<span>US</span>SA</h1>
                 <div class="subtitle">Your Blockchain · Pulse Counting · 3-6-9</div>
             </div>
             <div class="status" id="statusBadge">● ACTIVE</div>
@@ -417,16 +502,27 @@
         BLOCKCHAIN DISPLAY
         ============================================================ -->
         <div class="blockchain-display" id="blockchainDisplay">
-            <div class="block-label">⧫ Blockchain · Last 20 Blocks</div>
+            <div class="block-label">🐍 Medussa · Blockchain</div>
             <div id="blockchainList">
                 <div class="block-item header">
                     <span>#</span>
                     <span>Pulse</span>
                     <span>Decision</span>
                     <span>Hash</span>
+                    <span>Prev</span>
                     <span>Time</span>
                 </div>
             </div>
+        </div>
+        
+        <!-- ============================================================
+        FOLDER SAVE
+        ============================================================ -->
+        <div class="folder-save">
+            <span class="label">💾 Save to Folder</span>
+            <input type="text" id="folderName" placeholder="Folder name (e.g., my_chain)" value="medussa_chain">
+            <button id="saveToFolderBtn">📁 SAVE CHAIN</button>
+            <button id="loadFromFolderBtn">📂 LOAD CHAIN</button>
         </div>
         
         <!-- ============================================================
@@ -434,27 +530,28 @@
         ============================================================ -->
         <div class="actions">
             <button id="addBlockBtn">⧫ ADD BLOCK</button>
-            <button id="simulateBtn">🎲 SIMULATE PULSES</button>
-            <button id="clearBtn" class="danger">✕ CLEAR CHAIN</button>
-            <button id="exportBtn">💾 EXPORT CHAIN</button>
-            <button id="importBtn">📂 IMPORT CHAIN</button>
+            <button id="autoMineBtn">🎲 AUTO MINE</button>
+            <button id="simulateBtn">⚡ SIMULATE 10</button>
+            <button id="exportBtn" class="warning">💾 EXPORT JSON</button>
+            <button id="importBtn" class="warning">📂 IMPORT JSON</button>
+            <button id="clearBtn" class="danger">✕ CLEAR ALL</button>
         </div>
         
         <!-- ============================================================
         FOOTER
         ============================================================ -->
         <div class="footer">
-            dotcalculation v1.0 · Your Blockchain · <span id="updateTime">--</span>
+            🐍 MEDUSSA v1.0 · Your Blockchain · <span id="updateTime">--</span>
             <br>
             <span style="font-size:10px;color:#00ff8822;">
-                Build on 3-6-9 Matrix · Electromagnetic Pulse Counting
+                Built on 3-6-9 Matrix · Electromagnetic Pulse Counting
             </span>
         </div>
         
     </div>
     
     <!-- ============================================================
-    JAVASCRIPT - DOTCALCULATION ENGINE
+    JAVASCRIPT - MEDUSSA ENGINE
     ============================================================ -->
     <script>
         // ============================================================
@@ -463,7 +560,7 @@
         const NUM_CHANNELS = 12;
         const THRESHOLD = 2048;
         const CHANNEL_LABELS = ['GPU0','GPU1','GPU2','GPU3','PSU0','PSU1','PSU2','PSU3','TMP0','TMP1','TMP2','TMP3'];
-        const STORAGE_KEY = 'dotcalculation_chain';
+        const STORAGE_KEY = 'medussa_chain';
         
         // ============================================================
         // BLOCKCHAIN STATE
@@ -492,10 +589,10 @@
         }
         
         // ============================================================
-        // HASH GENERATOR (Simple but effective)
+        // HASH GENERATOR
         // ============================================================
         function generateHash(index, pulseCount, decision, prevHash, timestamp) {
-            let hash = prevHash || 0;
+            let hash = prevHash ? parseInt(prevHash.substring(0, 8), 16) || 0 : 0;
             hash ^= (index * 31);
             hash ^= (Math.floor(pulseCount) * 97);
             hash ^= (decision ? 0xFFFFFFFF : 0x00000000);
@@ -510,12 +607,9 @@
         function countPulses(values) {
             let pulse = 0;
             for (let i = 0; i < values.length; i++) {
-                // 3 = Creator (Input)
-                pulse += (values[i] % 3) * 100;
-                // 6 = Preserver (Process)
-                pulse += (Math.floor(values[i] / 6)) * 50;
-                // 9 = Destroyer (Output)
-                pulse += (values[i] % 9) * 10;
+                pulse += (values[i] % 3) * 100;   // 3 = Creator
+                pulse += (Math.floor(values[i] / 6)) * 50;  // 6 = Preserver
+                pulse += (values[i] % 9) * 10;    // 9 = Destroyer
             }
             return pulse;
         }
@@ -531,7 +625,7 @@
                 else values.push(Math.floor(800 + Math.random() * 2200));
             }
             
-            // Force pattern
+            // Force pattern for visibility
             values[0] = 3162 + Math.floor(Math.random() * 50);
             values[1] = 2880 + Math.floor(Math.random() * 50);
             values[2] = 1244 + Math.floor(Math.random() * 50);
@@ -575,7 +669,7 @@
         }
         
         // ============================================================
-        // ADD BLOCK TO CHAIN
+        // ADD BLOCK
         // ============================================================
         function addBlock(values, decision) {
             const prevHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0000000000000000';
@@ -600,7 +694,7 @@
         }
         
         // ============================================================
-        // SAVE CHAIN (Phone backup)
+        // SAVE/LOCAL STORAGE
         // ============================================================
         function saveChain() {
             try {
@@ -614,9 +708,6 @@
             }
         }
         
-        // ============================================================
-        // LOAD CHAIN
-        // ============================================================
         function loadChain() {
             try {
                 const data = localStorage.getItem(STORAGE_KEY);
@@ -633,7 +724,71 @@
         }
         
         // ============================================================
-        // EXPORT CHAIN (Download)
+        // SAVE TO FOLDER (Download as ZIP or JSON)
+        // ============================================================
+        function saveToFolder(folderName) {
+            const data = {
+                name: folderName || 'medussa_chain',
+                version: '1.0',
+                matrix: '3-6-9',
+                created: Date.now(),
+                blockchain: blockchain,
+                totalPulses: totalPulses,
+                blockCount: blockchain.length
+            };
+            
+            // Create JSON file
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            // Download as file (browser will save to Downloads folder)
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${folderName || 'medussa_chain'}_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Chain saved to file! Check your Downloads folder.');
+        }
+        
+        // ============================================================
+        // LOAD FROM FOLDER
+        // ============================================================
+        function loadFromFolder() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (data.blockchain && Array.isArray(data.blockchain)) {
+                            blockchain = data.blockchain;
+                            totalPulses = data.totalPulses || 0;
+                            saveChain();
+                            updateDashboard();
+                            alert(`✅ Chain loaded! ${blockchain.length} blocks restored.`);
+                        } else {
+                            alert('❌ Invalid chain data');
+                        }
+                    } catch (err) {
+                        alert('❌ Failed to parse file');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // ============================================================
+        // EXPORT/IMPORT CHAIN
         // ============================================================
         function exportChain() {
             const data = {
@@ -648,14 +803,11 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `dotcalculation_chain_${Date.now()}.json`;
+            a.download = `medussa_chain_${Date.now()}.json`;
             a.click();
             URL.revokeObjectURL(url);
         }
         
-        // ============================================================
-        // IMPORT CHAIN
-        // ============================================================
         function importChain() {
             const input = document.createElement('input');
             input.type = 'file';
@@ -704,22 +856,20 @@
         function updateDashboard() {
             updateCount++;
             
-            // Generate current pulse data
             const values = generatePulseData();
             const winners = processBinaryLogic(values);
             const winnerCount = winners.filter(w => w).length;
             const selectionRatio = (winnerCount / NUM_CHANNELS * 100);
             const dominant = findDominant(values);
-            const isHealthy = winnerCount > (NUM_CHANNELS / 2);
             
             // Stats
             document.getElementById('blockCount').textContent = blockchain.length;
             document.getElementById('totalPulses').textContent = Math.floor(totalPulses);
             document.getElementById('winnersCount').textContent = `${winnerCount}/${NUM_CHANNELS}`;
+            document.getElementById('winnersCount').className = `value ${winnerCount < 4 ? 'danger' : winnerCount < 6 ? 'warning' : ''}`;
             document.getElementById('selectionPower').textContent = `${selectionRatio.toFixed(1)}%`;
-            document.getElementById('lastBlock').textContent = blockchain.length > 0 ? 
-                `#${blockchain.length - 1}` : '--';
-            document.getElementById('rigHealth').textContent = isHealthy ? '✅ OPTIMAL' : '⚠️ WARNING';
+            document.getElementById('selectionPower').className = `value ${selectionRatio < 40 ? 'danger' : selectionRatio < 55 ? 'warning' : ''}`;
+            document.getElementById('lastBlock').textContent = blockchain.length > 0 ? `#${blockchain.length - 1}` : '--';
             
             // Channels
             const grid = document.getElementById('channelsGrid');
@@ -751,12 +901,10 @@
             
             // Blockchain List
             const list = document.getElementById('blockchainList');
-            // Keep header
             const header = list.querySelector('.header');
             list.innerHTML = '';
             list.appendChild(header);
             
-            // Show last 20 blocks (reversed)
             const start = Math.max(0, blockchain.length - 20);
             for (let i = blockchain.length - 1; i >= start; i--) {
                 const block = blockchain[i];
@@ -767,26 +915,33 @@
                     <span class="pulse">${Math.floor(block.pulseCount)}</span>
                     <span class="decision ${block.decision ? 'win' : 'lose'}">${block.decision ? 'WIN' : 'LOSE'}</span>
                     <span class="hash">${block.hash.substring(0, 8)}...</span>
-                    <span style="font-size:10px;color:#00ff8844;">${new Date(block.timestamp).toLocaleTimeString()}</span>
+                    <span class="hash">${block.prevHash.substring(0, 6)}...</span>
+                    <span style="font-size:9px;color:#00ff8844;">${new Date(block.timestamp).toLocaleTimeString()}</span>
                 `;
                 list.appendChild(div);
             }
             
-            // Update time
-            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
-            
             // Status
             document.getElementById('statusBadge').textContent = `● ${blockchain.length} BLOCKS`;
+            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
         }
         
         // ============================================================
-        // AUTO-MINE PULSES
+        // AUTO MINE
         // ============================================================
-        function autoMine() {
+        function toggleAutoMine() {
+            if (isAutoMining) {
+                stopAutoMine();
+            } else {
+                startAutoMine();
+            }
+        }
+        
+        function startAutoMine() {
             if (isAutoMining) return;
-            
             isAutoMining = true;
-            document.getElementById('addBlockBtn').textContent = '⏹ STOP MINING';
+            document.getElementById('autoMineBtn').textContent = '⏹ STOP MINING';
+            document.getElementById('autoMineBtn').className = 'danger';
             
             autoMineInterval = setInterval(() => {
                 const values = generatePulseData();
@@ -797,39 +952,30 @@
             }, 1000);
         }
         
-        function stopMining() {
+        function stopAutoMine() {
             isAutoMining = false;
             if (autoMineInterval) {
                 clearInterval(autoMineInterval);
                 autoMineInterval = null;
             }
-            document.getElementById('addBlockBtn').textContent = '⧫ ADD BLOCK';
+            document.getElementById('autoMineBtn').textContent = '🎲 AUTO MINE';
+            document.getElementById('autoMineBtn').className = '';
         }
         
         // ============================================================
         // EVENT LISTENERS
         // ============================================================
         document.getElementById('addBlockBtn').addEventListener('click', function() {
-            if (isAutoMining) {
-                stopMining();
-                return;
-            }
-            
-            // Add one block
             const values = generatePulseData();
             const winners = processBinaryLogic(values);
             const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
             addBlock(values, decision);
             updateDashboard();
-            
-            // Start auto-mining if shift held
-            if (window.event && window.event.shiftKey) {
-                autoMine();
-            }
         });
         
+        document.getElementById('autoMineBtn').addEventListener('click', toggleAutoMine);
+        
         document.getElementById('simulateBtn').addEventListener('click', function() {
-            // Add 10 blocks
             for (let i = 0; i < 10; i++) {
                 const values = generatePulseData();
                 const winners = processBinaryLogic(values);
@@ -843,17 +989,20 @@
         document.getElementById('exportBtn').addEventListener('click', exportChain);
         document.getElementById('importBtn').addEventListener('click', importChain);
         
+        document.getElementById('saveToFolderBtn').addEventListener('click', function() {
+            const folderName = document.getElementById('folderName').value || 'medussa_chain';
+            saveToFolder(folderName);
+        });
+        
+        document.getElementById('loadFromFolderBtn').addEventListener('click', loadFromFolder);
+        
         // ============================================================
         // KEYBOARD SHORTCUTS
         // ============================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === ' ' || e.key === 'Enter') {
                 e.preventDefault();
-                if (isAutoMining) {
-                    stopMining();
-                } else {
-                    autoMine();
-                }
+                toggleAutoMine();
             }
             if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
                 e.preventDefault();
@@ -869,23 +1018,18 @@
         // INITIALIZE
         // ============================================================
         function init() {
-            // Load saved chain
             if (!loadChain()) {
-                // Create genesis block
                 const genesisValues = new Array(NUM_CHANNELS).fill(0);
                 addBlock(genesisValues, false);
             }
             
-            // Update dashboard
             updateDashboard();
             
-            // Start auto-update (live view)
             setInterval(() => {
-                // Update display without adding blocks
                 updateDashboard();
             }, 5000);
             
-            console.log('⧫ DOTCALCULATION v1.0');
+            console.log('🐍 MEDUSSA v1.0');
             console.log(`Blocks: ${blockchain.length}`);
             console.log(`Total Pulses: ${totalPulses}`);
             console.log('3-6-9 Matrix Active');
@@ -896,7 +1040,6 @@
             console.log('==============================');
         }
         
-        // Start when DOM is ready
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
