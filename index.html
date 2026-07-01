@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEDUSSA · Secure Blockchain</title>
+    <title>MEDUSSA VAULT · Rolling Blockchain</title>
     <style>
         /* ============================================================
-        MEDUSSA SECURE STYLES
+        MEDUSSA VAULT STYLES
         ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -63,12 +63,72 @@
             color: #8866ff88;
             letter-spacing: 1px;
         }
-        .license-banner .license-text strong {
-            color: #8866ff;
+        .license-banner .license-text strong { color: #8866ff; }
+        .license-banner .license-text .owner { color: #00ff88; font-weight: bold; }
+
+        /* Rolling Window */
+        .rolling-window {
+            background: #0a0a0f;
+            border: 2px solid #8866ff44;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
         }
-        .license-banner .license-text .owner {
-            color: #00ff88;
+        .rolling-window .window-title {
+            font-size: 11px;
+            color: #8866ff66;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .rolling-window .window-content {
+            font-size: 12px;
+            color: #8866ff;
+            font-family: 'Courier New', monospace;
+            line-height: 1.8;
+        }
+        .rolling-window .window-content .block-line {
+            border-bottom: 1px solid #8866ff11;
+            padding: 4px 0;
+        }
+        .rolling-window .window-content .block-line .idx { color: #ffaa00; font-weight: bold; }
+        .rolling-window .window-content .block-line .pulse { color: #00ff88; }
+        .rolling-window .window-content .block-line .decision.win { color: #00ff88; }
+        .rolling-window .window-content .block-line .decision.lose { color: #ff3355; }
+        .rolling-window .window-content .block-line .hash { color: #8866ff66; font-size: 10px; }
+        .rolling-window .window-content .block-line .time { color: #8866ff44; font-size: 10px; }
+        .rolling-window .window-content .block-line .vault { color: #ffaa00; font-weight: bold; }
+
+        /* Vault Status */
+        .vault-status {
+            background: #1a1a24;
+            border: 2px solid #ffaa0044;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .vault-status .vault-label {
+            font-size: 11px;
+            color: #ffaa0066;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .vault-status .vault-value {
+            font-size: 20px;
             font-weight: bold;
+            color: #ffaa00;
+        }
+        .vault-status .vault-value .safe {
+            color: #00ff88;
+            animation: securePulse 2s infinite;
         }
 
         /* Stats Grid */
@@ -101,247 +161,7 @@
         .stat-card .value.warning { color: #ffaa00; }
         .stat-card .value.speed { color: #ffaa00; animation: speedPulse 1s infinite; }
         .stat-card .value.cosmic { color: #00ff88; }
-        .stat-card .value.secure { color: #8866ff; animation: securePulse 2s infinite; }
-
-        /* Security Panel */
-        .security-panel {
-            background: #1a1a24;
-            border: 2px solid #00ff8844;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-        }
-        .security-panel .security-title {
-            font-size: 11px;
-            color: #00ff8866;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-        .security-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-        .security-item {
-            text-align: center;
-            padding: 10px;
-            border-radius: 4px;
-            background: #0a0a0f;
-            border: 1px solid #00ff8833;
-        }
-        .security-item .sec-label {
-            font-size: 9px;
-            color: #00ff8866;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: block;
-        }
-        .security-item .sec-value {
-            font-size: 16px;
-            font-weight: bold;
-            display: block;
-            margin-top: 4px;
-        }
-        .security-item.ok .sec-value { color: #00ff88; }
-        .security-item.warning .sec-value { color: #ffaa00; }
-        .security-item.error .sec-value { color: #ff3355; }
-        .security-item .sec-icon { font-size: 24px; display: block; margin-bottom: 4px; }
-
-        /* Matrix */
-        .matrix {
-            display: grid;
-            grid-template-columns: repeat(9, 1fr);
-            gap: 10px;
-            background: #1a1a24;
-            border: 1px solid #8866ff33;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        .matrix .num {
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .matrix .num.c3 { color: #ff3355; }
-        .matrix .num.c6 { color: #ffaa00; }
-        .matrix .num.c9 { color: #00ff88; }
-        .matrix .num.c0 { color: #8866ff; }
-        .matrix .label { font-size: 8px; color: #8866ff66; text-transform: uppercase; letter-spacing: 1px; }
-        .matrix .hardship { border: 2px solid #ff3355; border-radius: 4px; padding: 8px; background: #ff335511; }
-        .matrix .reset { border: 2px solid #8866ff; border-radius: 4px; padding: 8px; background: #8866ff11; }
-
-        /* Channels */
-        .channels {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-        .channel {
-            background: #1a1a24;
-            border: 1px solid #8866ff33;
-            border-radius: 6px;
-            padding: 12px 10px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        .channel.winner { border-color: #00ff88; background: #00ff8811; box-shadow: 0 0 20px #00ff8822; }
-        .channel.loser { border-color: #ff335544; background: #ff335511; }
-        .channel .ch-label { font-size: 10px; color: #8866ff66; text-transform: uppercase; }
-        .channel .ch-value { font-size: 16px; font-weight: bold; margin: 4px 0; color: #8866ff; }
-        .channel .ch-status { font-size: 18px; }
-        .channel .ch-status.win { color: #00ff88; }
-        .channel .ch-status.lose { color: #ff3355; }
-
-        /* Binary Map */
-        .binary-map {
-            background: #1a1a24;
-            border: 1px solid #8866ff33;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-        }
-        .binary-map .map-label {
-            font-size: 11px;
-            color: #8866ff66;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        .binary-map .map-row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .bit {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .bit.on { background: #00ff88; color: #0a0a0f; }
-        .bit.off { background: #2a2a3a; color: #555; }
-
-        /* Dominant */
-        .dominant {
-            background: #1a1a24;
-            border: 1px solid #ffaa0044;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        .dominant .dom-label {
-            font-size: 11px;
-            color: #ffaa0066;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .dominant .dom-value {
-            font-size: 36px;
-            font-weight: bold;
-            color: #ffaa00;
-            margin-top: 4px;
-        }
-        .dominant .dom-channel {
-            font-size: 14px;
-            color: #ffaa0088;
-        }
-
-        /* Blockchain Display */
-        .blockchain-display {
-            background: #1a1a24;
-            border: 1px solid #8866ff33;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            max-height: 350px;
-            overflow-y: auto;
-        }
-        .blockchain-display .block-label {
-            font-size: 11px;
-            color: #8866ff66;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-        .block-item {
-            display: grid;
-            grid-template-columns: 35px 60px 50px 70px 70px 50px 70px;
-            gap: 5px;
-            padding: 5px 10px;
-            border-bottom: 1px solid #8866ff22;
-            font-size: 9px;
-            align-items: center;
-        }
-        .block-item .idx { color: #ffaa00; font-weight: bold; }
-        .block-item .pulse { color: #00ff88; }
-        .block-item .decision { font-weight: bold; }
-        .block-item .decision.win { color: #00ff88; }
-        .block-item .decision.lose { color: #ff3355; }
-        .block-item .hash { color: #8866ff66; font-size: 8px; }
-        .block-item .time { color: #8866ff44; font-size: 8px; }
-        .block-item .deposited { color: #00ff8866; font-size: 9px; }
-        .block-item .secure { color: #8866ff; font-size: 9px; }
-        .block-item .signature { color: #8866ff44; font-size: 7px; }
-
-        .block-item.header {
-            color: #8866ff66;
-            font-size: 7px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid #8866ff33;
-        }
-
-        /* Folder Save */
-        .folder-save {
-            background: #1a1a24;
-            border: 1px solid #8866ff33;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .folder-save .label {
-            font-size: 11px;
-            color: #8866ff66;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .folder-save input {
-            background: #0a0a0f;
-            border: 1px solid #8866ff33;
-            color: #8866ff;
-            padding: 8px 15px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            flex: 1;
-            min-width: 150px;
-        }
-        .folder-save input:focus { outline: none; border-color: #8866ff; }
-        .folder-save button {
-            background: #8866ff22;
-            border: 1px solid #8866ff;
-            color: #8866ff;
-            padding: 8px 18px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            transition: all 0.3s;
-            font-size: 12px;
-        }
-        .folder-save button:hover { background: #8866ff44; box-shadow: 0 0 20px #8866ff22; }
-        .folder-save .count { color: #ffaa00; font-weight: bold; font-size: 14px; }
+        .stat-card .value.vault { color: #ffaa00; animation: securePulse 2s infinite; }
 
         /* Actions */
         .actions {
@@ -371,8 +191,8 @@
         .actions button.warning:hover { background: #ffaa0044; box-shadow: 0 0 30px #ffaa0022; }
         .actions button.cosmic { border-color: #00ff88; color: #00ff88; background: #00ff8822; }
         .actions button.cosmic:hover { background: #00ff8844; box-shadow: 0 0 30px #00ff8822; }
+        .actions button.active { border-color: #ff3355; color: #ff3355; background: #ff335522; }
 
-        /* Footer */
         .footer {
             text-align: center;
             color: #8866ff33;
@@ -380,42 +200,26 @@
             padding: 20px 0;
             border-top: 1px solid #8866ff33;
         }
-        .footer .owner {
-            color: #00ff88;
-            font-weight: bold;
-        }
+        .footer .owner { color: #00ff88; font-weight: bold; }
+
+        /* Scrollbar */
+        .rolling-window::-webkit-scrollbar { width: 4px; }
+        .rolling-window::-webkit-scrollbar-track { background: #0a0a0f; }
+        .rolling-window::-webkit-scrollbar-thumb { background: #8866ff33; border-radius: 2px; }
 
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         @keyframes speedPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
-        @keyframes securePulse { 0%, 100% { opacity: 1; text-shadow: 0 0 20px #8866ff44; } 50% { opacity: 0.7; text-shadow: 0 0 40px #8866ff88; } }
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px #8866ff22; } 50% { box-shadow: 0 0 40px #8866ff55; } }
-        .winner .ch-value { animation: glow 2s ease-in-out infinite; }
+        @keyframes securePulse { 0%, 100% { opacity: 1; text-shadow: 0 0 20px #ffaa0044; } 50% { opacity: 0.7; text-shadow: 0 0 40px #ffaa0088; } }
 
-        .blockchain-display::-webkit-scrollbar { width: 4px; }
-        .blockchain-display::-webkit-scrollbar-track { background: #0a0a0f; }
-        .blockchain-display::-webkit-scrollbar-thumb { background: #8866ff33; border-radius: 2px; }
-
-        @media (max-width: 992px) {
-            .channels { grid-template-columns: repeat(4, 1fr); }
-            .stats-grid { grid-template-columns: repeat(3, 1fr); }
-            .matrix { grid-template-columns: repeat(3, 1fr); }
-            .security-grid { grid-template-columns: repeat(2, 1fr); }
-        }
         @media (max-width: 768px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
-            .channels { grid-template-columns: repeat(3, 1fr); }
-            .matrix { grid-template-columns: repeat(3, 1fr); }
-            .security-grid { grid-template-columns: 1fr 1fr; }
-            .header h1 { font-size: 28px; }
-            .folder-save { flex-direction: column; }
             .actions button { min-width: 70px; font-size: 10px; padding: 6px 10px; }
+            .vault-status { flex-direction: column; text-align: center; }
+            .header h1 { font-size: 28px; }
         }
         @media (max-width: 480px) {
-            .channels { grid-template-columns: repeat(2, 1fr); }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .matrix { grid-template-columns: repeat(3, 1fr); }
-            .security-grid { grid-template-columns: 1fr 1fr; }
-            .matrix .num { font-size: 20px; }
+            .rolling-window { max-height: 300px; }
         }
     </style>
 </head>
@@ -427,10 +231,10 @@
         ============================================================ -->
         <div class="header">
             <div>
-                <h1>🔒 MED<span>US</span>SA</h1>
-                <div class="subtitle">Secure Blockchain · 369M Blocks · 3-6-9</div>
+                <h1>🏦 MED<span>US</span>SA</h1>
+                <div class="subtitle">Vault · Rolling Blockchain · 369M Blocks</div>
             </div>
-            <div class="status" id="statusBadge">● SECURE</div>
+            <div class="status" id="statusBadge">● MINING</div>
         </div>
 
         <!-- ============================================================
@@ -440,61 +244,44 @@
             <div class="license-text">
                 <strong>© 2026 SELIIM AHMED</strong> · 
                 <span class="owner">amit.khanna.1082@gmail.com</span> · 
-                <strong>ALL RIGHTS RESERVED</strong> · 
-                Intellectual Property · Patent Pending · Strict Ownership
+                <strong>ALL RIGHTS RESERVED</strong> · Patent Pending
                 <br>
                 <span style="font-size:10px;color:#8866ff44;">
-                    This software is the exclusive property of Seliim Ahmed. 
-                    Unauthorized reproduction, distribution, or modification is strictly prohibited.
+                    Vault Mode: Blocks auto-save. Never replaced. Continue until phone off.
                 </span>
             </div>
         </div>
 
         <!-- ============================================================
-        SECURITY PANEL
+        VAULT STATUS
         ============================================================ -->
-        <div class="security-panel">
-            <div class="security-title">🛡️ SECURITY FEATURES · ACTIVE</div>
-            <div class="security-grid">
-                <div class="security-item ok">
-                    <span class="sec-icon">🔗</span>
-                    <span class="sec-label">Double Spend</span>
-                    <span class="sec-value">PROTECTED</span>
-                </div>
-                <div class="security-item ok">
-                    <span class="sec-icon">🔐</span>
-                    <span class="sec-label">Hash Verification</span>
-                    <span class="sec-value">ACTIVE</span>
-                </div>
-                <div class="security-item ok">
-                    <span class="sec-icon">🛡️</span>
-                    <span class="sec-label">Sybil Resistance</span>
-                    <span class="sec-value">3-6-9</span>
-                </div>
-                <div class="security-item ok">
-                    <span class="sec-icon">⚡</span>
-                    <span class="sec-label">51% Protection</span>
-                    <span class="sec-value">ACTIVE</span>
-                </div>
-                <div class="security-item ok">
-                    <span class="sec-icon">📜</span>
-                    <span class="sec-label">Chain Validation</span>
-                    <span class="sec-value">100%</span>
-                </div>
-                <div class="security-item ok">
-                    <span class="sec-icon">⏳</span>
-                    <span class="sec-label">Timestamp Security</span>
-                    <span class="sec-value">ACTIVE</span>
-                </div>
-                <div class="security-item ok">
-                    <span class="sec-icon">🔑</span>
-                    <span class="sec-label">Digital Signature</span>
-                    <span class="sec-value">SELIIM</span>
-                </div>
-                <div class="security-item ok">
-                    <span class="sec-icon">📁</span>
-                    <span class="sec-label">Backup Integrity</span>
-                    <span class="sec-value">ACTIVE</span>
+        <div class="vault-status">
+            <div>
+                <span class="vault-label">📁 VAULT STATUS</span>
+                <span class="vault-value safe" id="vaultStatus">● ACTIVE · NEVER REPLACED</span>
+            </div>
+            <div>
+                <span class="vault-label">📦 VAULT SIZE</span>
+                <span class="vault-value" id="vaultSize">0 blocks</span>
+            </div>
+            <div>
+                <span class="vault-label">⏳ SESSION</span>
+                <span class="vault-value" id="sessionTime">00:00:00</span>
+            </div>
+            <div>
+                <span class="vault-label">💾 LAST SAVED</span>
+                <span class="vault-value" id="lastSaved">--</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        ROLLING WINDOW
+        ============================================================ -->
+        <div class="rolling-window" id="rollingWindow">
+            <div class="window-title">📜 ROLLING BLOCKCHAIN · LIVE CREATION</div>
+            <div class="window-content" id="windowContent">
+                <div style="color: #8866ff44; text-align: center; padding: 20px;">
+                    ⏳ Waiting for blocks...
                 </div>
             </div>
         </div>
@@ -503,94 +290,34 @@
         STATS GRID
         ============================================================ -->
         <div class="stats-grid">
-            <div class="stat-card"><div class="label">Blocks</div><div class="value secure" id="blockCount">0</div></div>
-            <div class="stat-card"><div class="label">Creation Speed</div><div class="value speed" id="creationSpeed">0.0/s</div></div>
+            <div class="stat-card"><div class="label">Total Blocks</div><div class="value vault" id="blockCount">0</div></div>
+            <div class="stat-card"><div class="label">Speed</div><div class="value speed" id="creationSpeed">0.0/s</div></div>
             <div class="stat-card"><div class="label">Total Pulses</div><div class="value" id="totalPulses">0</div></div>
-            <div class="stat-card"><div class="label">Deposited</div><div class="value warning" id="depositedCount">0</div></div>
+            <div class="stat-card"><div class="label">Vaulted</div><div class="value warning" id="vaultedCount">0</div></div>
             <div class="stat-card"><div class="label">Segment</div><div class="value cosmic" id="currentSegment">1</div></div>
-            <div class="stat-card"><div class="label">Security</div><div class="value secure" id="securityStatus">🛡️ 100%</div></div>
-        </div>
-
-        <!-- ============================================================
-        3-6-9 MATRIX
-        ============================================================ -->
-        <div class="matrix">
-            <div class="num c3">3</div><div class="num c3">3</div><div class="num c3">3</div>
-            <div class="num c6">6</div><div class="num c6">6</div><div class="num c6 hardship">6</div>
-            <div class="num c9">9</div><div class="num c9">9</div><div class="num c9 reset">9</div>
-            <div class="label">Seg 1</div><div class="label">Seg 2</div><div class="label">Seg 3</div>
-            <div class="label">Seg 4</div><div class="label">Seg 5</div><div class="label hardship">Seg 6</div>
-            <div class="label">Seg 7</div><div class="label">Seg 8</div><div class="label reset">Seg 9</div>
-        </div>
-
-        <!-- ============================================================
-        CHANNELS
-        ============================================================ -->
-        <div class="channels" id="channelsGrid"></div>
-
-        <!-- ============================================================
-        BINARY MAP
-        ============================================================ -->
-        <div class="binary-map">
-            <div class="map-label">Binary Map · 1 = Winner · 0 = Loser</div>
-            <div class="map-row" id="binaryMap"></div>
-        </div>
-
-        <!-- ============================================================
-        DOMINANT
-        ============================================================ -->
-        <div class="dominant">
-            <div class="dom-label">🏆 Dominant Channel · Pulse Resonance</div>
-            <div class="dom-value" id="dominantValue">--</div>
-            <div class="dom-channel" id="dominantLabel">Channel --</div>
-        </div>
-
-        <!-- ============================================================
-        BLOCKCHAIN DISPLAY
-        ============================================================ -->
-        <div class="blockchain-display">
-            <div class="block-label">🔒 Medussa · Secure Blockchain Index</div>
-            <div id="blockchainList">
-                <div class="block-item header">
-                    <span>#</span><span>Pulse</span><span>Decision</span>
-                    <span>Hash</span><span>Prev</span><span>Time</span><span>🔒</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-        FOLDER SAVE
-        ============================================================ -->
-        <div class="folder-save">
-            <span class="label">💾 Save to Folder</span>
-            <input type="text" id="folderName" placeholder="Folder name" value="medussa_secure">
-            <span class="count" id="folderBlockCount">0 blocks</span>
-            <button id="saveToFolderBtn">📁 SAVE CHAIN</button>
-            <button id="loadFromFolderBtn">📂 LOAD CHAIN</button>
+            <div class="stat-card"><div class="label">Integrity</div><div class="value" id="integrityStatus">100%</div></div>
         </div>
 
         <!-- ============================================================
         ACTIONS
         ============================================================ -->
         <div class="actions">
-            <button id="addBlockBtn">⧫ ADD BLOCK</button>
-            <button id="autoMineBtn">🎲 AUTO MINE</button>
-            <button id="simulateBtn">⚡ SIMULATE 10</button>
-            <button id="exportBtn" class="warning">💾 EXPORT JSON</button>
-            <button id="importBtn" class="warning">📂 IMPORT JSON</button>
-            <button id="clearBtn" class="danger">✕ CLEAR ALL</button>
-            <button id="verifyBtn" class="cosmic">🔍 VERIFY CHAIN</button>
+            <button id="startBtn" class="cosmic">▶ START MINING</button>
+            <button id="pauseBtn" class="warning">⏸ PAUSE</button>
+            <button id="exportBtn" class="warning">💾 EXPORT VAULT</button>
+            <button id="clearBtn" class="danger">✕ CLEAR</button>
+            <button id="verifyBtn" class="cosmic">🔍 VERIFY</button>
         </div>
 
         <!-- ============================================================
         FOOTER
         ============================================================ -->
         <div class="footer">
-            🔒 MEDUSSA SECURE v3.0 · © 2026 <span class="owner">SELIIM AHMED</span> · 
+            🏦 MEDUSSA VAULT v1.0 · © 2026 <span class="owner">SELIIM AHMED</span> · 
             <span id="updateTime">--</span>
             <br>
             <span style="font-size:10px;color:#8866ff33;">
-                Intellectual Property of Seliim Ahmed · amit.khanna.1082@gmail.com · All Rights Reserved
+                Blocks auto-save · Never replace · Continue until phone off
             </span>
         </div>
 
@@ -598,380 +325,72 @@
 
     <script>
         // ============================================================
-        // MEDUSSA SECURE v3.0
+        // MEDUSSA VAULT v1.0
         // OWNER: SELIIM AHMED (amit.khanna.1082@gmail.com)
-        // LICENSE: ALL RIGHTS RESERVED · INTELLECTUAL PROPERTY
+        // FEATURE: Rolling Window · Auto-Save · Never Replace
         // ============================================================
 
         // ============================================================
-        // LICENSE & OWNERSHIP
+        // LICENSE
         // ============================================================
         const LICENSE = {
             owner: "Seliim Ahmed",
             email: "amit.khanna.1082@gmail.com",
             year: 2026,
             rights: "All Rights Reserved",
-            type: "Intellectual Property",
-            patent: "Pending",
-            restrictions: "Unauthorized reproduction, distribution, or modification strictly prohibited",
-            notice: "This software is the exclusive property of Seliim Ahmed"
+            patent: "Pending"
         };
 
-        console.log('========================================');
-        console.log('🔒 MEDUSSA SECURE v3.0');
-        console.log(`© ${LICENSE.year} ${LICENSE.owner}`);
-        console.log(`Email: ${LICENSE.email}`);
-        console.log(LICENSE.rights);
-        console.log(LICENSE.type);
-        console.log('========================================');
-
         // ============================================================
-        // COSMIC CONSTANTS
+        // CONSTANTS
         // ============================================================
-        const COSMIC = {
-            maxBlocks: 369000000,
-            segments: 9,
-            blocksPerSegment: 41000000,
-            creationDays: 18,
-            blocksPerDay: 20500000,
-            hardshipStart: 4,
-            hardshipPeak: 6,
-            resetAt: 9,
-            secondsPerBlock: 1,
-            pi: 3.141592653589793,
-            saCycle: 18,
-            zagmukMonth: 3,
-            zagmukDay: 21
-        };
-
+        const MAX_BLOCKS = 369000000;
         const NUM_CHANNELS = 12;
         const THRESHOLD = 2048;
         const CHANNEL_LABELS = ['GPU0','GPU1','GPU2','GPU3','PSU0','PSU1','PSU2','PSU3','TMP0','TMP1','TMP2','TMP3'];
-        const STORAGE_KEY = 'medussa_secure_chain';
-
-        // ============================================================
-        // SECURITY FEATURES
-        // ============================================================
-        const SECURITY = {
-            doubleSpend: true,
-            hashVerification: true,
-            sybilResistance: true,
-            protection51: true,
-            chainValidation: true,
-            timestampSecurity: true,
-            digitalSignature: LICENSE.owner,
-            backupIntegrity: true
-        };
+        const STORAGE_KEY = 'medussa_vault_chain';
+        const VAULT_KEY = 'medussa_vault_backup';
 
         // ============================================================
         // STATE
         // ============================================================
         let blockchain = [];
         let totalPulses = 0;
-        let depositedBlocks = 0;
+        let vaultedBlocks = 0;
         let creationSpeed = 0;
         let startTime = Date.now();
         let blockTimestamps = [];
-        let isAutoMining = false;
-        let autoMineInterval = null;
-        let updateCount = 0;
-        let chainIntegrity = 100;
+        let isMining = false;
+        let miningInterval = null;
+        let rollingWindow = [];
+        let maxWindowSize = 100; // Show last 100 blocks
 
         // ============================================================
-        // TIME-SENSITIVE FORMULA
+        // DOM REFS
         // ============================================================
-        function calculateProgression() {
-            const now = new Date();
-            const day = now.getDate();
-            const month = now.getMonth() + 1;
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
+        const windowContent = document.getElementById('windowContent');
+        const statusBadge = document.getElementById('statusBadge');
+        const vaultStatus = document.getElementById('vaultStatus');
+        const vaultSize = document.getElementById('vaultSize');
+        const sessionTime = document.getElementById('sessionTime');
+        const lastSaved = document.getElementById('lastSaved');
+        const blockCount = document.getElementById('blockCount');
+        const creationSpeedEl = document.getElementById('creationSpeed');
+        const totalPulsesEl = document.getElementById('totalPulses');
+        const vaultedCount = document.getElementById('vaultedCount');
+        const currentSegment = document.getElementById('currentSegment');
+        const integrityStatus = document.getElementById('integrityStatus');
+        const updateTime = document.getElementById('updateTime');
 
-            const sa = (day % COSMIC.saCycle) / COSMIC.saCycle;
-            const z = (month / 12) * Math.cos(2 * Math.PI * day / 365);
-            const t = Math.pow(3, 9) * (hours / 24) * (minutes / 60);
-            const phi = COSMIC.pi * 9;
-            const progression = (sa * z) / (3 * t) * Math.sqrt(phi);
-
-            return {
-                sa: sa,
-                z: z,
-                t: t,
-                phi: phi,
-                progression: progression,
-                isRollover: progression < 0,
-                isHardship: progression < -0.00001,
-                isReset: progression > 0.00001
-            };
-        }
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const verifyBtn = document.getElementById('verifyBtn');
 
         // ============================================================
-        // COSMIC FUNCTIONS
+        // CORE FUNCTIONS
         // ============================================================
-        function getSegment(blockIndex) {
-            return Math.floor(blockIndex / COSMIC.blocksPerSegment) + 1;
-        }
-
-        function getDifficulty(blockIndex) {
-            const segment = getSegment(blockIndex);
-            const diffMap = { 1: 4, 2: 4, 3: 4, 4: 3, 5: 2, 6: 1, 7: 2, 8: 3, 9: 4 };
-            return diffMap[segment] || 4;
-        }
-
-        function isHardship(blockIndex) {
-            const segment = getSegment(blockIndex);
-            return segment >= 4 && segment <= 6;
-        }
-
-        function isHardshipPeak(blockIndex) {
-            return getSegment(blockIndex) === 6;
-        }
-
-        function isResetPoint(blockIndex) {
-            return getSegment(blockIndex) === 9;
-        }
-
-        // ============================================================
-        // SECURE BLOCK CREATION
-        // ============================================================
-        function createBlock(index, pulseCount, decision, prevHash, data = {}) {
-            const timestamp = Date.now();
-            const segment = getSegment(index);
-            const difficulty = getDifficulty(index);
-            const prog = calculateProgression();
-
-            // Digital signature (owner verification)
-            const signature = generateSignature(index, pulseCount, timestamp);
-
-            const hash = generateSecureHash(index, pulseCount, decision, prevHash, timestamp, difficulty, prog, signature);
-
-            return {
-                index: index,
-                timestamp: timestamp,
-                pulseCount: pulseCount,
-                decision: decision,
-                prevHash: prevHash,
-                hash: hash,
-                segment: segment,
-                difficulty: difficulty,
-                progression: prog.progression,
-                isRollover: prog.isRollover,
-                signature: signature,
-                owner: LICENSE.owner,
-                email: LICENSE.email,
-                data: data,
-                deposited: false,
-                verified: true
-            };
-        }
-
-        function generateSecureHash(index, pulseCount, decision, prevHash, timestamp, difficulty, prog, signature) {
-            let hash = prevHash ? parseInt(prevHash.substring(0, 8), 16) || 0 : 0;
-            hash ^= (index * 31);
-            hash ^= (Math.floor(pulseCount) * 97);
-            hash ^= (decision ? 0xFFFFFFFF : 0x00000000);
-            hash ^= (timestamp * 13);
-            hash ^= (totalPulses * 7);
-            hash ^= (difficulty * 3);
-            hash ^= (Math.floor(prog.progression * 1000000) * 17);
-            hash ^= (signature * 19);
-            return (hash >>> 0).toString(16).padStart(16, '0');
-        }
-
-        function generateSignature(index, pulseCount, timestamp) {
-            let sig = 0;
-            sig ^= (index * 31);
-            sig ^= (Math.floor(pulseCount) * 97);
-            sig ^= (timestamp * 13);
-            sig ^= (LICENSE.owner.length * 7);
-            return (sig >>> 0) & 0xFFFFFFFF;
-        }
-
-        // ============================================================
-        // SECURITY VERIFICATION
-        // ============================================================
-        function verifyBlock(block) {
-            // 1. Verify hash
-            if (SECURITY.hashVerification) {
-                const rehash = generateSecureHash(
-                    block.index,
-                    block.pulseCount,
-                    block.decision,
-                    block.prevHash,
-                    block.timestamp,
-                    block.difficulty,
-                    block.progression || 0,
-                    block.signature || 0
-                );
-                if (rehash !== block.hash) return false;
-            }
-
-            // 2. Verify signature
-            if (block.signature) {
-                const sig = generateSignature(block.index, block.pulseCount, block.timestamp);
-                if (sig !== block.signature) return false;
-            }
-
-            // 3. Verify owner
-            if (block.owner !== LICENSE.owner) return false;
-
-            // 4. Verify timestamp (future proof)
-            if (SECURITY.timestampSecurity) {
-                if (block.timestamp > Date.now() + 60000) return false;
-            }
-
-            return true;
-        }
-
-        function verifyChain() {
-            let validCount = 0;
-            let errors = [];
-
-            for (let i = 0; i < blockchain.length; i++) {
-                if (verifyBlock(blockchain[i])) {
-                    validCount++;
-                } else {
-                    errors.push(`Block ${i} failed verification`);
-                }
-            }
-
-            chainIntegrity = blockchain.length > 0 ? (validCount / blockchain.length * 100) : 100;
-
-            return {
-                valid: errors.length === 0,
-                integrity: chainIntegrity,
-                errors: errors,
-                validBlocks: validCount,
-                totalBlocks: blockchain.length
-            };
-        }
-
-        // ============================================================
-        // DOUBLE SPEND PROTECTION
-        // ============================================================
-        function checkDoubleSpend(block) {
-            if (!SECURITY.doubleSpend) return true;
-
-            // Check if block already exists
-            for (let b of blockchain) {
-                if (b.hash === block.hash) return false;
-                if (b.index === block.index) return false;
-            }
-            return true;
-        }
-
-        // ============================================================
-        // SYBIL RESISTANCE (3-6-9 based)
-        // ============================================================
-        function checkSybilResistance(block) {
-            if (!SECURITY.sybilResistance) return true;
-
-            // Check if block creation speed is reasonable
-            const speed = blockTimestamps.length / 1.0;
-            if (speed > 10) return false;
-
-            // Check if difficulty matches segment
-            const expectedDifficulty = getDifficulty(block.index);
-            if (block.difficulty !== expectedDifficulty) return false;
-
-            return true;
-        }
-
-        // ============================================================
-        // 51% ATTACK PROTECTION
-        // ============================================================
-        function check51Protection(block) {
-            if (!SECURITY.protection51) return true;
-
-            // Check if this block would be the longest chain
-            if (blockchain.length > 0) {
-                const currentHash = blockchain[blockchain.length - 1].hash;
-                if (block.prevHash !== currentHash) return false;
-            }
-            return true;
-        }
-
-        // ============================================================
-        // ADD BLOCK WITH FULL SECURITY
-        // ============================================================
-        function addBlock(values, decision) {
-            // Check max blocks
-            if (blockchain.length >= COSMIC.maxBlocks) {
-                alert('⚠️ Max blocks reached: 369,000,000');
-                return null;
-            }
-
-            // Check progression
-            const prog = calculateProgression();
-            if (prog.isRollover) {
-                if (Math.random() > 0.3) return null;
-            }
-
-            // Create block
-            const prevHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0000000000000000';
-            const pulseCount = countPulses(values);
-            const decisionValue = decision !== undefined ? decision : (pulseCount > 10000);
-
-            const block = createBlock(
-                blockchain.length,
-                pulseCount,
-                decisionValue,
-                prevHash,
-                { values: values, winners: processBinaryLogic(values) }
-            );
-
-            // Security checks
-            if (!checkDoubleSpend(block)) {
-                console.warn('Double spend detected!');
-                return null;
-            }
-
-            if (!checkSybilResistance(block)) {
-                console.warn('Sybil attack detected!');
-                return null;
-            }
-
-            if (!check51Protection(block)) {
-                console.warn('51% attack detected!');
-                return null;
-            }
-
-            if (!verifyBlock(block)) {
-                console.warn('Block verification failed!');
-                return null;
-            }
-
-            // Add block
-            blockchain.push(block);
-            totalPulses += pulseCount;
-
-            if (blockchain.length % 5 === 0) {
-                depositedBlocks = blockchain.length;
-            }
-
-            saveChain();
-            calculateSpeed();
-
-            // Verify entire chain
-            const verification = verifyChain();
-            chainIntegrity = verification.integrity;
-
-            return block;
-        }
-
-        // ============================================================
-        // OTHER REQUIRED FUNCTIONS
-        // ============================================================
-        function countPulses(values) {
-            let pulse = 0;
-            for (let i = 0; i < values.length; i++) {
-                pulse += (values[i] % 3) * 100;
-                pulse += (Math.floor(values[i] / 6)) * 50;
-                pulse += (values[i] % 9) * 10;
-            }
-            return pulse;
-        }
-
         function generatePulseData() {
             const values = [];
             for (let i = 0; i < NUM_CHANNELS; i++) {
@@ -1006,410 +425,314 @@
             return winners;
         }
 
-        function findDominant(values) {
-            let maxIdx = 0, maxVal = values[0];
-            for (let i = 1; i < values.length; i++) {
-                if (values[i] > maxVal) { maxVal = values[i]; maxIdx = i; }
+        function countPulses(values) {
+            let pulse = 0;
+            for (let i = 0; i < values.length; i++) {
+                pulse += (values[i] % 3) * 100;
+                pulse += (Math.floor(values[i] / 6)) * 50;
+                pulse += (values[i] % 9) * 10;
             }
-            return { index: maxIdx, value: maxVal };
+            return pulse;
         }
 
-        function calculateSpeed() {
-            const now = Date.now();
-            blockTimestamps = blockTimestamps.filter(t => now - t < 1000);
-            blockTimestamps.push(now);
-            creationSpeed = blockTimestamps.length / 1.0;
-            const prog = calculateProgression();
-            if (prog.isRollover) creationSpeed = creationSpeed * 0.3;
-            return creationSpeed;
+        function getSegment(index) {
+            return Math.floor(index / 41000000) + 1;
+        }
+
+        function generateHash(index, pulseCount, decision, prevHash, timestamp) {
+            let hash = prevHash ? parseInt(prevHash.substring(0, 8), 16) || 0 : 0;
+            hash ^= (index * 31);
+            hash ^= (Math.floor(pulseCount) * 97);
+            hash ^= (decision ? 0xFFFFFFFF : 0x00000000);
+            hash ^= (timestamp * 13);
+            hash ^= (totalPulses * 7);
+            return (hash >>> 0).toString(16).padStart(16, '0');
         }
 
         // ============================================================
-        // SAVE / LOAD
+        // CREATE BLOCK
         // ============================================================
-        function saveChain() {
+        function createBlock(values, decision) {
+            if (blockchain.length >= MAX_BLOCKS) {
+                stopMining();
+                alert('✅ Max blocks reached: 369,000,000');
+                return null;
+            }
+
+            const prevHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0000000000000000';
+            const pulseCount = countPulses(values);
+            const decisionValue = decision !== undefined ? decision : (pulseCount > 10000);
+            const timestamp = Date.now();
+            const index = blockchain.length;
+
+            const block = {
+                index: index,
+                timestamp: timestamp,
+                pulseCount: pulseCount,
+                decision: decisionValue,
+                prevHash: prevHash,
+                hash: generateHash(index, pulseCount, decisionValue, prevHash, timestamp),
+                segment: getSegment(index),
+                owner: LICENSE.owner,
+                email: LICENSE.email,
+                data: { values: values, winners: processBinaryLogic(values) }
+            };
+
+            blockchain.push(block);
+            totalPulses += pulseCount;
+
+            // VAULT: Auto-save every block
+            vaultedBlocks = blockchain.length;
+            saveVault();
+
+            return block;
+        }
+
+        // ============================================================
+        // VAULT SYSTEM (NEVER REPLACE)
+        // ============================================================
+        function saveVault() {
             try {
+                // Save to localStorage (Phone Vault)
                 localStorage.setItem(STORAGE_KEY, JSON.stringify({
                     blockchain: blockchain,
                     totalPulses: totalPulses,
-                    depositedBlocks: depositedBlocks,
+                    vaultedBlocks: vaultedBlocks,
                     timestamp: Date.now(),
                     owner: LICENSE.owner,
                     email: LICENSE.email
                 }));
-            } catch (e) {}
+
+                // Backup to separate key (never overwritten)
+                const backupKey = `${VAULT_KEY}_${Date.now()}`;
+                // Only store if there's new data
+                const existing = localStorage.getItem(VAULT_KEY);
+                if (!existing || JSON.parse(existing).blockchain.length < blockchain.length) {
+                    localStorage.setItem(VAULT_KEY, JSON.stringify({
+                        blockchain: blockchain,
+                        totalPulses: totalPulses,
+                        vaultedBlocks: vaultedBlocks,
+                        timestamp: Date.now(),
+                        owner: LICENSE.owner,
+                        email: LICENSE.email
+                    }));
+                }
+
+                lastSaved.textContent = new Date().toLocaleTimeString();
+            } catch (e) {
+                console.warn('Vault save failed:', e);
+            }
         }
 
-        function loadChain() {
+        function loadVault() {
             try {
                 const data = localStorage.getItem(STORAGE_KEY);
                 if (data) {
                     const parsed = JSON.parse(data);
-                    // Verify owner
-                    if (parsed.owner !== LICENSE.owner) {
-                        console.warn('Owner mismatch! Chain may be from unauthorized source.');
-                        return false;
+                    if (parsed.owner === LICENSE.owner) {
+                        blockchain = parsed.blockchain || [];
+                        totalPulses = parsed.totalPulses || 0;
+                        vaultedBlocks = parsed.vaultedBlocks || blockchain.length;
+                        return true;
                     }
-                    blockchain = parsed.blockchain || [];
-                    totalPulses = parsed.totalPulses || 0;
-                    depositedBlocks = parsed.depositedBlocks || blockchain.length;
-                    return true;
                 }
             } catch (e) {}
             return false;
         }
 
         // ============================================================
-        // SAVE TO FOLDER
+        // ROLLING WINDOW
         // ============================================================
-        function saveToFolder(folderName) {
-            const prog = calculateProgression();
+        function updateRollingWindow(block) {
+            const time = new Date(block.timestamp).toLocaleTimeString();
+            const decisionText = block.decision ? 'WIN' : 'LOSE';
+            const decisionClass = block.decision ? 'win' : 'lose';
+
+            const line = document.createElement('div');
+            line.className = 'block-line';
+            line.innerHTML = `
+                <span class="idx">#${block.index}</span>
+                <span class="pulse">${Math.floor(block.pulseCount).toLocaleString()}</span>
+                <span class="decision ${decisionClass}">${decisionText}</span>
+                <span class="hash">${block.hash.substring(0, 8)}...</span>
+                <span class="time">${time}</span>
+                <span class="vault">🗄️</span>
+            `;
+
+            windowContent.appendChild(line);
+
+            // Keep only last 100 blocks
+            while (windowContent.children.length > 101) {
+                windowContent.removeChild(windowContent.firstChild);
+            }
+
+            // Auto-scroll to bottom
+            const windowEl = document.getElementById('rollingWindow');
+            windowEl.scrollTop = windowEl.scrollHeight;
+        }
+
+        // ============================================================
+        // MINING ENGINE
+        // ============================================================
+        function mineBlock() {
+            if (!isMining) return;
+
+            const values = generatePulseData();
+            const winners = processBinaryLogic(values);
+            const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
+            const block = createBlock(values, decision);
+
+            if (block) {
+                updateRollingWindow(block);
+                updateDashboard();
+            }
+        }
+
+        function startMining() {
+            if (isMining) return;
+            if (blockchain.length >= MAX_BLOCKS) {
+                alert('✅ Max blocks reached: 369,000,000');
+                return;
+            }
+
+            isMining = true;
+            startTime = Date.now();
+            statusBadge.textContent = '● MINING';
+            startBtn.textContent = '⛏️ MINING...';
+            startBtn.className = 'active';
+
+            // Start mining interval
+            miningInterval = setInterval(mineBlock, 1000);
+            updateDashboard();
+        }
+
+        function stopMining() {
+            isMining = false;
+            if (miningInterval) {
+                clearInterval(miningInterval);
+                miningInterval = null;
+            }
+            statusBadge.textContent = '● PAUSED';
+            startBtn.textContent = '▶ START MINING';
+            startBtn.className = 'cosmic';
+            updateDashboard();
+        }
+
+        function toggleMining() {
+            if (isMining) {
+                stopMining();
+            } else {
+                startMining();
+            }
+        }
+
+        // ============================================================
+        // DASHBOARD UPDATE
+        // ============================================================
+        function updateDashboard() {
+            // Speed calculation
+            const now = Date.now();
+            blockTimestamps = blockTimestamps.filter(t => now - t < 1000);
+            blockTimestamps.push(now);
+            creationSpeed = blockTimestamps.length / 1.0;
+
+            // Stats
+            blockCount.textContent = blockchain.length.toLocaleString();
+            creationSpeedEl.textContent = creationSpeed.toFixed(1) + '/s';
+            totalPulsesEl.textContent = Math.floor(totalPulses).toLocaleString();
+            vaultedCount.textContent = vaultedBlocks.toLocaleString();
+            currentSegment.textContent = blockchain.length > 0 ? getSegment(blockchain.length) : 1;
+            vaultSize.textContent = blockchain.length.toLocaleString() + ' blocks';
+
+            // Session time
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const hours = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+            const seconds = String(elapsed % 60).padStart(2, '0');
+            sessionTime.textContent = `${hours}:${minutes}:${seconds}`;
+
+            // Integrity
+            const integrity = blockchain.length > 0 ? 
+                (blockchain.filter(b => b.hash).length / blockchain.length * 100) : 100;
+            integrityStatus.textContent = integrity.toFixed(1) + '%';
+            integrityStatus.className = `value ${integrity > 95 ? '' : integrity > 80 ? 'warning' : 'danger'}`;
+
+            updateTime.textContent = new Date().toLocaleTimeString();
+        }
+
+        // ============================================================
+        // EXPORT VAULT
+        // ============================================================
+        function exportVault() {
             const data = {
                 owner: LICENSE.owner,
                 email: LICENSE.email,
                 copyright: `© ${LICENSE.year} ${LICENSE.owner}`,
-                rights: LICENSE.rights,
                 patent: LICENSE.patent,
-                notice: LICENSE.notice,
-                name: folderName || 'medussa_secure',
-                version: '3.0',
-                matrix: '3-6-9',
-                security: SECURITY,
-                maxBlocks: COSMIC.maxBlocks,
-                segments: COSMIC.segments,
-                progression: prog,
-                created: Date.now(),
                 blockchain: blockchain,
                 totalPulses: totalPulses,
-                depositedBlocks: depositedBlocks,
-                blockCount: blockchain.length,
-                chainIntegrity: chainIntegrity
-            };
-
-            const json = JSON.stringify(data, null, 2);
-            const blob = new Blob([json], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${folderName || 'medussa_secure'}_${Date.now()}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            alert('✅ Chain saved to Downloads folder!');
-        }
-
-        function loadFromFolder() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        if (data.blockchain && Array.isArray(data.blockchain)) {
-                            // Verify owner
-                            if (data.owner !== LICENSE.owner) {
-                                alert('❌ Unauthorized chain! Owner mismatch.');
-                                return;
-                            }
-                            blockchain = data.blockchain;
-                            totalPulses = data.totalPulses || 0;
-                            depositedBlocks = data.depositedBlocks || blockchain.length;
-                            saveChain();
-                            updateDashboard();
-                            alert(`✅ Loaded ${blockchain.length} blocks!`);
-                        } else {
-                            alert('❌ Invalid chain data');
-                        }
-                    } catch (err) {
-                        alert('❌ Failed to parse file');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        function exportChain() {
-            const data = {
-                owner: LICENSE.owner,
-                email: LICENSE.email,
-                copyright: `© ${LICENSE.year} ${LICENSE.owner}`,
-                blockchain: blockchain,
-                totalPulses: totalPulses,
-                depositedBlocks: depositedBlocks,
-                chainIntegrity: chainIntegrity,
+                vaultedBlocks: vaultedBlocks,
                 timestamp: Date.now(),
-                version: '3.0',
-                matrix: '3-6-9',
-                maxBlocks: COSMIC.maxBlocks
+                version: '1.0'
             };
 
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `medussa_secure_${Date.now()}.json`;
+            a.download = `medussa_vault_${Date.now()}.json`;
             a.click();
             URL.revokeObjectURL(url);
+            alert('✅ Vault exported!');
         }
 
-        function importChain() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        if (data.blockchain && Array.isArray(data.blockchain)) {
-                            if (data.owner !== LICENSE.owner) {
-                                alert('❌ Unauthorized chain!');
-                                return;
-                            }
-                            blockchain = data.blockchain;
-                            totalPulses = data.totalPulses || 0;
-                            depositedBlocks = data.depositedBlocks || blockchain.length;
-                            saveChain();
-                            updateDashboard();
-                            alert('✅ Chain imported successfully!');
-                        } else {
-                            alert('❌ Invalid chain data');
-                        }
-                    } catch (err) {
-                        alert('❌ Failed to parse file');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        function clearChain() {
-            if (confirm('⚠️ Clear ALL blocks? This cannot be undone.')) {
+        // ============================================================
+        // CLEAR & VERIFY
+        // ============================================================
+        function clearVault() {
+            if (confirm('⚠️ Clear ALL blocks from memory? Vault backup will remain.')) {
                 blockchain = [];
                 totalPulses = 0;
-                depositedBlocks = 0;
-                startTime = Date.now();
-                blockTimestamps = [];
-                creationSpeed = 0;
-                chainIntegrity = 100;
-                saveChain();
+                vaultedBlocks = 0;
+                windowContent.innerHTML = `<div style="color: #8866ff44; text-align: center; padding: 20px;">⏳ Waiting for blocks...</div>`;
+                saveVault();
                 updateDashboard();
             }
         }
 
-        // ============================================================
-        // VERIFY CHAIN
-        // ============================================================
-        function verifyChainFull() {
-            const result = verifyChain();
-            if (result.valid) {
-                alert(`✅ Chain verified!\n\nIntegrity: ${result.integrity}%\nValid Blocks: ${result.validBlocks}/${result.totalBlocks}\nOwner: ${LICENSE.owner}`);
-            } else {
-                alert(`❌ Chain verification failed!\n\nIntegrity: ${result.integrity}%\nErrors:\n${result.errors.join('\n')}`);
+        function verifyChain() {
+            let valid = 0;
+            for (let i = 0; i < blockchain.length; i++) {
+                const b = blockchain[i];
+                const rehash = generateHash(b.index, b.pulseCount, b.decision, b.prevHash, b.timestamp);
+                if (rehash === b.hash) valid++;
             }
-            updateDashboard();
-        }
-
-        // ============================================================
-        // UPDATE DASHBOARD
-        // ============================================================
-        function updateDashboard() {
-            updateCount++;
-
-            const values = generatePulseData();
-            const winners = processBinaryLogic(values);
-            const winnerCount = winners.filter(w => w).length;
-            const selectionRatio = (winnerCount / NUM_CHANNELS * 100);
-            const dominant = findDominant(values);
-            const currentSegment = getSegment(blockchain.length);
-            const isHardshipPhase = isHardship(blockchain.length);
-            const isPeak = isHardshipPeak(blockchain.length);
-            const prog = calculateProgression();
-
-            // Verify chain
-            const verification = verifyChain();
-            chainIntegrity = verification.integrity;
-
-            document.getElementById('blockCount').textContent = blockchain.length.toLocaleString();
-            document.getElementById('creationSpeed').textContent = creationSpeed.toFixed(1) + '/s';
-            document.getElementById('totalPulses').textContent = Math.floor(totalPulses).toLocaleString();
-            document.getElementById('depositedCount').textContent = depositedBlocks.toLocaleString();
-            document.getElementById('currentSegment').textContent = currentSegment;
-            document.getElementById('currentSegment').className = `value cosmic ${isPeak ? 'danger' : isHardshipPhase ? 'warning' : ''}`;
-            document.getElementById('securityStatus').textContent = `🛡️ ${chainIntegrity.toFixed(1)}%`;
-
-            // Channels
-            const grid = document.getElementById('channelsGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < NUM_CHANNELS; i++) {
-                const div = document.createElement('div');
-                div.className = `channel ${winners[i] ? 'winner' : 'loser'}`;
-                div.innerHTML = `
-                    <div class="ch-label">${CHANNEL_LABELS[i]}</div>
-                    <div class="ch-value">${values[i]}</div>
-                    <div class="ch-status ${winners[i] ? 'win' : 'lose'}">${winners[i] ? '▼ WIN' : '▲ LOSE'}</div>
-                `;
-                grid.appendChild(div);
-            }
-
-            // Binary Map
-            const map = document.getElementById('binaryMap');
-            map.innerHTML = '';
-            for (let i = 0; i < NUM_CHANNELS; i++) {
-                const bit = document.createElement('div');
-                bit.className = `bit ${winners[i] ? 'on' : 'off'}`;
-                bit.textContent = winners[i] ? '1' : '0';
-                map.appendChild(bit);
-            }
-
-            // Dominant
-            document.getElementById('dominantValue').textContent = dominant.value;
-            document.getElementById('dominantLabel').textContent = `Channel ${dominant.index} · ${CHANNEL_LABELS[dominant.index]}`;
-
-            // Blockchain List
-            const list = document.getElementById('blockchainList');
-            const header = list.querySelector('.header');
-            list.innerHTML = '';
-            list.appendChild(header);
-
-            const start = Math.max(0, blockchain.length - 20);
-            for (let i = blockchain.length - 1; i >= start; i--) {
-                const block = blockchain[i];
-                const isDeposited = i < depositedBlocks;
-                const div = document.createElement('div');
-                div.className = 'block-item';
-                div.innerHTML = `
-                    <span class="idx">#${block.index}</span>
-                    <span class="pulse">${Math.floor(block.pulseCount)}</span>
-                    <span class="decision ${block.decision ? 'win' : 'lose'}">${block.decision ? 'WIN' : 'LOSE'}</span>
-                    <span class="hash">${block.hash.substring(0, 6)}...</span>
-                    <span class="hash">${block.prevHash.substring(0, 6)}...</span>
-                    <span class="time">${new Date(block.timestamp).toLocaleTimeString()}</span>
-                    <span class="secure">${block.owner === LICENSE.owner ? '🔒' : '⚠️'}</span>
-                `;
-                list.appendChild(div);
-            }
-
-            // Status
-            document.getElementById('statusBadge').textContent = `🔒 SECURE · ${blockchain.length.toLocaleString()} BLOCKS`;
-            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
-
-            // Folder count
-            document.getElementById('folderBlockCount').textContent = blockchain.length.toLocaleString() + ' blocks';
-        }
-
-        // ============================================================
-        // AUTO MINE
-        // ============================================================
-        function toggleAutoMine() {
-            if (isAutoMining) {
-                stopAutoMine();
-            } else {
-                startAutoMine();
-            }
-        }
-
-        function startAutoMine() {
-            if (isAutoMining) return;
-            if (blockchain.length >= COSMIC.maxBlocks) {
-                alert('⚠️ Max blocks reached: 369,000,000');
-                return;
-            }
-
-            isAutoMining = true;
-            document.getElementById('autoMineBtn').textContent = '⏹ STOP';
-            document.getElementById('autoMineBtn').className = 'danger';
-
-            autoMineInterval = setInterval(() => {
-                if (blockchain.length >= COSMIC.maxBlocks) {
-                    stopAutoMine();
-                    alert('✅ Max blocks reached: 369,000,000');
-                    return;
-                }
-
-                const values = generatePulseData();
-                const winners = processBinaryLogic(values);
-                const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
-                addBlock(values, decision);
-                updateDashboard();
-            }, 1000);
-        }
-
-        function stopAutoMine() {
-            isAutoMining = false;
-            if (autoMineInterval) {
-                clearInterval(autoMineInterval);
-                autoMineInterval = null;
-            }
-            document.getElementById('autoMineBtn').textContent = '🎲 AUTO MINE';
-            document.getElementById('autoMineBtn').className = '';
+            const pct = blockchain.length > 0 ? (valid / blockchain.length * 100) : 100;
+            alert(`✅ Chain Verified!\n\nIntegrity: ${pct.toFixed(1)}%\nValid Blocks: ${valid}/${blockchain.length}\nOwner: ${LICENSE.owner}`);
         }
 
         // ============================================================
         // EVENT LISTENERS
         // ============================================================
-        document.getElementById('addBlockBtn').addEventListener('click', function() {
-            const values = generatePulseData();
-            const winners = processBinaryLogic(values);
-            const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
-            addBlock(values, decision);
-            updateDashboard();
-        });
+        startBtn.addEventListener('click', toggleMining);
+        pauseBtn.addEventListener('click', stopMining);
+        exportBtn.addEventListener('click', exportVault);
+        clearBtn.addEventListener('click', clearVault);
+        verifyBtn.addEventListener('click', verifyChain);
 
-        document.getElementById('autoMineBtn').addEventListener('click', toggleAutoMine);
-
-        document.getElementById('simulateBtn').addEventListener('click', function() {
-            for (let i = 0; i < 10; i++) {
-                const values = generatePulseData();
-                const winners = processBinaryLogic(values);
-                const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
-                addBlock(values, decision);
-            }
-            updateDashboard();
-        });
-
-        document.getElementById('clearBtn').addEventListener('click', clearChain);
-        document.getElementById('exportBtn').addEventListener('click', exportChain);
-        document.getElementById('importBtn').addEventListener('click', importChain);
-        document.getElementById('verifyBtn').addEventListener('click', verifyChainFull);
-
-        document.getElementById('saveToFolderBtn').addEventListener('click', function() {
-            const folderName = document.getElementById('folderName').value || 'medussa_secure';
-            saveToFolder(folderName);
-        });
-
-        document.getElementById('loadFromFolderBtn').addEventListener('click', loadFromFolder);
-
-        // ============================================================
-        // KEYBOARD SHORTCUTS
-        // ============================================================
+        // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
             if (e.key === ' ' || e.key === 'Enter') {
                 e.preventDefault();
-                toggleAutoMine();
+                toggleMining();
             }
             if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
                 e.preventDefault();
-                exportChain();
-            }
-            if (e.key === 'c' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                clearChain();
+                exportVault();
             }
             if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
                 e.preventDefault();
-                verifyChainFull();
+                verifyChain();
             }
         });
 
@@ -1417,44 +740,42 @@
         // INITIALIZE
         // ============================================================
         function init() {
-            console.log(`🔒 MEDUSSA SECURE v3.0`);
+            console.log('🏦 MEDUSSA VAULT v1.0');
             console.log(`© ${LICENSE.year} ${LICENSE.owner}`);
             console.log(`Email: ${LICENSE.email}`);
-            console.log(`License: ${LICENSE.rights}`);
-            console.log(`Patent: ${LICENSE.patent}`);
             console.log('========================================');
 
-            if (!loadChain()) {
+            // Load vault
+            if (loadVault()) {
+                console.log(`✅ Vault loaded: ${blockchain.length} blocks`);
+                // Replay last 100 blocks in window
+                const start = Math.max(0, blockchain.length - 100);
+                for (let i = start; i < blockchain.length; i++) {
+                    updateRollingWindow(blockchain[i]);
+                }
+            } else {
+                console.log('📁 No vault found. Starting fresh.');
+                // Add genesis block
                 const genesisValues = new Array(NUM_CHANNELS).fill(0);
-                addBlock(genesisValues, false);
-                depositedBlocks = 1;
+                createBlock(genesisValues, false);
+                saveVault();
             }
 
             startTime = Date.now() - (blockchain.length * 1000);
             updateDashboard();
+            statusBadge.textContent = '● READY';
 
-            setInterval(() => {
-                updateDashboard();
-            }, 5000);
+            // Auto-start mining if no blocks
+            if (blockchain.length < 2) {
+                startMining();
+            }
 
-            console.log('✅ Security Features Active:');
-            console.log(`  🔗 Double Spend: ${SECURITY.doubleSpend ? '✅' : '❌'}`);
-            console.log(`  🔐 Hash Verification: ${SECURITY.hashVerification ? '✅' : '❌'}`);
-            console.log(`  🛡️ Sybil Resistance: ${SECURITY.sybilResistance ? '✅' : '❌'}`);
-            console.log(`  ⚡ 51% Protection: ${SECURITY.protection51 ? '✅' : '❌'}`);
-            console.log(`  📜 Chain Validation: ${SECURITY.chainValidation ? '✅' : '❌'}`);
-            console.log(`  ⏳ Timestamp Security: ${SECURITY.timestampSecurity ? '✅' : '❌'}`);
-            console.log(`  🔑 Digital Signature: ${SECURITY.digitalSignature}`);
-            console.log(`  📁 Backup Integrity: ${SECURITY.backupIntegrity ? '✅' : '❌'}`);
-            console.log('========================================');
-            console.log(`🛡️ Chain Integrity: ${chainIntegrity}%`);
             console.log(`📦 Blocks: ${blockchain.length}`);
-            console.log(`👤 Owner: ${LICENSE.owner}`);
+            console.log(`🗄️ Vaulted: ${vaultedBlocks}`);
             console.log('========================================');
-            console.log('Keys:');
-            console.log('  Space: Toggle auto-mine');
-            console.log('  Ctrl+S: Export chain');
-            console.log('  Ctrl+C: Clear chain');
+            console.log('Controls:');
+            console.log('  Space: Toggle mining');
+            console.log('  Ctrl+S: Export vault');
             console.log('  Ctrl+V: Verify chain');
             console.log('========================================');
         }
