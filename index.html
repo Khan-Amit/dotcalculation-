@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEDUSSA · Blockchain</title>
+    <title>MEDUSSA · Cosmic Blockchain</title>
     <style>
         /* ============================================================
-        MEDUSSA COMPLETE STYLES
+        MEDUSSA COSMIC STYLES
         ============================================================ */
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,7 +21,6 @@
         
         .container { max-width: 1400px; margin: 0 auto; }
         
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -57,7 +56,6 @@
             animation: pulse 2s infinite;
         }
         
-        /* Stats Grid - Enhanced */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -90,12 +88,12 @@
         .stat-card .value.danger { color: #ff3355; }
         .stat-card .value.warning { color: #ffaa00; }
         .stat-card .value.speed { color: #ffaa00; animation: speedPulse 1s infinite; }
+        .stat-card .value.cosmic { color: #8866ff; }
         
-        /* 3-6-9 Matrix */
         .matrix {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 10px;
             background: #1a1a24;
             border: 1px solid #00ff8833;
             border-radius: 8px;
@@ -105,16 +103,18 @@
         }
         
         .matrix .num {
-            font-size: 56px;
+            font-size: 28px;
             font-weight: bold;
         }
         .matrix .num.c3 { color: #ff3355; }
         .matrix .num.c6 { color: #ffaa00; }
         .matrix .num.c9 { color: #00ff88; }
-        .matrix .label { font-size: 12px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
-        .matrix .desc { font-size: 11px; color: #00ff8844; margin-top: 4px; }
+        .matrix .num.c0 { color: #8866ff; }
+        .matrix .label { font-size: 8px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Channel Grid */
+        .matrix .hardship { border: 2px solid #ff3355; border-radius: 4px; padding: 8px; background: #ff335511; }
+        .matrix .reset { border: 2px solid #8866ff; border-radius: 4px; padding: 8px; background: #8866ff11; }
+        
         .channels {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -148,7 +148,6 @@
         .channel .ch-status.win { color: #00ff88; }
         .channel .ch-status.lose { color: #ff3355; }
         
-        /* Binary Map */
         .binary-map {
             background: #1a1a24;
             border: 1px solid #00ff8833;
@@ -184,7 +183,6 @@
         .bit.on { background: #00ff88; color: #0a0a0f; }
         .bit.off { background: #2a2a3a; color: #555; }
         
-        /* Dominant */
         .dominant {
             background: #1a1a24;
             border: 1px solid #ffaa0044;
@@ -213,7 +211,6 @@
             color: #ffaa0088;
         }
         
-        /* Blockchain Display */
         .blockchain-display {
             background: #1a1a24;
             border: 1px solid #00ff8833;
@@ -234,11 +231,11 @@
         
         .block-item {
             display: grid;
-            grid-template-columns: 40px 70px 70px 80px 80px 60px 80px;
+            grid-template-columns: 35px 60px 50px 70px 70px 50px 70px;
             gap: 5px;
             padding: 5px 10px;
             border-bottom: 1px solid #00ff8822;
-            font-size: 10px;
+            font-size: 9px;
             align-items: center;
         }
         
@@ -248,18 +245,21 @@
         .block-item .decision.win { color: #00ff88; }
         .block-item .decision.lose { color: #ff3355; }
         .block-item .hash { color: #ffaa0066; font-size: 8px; }
-        .block-item .time { color: #00ff8844; font-size: 9px; }
+        .block-item .time { color: #00ff8844; font-size: 8px; }
         .block-item .deposited { color: #00ff8866; font-size: 9px; }
+        .block-item .segment { font-size: 8px; padding: 2px 6px; border-radius: 10px; }
+        .block-item .segment.s1 { background: #ff335522; color: #ff3355; }
+        .block-item .segment.s2 { background: #ffaa0022; color: #ffaa00; }
+        .block-item .segment.s3 { background: #00ff8822; color: #00ff88; }
         
         .block-item.header {
             color: #00ff8866;
-            font-size: 8px;
+            font-size: 7px;
             text-transform: uppercase;
             letter-spacing: 1px;
             border-bottom: 2px solid #00ff8833;
         }
         
-        /* Folder Save */
         .folder-save {
             background: #1a1a24;
             border: 1px solid #00ff8833;
@@ -313,13 +313,8 @@
             box-shadow: 0 0 20px #00ff8822;
         }
         
-        .folder-save .count {
-            color: #ffaa00;
-            font-weight: bold;
-            font-size: 14px;
-        }
+        .folder-save .count { color: #ffaa00; font-weight: bold; font-size: 14px; }
         
-        /* Actions */
         .actions {
             display: flex;
             gap: 10px;
@@ -369,70 +364,17 @@
             box-shadow: 0 0 30px #ffaa0022;
         }
         
-        /* Footer */
-        .footer {
-            text-align: center;
-            color: #00ff8833;
-            font-size: 12px;
-            padding: 20px 0;
-            border-top: 1px solid #00ff8833;
+        .actions button.cosmic {
+            border-color: #8866ff;
+            color: #8866ff;
+            background: #8866ff22;
         }
         
-        /* Animations */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .actions button.cosmic:hover {
+            background: #8866ff44;
+            box-shadow: 0 0 30px #8866ff22;
         }
         
-        @keyframes speedPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.05); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px #00ff8822; }
-            50% { box-shadow: 0 0 40px #00ff8855; }
-        }
-        
-        .winner .ch-value { animation: glow 2s ease-in-out infinite; }
-        
-        /* Scrollbar */
-        .blockchain-display::-webkit-scrollbar {
-            width: 4px;
-        }
-        .blockchain-display::-webkit-scrollbar-track {
-            background: #0a0a0f;
-        }
-        .blockchain-display::-webkit-scrollbar-thumb {
-            background: #00ff8833;
-            border-radius: 2px;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .channels { grid-template-columns: repeat(4, 1fr); }
-            .stats-grid { grid-template-columns: repeat(3, 1fr); }
-            .block-item { grid-template-columns: 30px 50px 50px 60px 50px 40px 50px; font-size: 8px; }
-        }
-        
-        @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: repeat(3, 1fr); }
-            .channels { grid-template-columns: repeat(3, 1fr); }
-            .matrix { grid-template-columns: 1fr; }
-            .block-item { grid-template-columns: 25px 40px 40px 50px 40px 30px 40px; font-size: 7px; gap: 3px; }
-            .header h1 { font-size: 28px; }
-            .folder-save { flex-direction: column; }
-            .actions button { min-width: 70px; font-size: 10px; padding: 6px 10px; }
-        }
-        
-        @media (max-width: 480px) {
-            .channels { grid-template-columns: repeat(2, 1fr); }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .block-item { grid-template-columns: 20px 30px 30px 40px 30px 25px 30px; font-size: 6px; gap: 2px; }
-            .block-item .hash { display: none; }
-        }
-        
-        /* Deposit Window */
         .deposit-window {
             background: #1a1a24;
             border: 2px solid #ffaa0044;
@@ -461,25 +403,119 @@
             color: #ffaa0088;
             margin-top: 2px;
         }
+        
+        .restriction-panel {
+            background: #1a1a24;
+            border: 1px solid #00ff8833;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+        
+        .restriction-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .restriction-item {
+            text-align: center;
+            padding: 8px;
+            border-radius: 4px;
+            background: #0a0a0f;
+        }
+        
+        .restriction-item .rest-label {
+            font-size: 9px;
+            color: #00ff8866;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+        }
+        
+        .restriction-item .rest-value {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin-top: 4px;
+        }
+        
+        .restriction-item.ok .rest-value { color: #00ff88; }
+        .restriction-item.warning .rest-value { color: #ffaa00; }
+        .restriction-item.error .rest-value { color: #ff3355; }
+        
+        .footer {
+            text-align: center;
+            color: #00ff8833;
+            font-size: 12px;
+            padding: 20px 0;
+            border-top: 1px solid #00ff8833;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes speedPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px #00ff8822; }
+            50% { box-shadow: 0 0 40px #00ff8855; }
+        }
+        
+        .winner .ch-value { animation: glow 2s ease-in-out infinite; }
+        
+        .blockchain-display::-webkit-scrollbar { width: 4px; }
+        .blockchain-display::-webkit-scrollbar-track { background: #0a0a0f; }
+        .blockchain-display::-webkit-scrollbar-thumb { background: #00ff8833; border-radius: 2px; }
+        
+        @media (max-width: 992px) {
+            .channels { grid-template-columns: repeat(4, 1fr); }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .matrix { grid-template-columns: repeat(3, 1fr); }
+            .block-item { grid-template-columns: 25px 40px 40px 50px 40px 30px 40px; font-size: 7px; }
+            .restriction-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .channels { grid-template-columns: repeat(3, 1fr); }
+            .matrix { grid-template-columns: repeat(3, 1fr); }
+            .header h1 { font-size: 28px; }
+            .folder-save { flex-direction: column; }
+            .actions button { min-width: 70px; font-size: 10px; padding: 6px 10px; }
+            .block-item { grid-template-columns: 20px 30px 30px 40px 30px 25px 30px; font-size: 6px; gap: 2px; }
+            .block-item .hash { display: none; }
+            .restriction-grid { grid-template-columns: 1fr 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            .channels { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .matrix { grid-template-columns: repeat(3, 1fr); }
+            .matrix .num { font-size: 20px; }
+            .block-item { grid-template-columns: 15px 25px 25px 30px 20px 20px; font-size: 5px; gap: 1px; }
+            .block-item .hash { display: none; }
+            .block-item .time { display: none; }
+            .restriction-grid { grid-template-columns: 1fr 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         
-        <!-- ============================================================
-        HEADER
-        ============================================================ -->
         <div class="header">
             <div>
                 <h1>🐍 MED<span>US</span>SA</h1>
-                <div class="subtitle">Blockchain · Pulse Counting · 3-6-9</div>
+                <div class="subtitle">Cosmic Blockchain · 3-6-9 · 9,000,000 Blocks</div>
             </div>
             <div class="status" id="statusBadge">● ACTIVE</div>
         </div>
         
-        <!-- ============================================================
-        STATS GRID - Includes Creation Speed & Deposited
-        ============================================================ -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="label">Blocks</div>
@@ -498,72 +534,57 @@
                 <div class="value warning" id="depositedCount">0</div>
             </div>
             <div class="stat-card">
-                <div class="label">Winners</div>
-                <div class="value" id="winnersCount">0/12</div>
+                <div class="label">Segment</div>
+                <div class="value cosmic" id="currentSegment">1</div>
             </div>
             <div class="stat-card">
-                <div class="label">Selection Power</div>
-                <div class="value" id="selectionPower">0%</div>
+                <div class="label">Rollover</div>
+                <div class="value" id="rolloverStatus">--</div>
             </div>
         </div>
         
-        <!-- ============================================================
-        DEPOSIT WINDOW
-        ============================================================ -->
         <div class="deposit-window">
-            <div class="deposit-label">📦 INTERNAL FOLDER · DEPOSITED BLOCKS</div>
+            <div class="deposit-label">📦 COSMIC DEPOSIT · Suriya Siddhanta Cycle</div>
             <div class="deposit-value" id="depositDisplay">0</div>
-            <div class="deposit-sub">Blocks stored in internal folder · Ready for export</div>
+            <div class="deposit-sub">Blocks deposited · Next rollover: <span id="nextRollover">--</span></div>
         </div>
         
-        <!-- ============================================================
-        3-6-9 MATRIX
-        ============================================================ -->
-        <div class="matrix">
-            <div>
-                <div class="num c3">3</div>
-                <div class="label">Creator</div>
-                <div class="desc">Input · Pulse Source</div>
-            </div>
-            <div>
-                <div class="num c6">6</div>
-                <div class="label">Preserver</div>
-                <div class="desc">Process · Pulse Interaction</div>
-            </div>
-            <div>
-                <div class="num c9">9</div>
-                <div class="label">Destroyer</div>
-                <div class="desc">Output · Block Creation</div>
-            </div>
+        <div class="matrix" id="segmentMatrix">
+            <div class="num c3">3</div>
+            <div class="num c3">3</div>
+            <div class="num c3">3</div>
+            <div class="num c6">6</div>
+            <div class="num c6">6</div>
+            <div class="num c6 hardship">6</div>
+            <div class="num c9">9</div>
+            <div class="num c9">9</div>
+            <div class="num c9 reset">9</div>
+            <div class="label">Seg 1</div>
+            <div class="label">Seg 2</div>
+            <div class="label">Seg 3</div>
+            <div class="label">Seg 4</div>
+            <div class="label">Seg 5</div>
+            <div class="label hardship">Seg 6</div>
+            <div class="label">Seg 7</div>
+            <div class="label">Seg 8</div>
+            <div class="label reset">Seg 9</div>
         </div>
         
-        <!-- ============================================================
-        CHANNELS
-        ============================================================ -->
         <div class="channels" id="channelsGrid"></div>
         
-        <!-- ============================================================
-        BINARY MAP
-        ============================================================ -->
         <div class="binary-map">
             <div class="map-label">Binary Map · 1 = Winner · 0 = Loser</div>
             <div class="map-row" id="binaryMap"></div>
         </div>
         
-        <!-- ============================================================
-        DOMINANT
-        ============================================================ -->
         <div class="dominant">
             <div class="dom-label">🏆 Dominant Channel · Pulse Resonance</div>
             <div class="dom-value" id="dominantValue">--</div>
             <div class="dom-channel" id="dominantLabel">Channel --</div>
         </div>
         
-        <!-- ============================================================
-        BLOCKCHAIN DISPLAY
-        ============================================================ -->
         <div class="blockchain-display" id="blockchainDisplay">
-            <div class="block-label">🐍 Medussa · Blockchain Index · Creation Window</div>
+            <div class="block-label">🐍 Medussa · Blockchain Index · Cosmic Cycle</div>
             <div id="blockchainList">
                 <div class="block-item header">
                     <span>#</span>
@@ -572,25 +593,40 @@
                     <span>Hash</span>
                     <span>Prev</span>
                     <span>Time</span>
-                    <span>Deposited</span>
+                    <span>Dep</span>
                 </div>
             </div>
         </div>
         
-        <!-- ============================================================
-        FOLDER SAVE
-        ============================================================ -->
+        <div class="restriction-panel" id="restrictionStatus">
+            <div class="restriction-grid">
+                <div class="restriction-item ok">
+                    <span class="rest-label">Chain Integrity</span>
+                    <span class="rest-value" id="chainIntegrity">100%</span>
+                </div>
+                <div class="restriction-item ok">
+                    <span class="rest-label">Speed Status</span>
+                    <span class="rest-value" id="speedStatus">OK</span>
+                </div>
+                <div class="restriction-item ok">
+                    <span class="rest-label">Deposit Ready</span>
+                    <span class="rest-value" id="depositReady">✅</span>
+                </div>
+                <div class="restriction-item ok">
+                    <span class="rest-label">3-6-9 Matrix</span>
+                    <span class="rest-value" id="matrixStatus">✅ ACTIVE</span>
+                </div>
+            </div>
+        </div>
+        
         <div class="folder-save">
             <span class="label">💾 Save to Folder</span>
-            <input type="text" id="folderName" placeholder="Folder name" value="medussa_chain">
+            <input type="text" id="folderName" placeholder="Folder name" value="medussa_cosmic">
             <span class="count" id="folderBlockCount">0 blocks</span>
             <button id="saveToFolderBtn">📁 SAVE CHAIN</button>
             <button id="loadFromFolderBtn">📂 LOAD CHAIN</button>
         </div>
         
-        <!-- ============================================================
-        ACTIONS
-        ============================================================ -->
         <div class="actions">
             <button id="addBlockBtn">⧫ ADD BLOCK</button>
             <button id="autoMineBtn">🎲 AUTO MINE</button>
@@ -598,52 +634,163 @@
             <button id="exportBtn" class="warning">💾 EXPORT JSON</button>
             <button id="importBtn" class="warning">📂 IMPORT JSON</button>
             <button id="clearBtn" class="danger">✕ CLEAR ALL</button>
+            <button id="rolloverBtn" class="cosmic">🌙 ROLLOVER</button>
         </div>
         
-        <!-- ============================================================
-        FOOTER
-        ============================================================ -->
         <div class="footer">
-            🐍 MEDUSSA v1.0 · Creation Speed: <span id="speedDisplay">0.0/s</span> · Deposited: <span id="depositFooter">0</span> blocks · <span id="updateTime">--</span>
+            🐍 MEDUSSA COSMIC v2.0 · 9,000,000 Blocks · 3-6-9 Segments · <span id="updateTime">--</span>
             <br>
             <span style="font-size:10px;color:#00ff8822;">
-                Built on 3-6-9 Matrix · Electromagnetic Pulse Counting
+                Suriya Siddhanta Time Cycles · South Indian New Year · Sumerian Zagmuk
             </span>
         </div>
         
     </div>
     
-    <!-- ============================================================
-    JAVASCRIPT - MEDUSSA ENGINE WITH SPEED & DEPOSIT
-    ============================================================ -->
     <script>
         // ============================================================
-        // CONFIGURATION
+        // MEDUSSA COSMIC ENGINE - 3-6-9 SEGMENTS · 9,000,000 BLOCKS
         // ============================================================
+        
+        // ============================================================
+        // COSMIC CONSTANTS
+        // ============================================================
+        const COSMIC = {
+            maxBlocks: 9000000,
+            segments: 9,
+            blocksPerSegment: 1000000,
+            creationDays: 18,
+            blocksPerDay: 500000,
+            hardshipStart: 4,
+            hardshipPeak: 6,
+            resetAt: 9,
+            rolloverDates: {
+                southIndianNewYear: { month: 3, day: 14, name: 'South Indian New Year' },
+                sumerianZagmuk: { month: 2, day: 21, name: 'Sumerian Zagmuk' }
+            }
+        };
+        
         const NUM_CHANNELS = 12;
         const THRESHOLD = 2048;
         const CHANNEL_LABELS = ['GPU0','GPU1','GPU2','GPU3','PSU0','PSU1','PSU2','PSU3','TMP0','TMP1','TMP2','TMP3'];
-        const STORAGE_KEY = 'medussa_chain';
+        const STORAGE_KEY = 'medussa_cosmic_chain';
         
         // ============================================================
-        // BLOCKCHAIN STATE
+        // STATE
         // ============================================================
         let blockchain = [];
         let totalPulses = 0;
-        let updateCount = 0;
-        let autoMineInterval = null;
-        let isAutoMining = false;
-        let startTime = Date.now();
-        let blockCountHistory = [];
-        let creationSpeed = 0;
         let depositedBlocks = 0;
+        let creationSpeed = 0;
+        let startTime = Date.now();
+        let blockTimestamps = [];
+        let isAutoMining = false;
+        let autoMineInterval = null;
+        let updateCount = 0;
+        
+        // ============================================================
+        // COSMIC FUNCTIONS
+        // ============================================================
+        function getSegment(blockIndex) {
+            return Math.floor(blockIndex / COSMIC.blocksPerSegment) + 1;
+        }
+        
+        function getSegmentName(segment) {
+            const names = {
+                1: 'Creation',
+                2: 'Creation',
+                3: 'Creation',
+                4: 'Preservation',
+                5: 'Preservation',
+                6: 'Preservation ⚠️',
+                7: 'Transformation',
+                8: 'Transformation',
+                9: 'Transformation 🔄'
+            };
+            return names[segment] || 'Unknown';
+        }
+        
+        function getDifficulty(blockIndex) {
+            const segment = getSegment(blockIndex);
+            const difficultyMap = {
+                1: 4, 2: 4, 3: 4,
+                4: 3, 5: 2, 6: 1,
+                7: 2, 8: 3, 9: 4
+            };
+            return difficultyMap[segment] || 4;
+        }
+        
+        function isHardship(blockIndex) {
+            const segment = getSegment(blockIndex);
+            return segment >= 4 && segment <= 6;
+        }
+        
+        function isHardshipPeak(blockIndex) {
+            const segment = getSegment(blockIndex);
+            return segment === 6;
+        }
+        
+        function isResetPoint(blockIndex) {
+            const segment = getSegment(blockIndex);
+            return segment === 9;
+        }
+        
+        function getTimeCycle(blockIndex) {
+            const day = Math.floor(blockIndex / COSMIC.blocksPerDay) + 1;
+            const month = Math.floor((day - 1) / 30) + 1;
+            const year = Math.floor((month - 1) / 12) + 1;
+            return { day, month, year, totalDays: day };
+        }
+        
+        function checkRollover() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            
+            const rollovers = [];
+            
+            for (const [key, date] of Object.entries(COSMIC.rolloverDates)) {
+                if (month === date.month && day === date.day) {
+                    rollovers.push(date.name);
+                }
+            }
+            
+            return rollovers;
+        }
+        
+        function getNextRollover() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            
+            let next = null;
+            let minDays = 999;
+            
+            for (const [key, date] of Object.entries(COSMIC.rolloverDates)) {
+                let days = 0;
+                if (date.month > month || (date.month === month && date.day > day)) {
+                    days = (date.month - month) * 30 + (date.day - day);
+                } else {
+                    days = (12 - month + date.month) * 30 + (date.day - day);
+                }
+                if (days < minDays) {
+                    minDays = days;
+                    next = date.name;
+                }
+            }
+            
+            return next || '--';
+        }
         
         // ============================================================
         // BLOCK STRUCTURE
         // ============================================================
         function createBlock(index, pulseCount, decision, prevHash, data = {}) {
             const timestamp = Date.now();
-            const hash = generateHash(index, pulseCount, decision, prevHash, timestamp);
+            const segment = getSegment(index);
+            const difficulty = getDifficulty(index);
+            const hash = generateHash(index, pulseCount, decision, prevHash, timestamp, difficulty);
+            
             return {
                 index: index,
                 timestamp: timestamp,
@@ -651,21 +798,21 @@
                 decision: decision,
                 prevHash: prevHash,
                 hash: hash,
+                segment: segment,
+                difficulty: difficulty,
                 data: data,
                 deposited: false
             };
         }
         
-        // ============================================================
-        // HASH GENERATOR
-        // ============================================================
-        function generateHash(index, pulseCount, decision, prevHash, timestamp) {
+        function generateHash(index, pulseCount, decision, prevHash, timestamp, difficulty) {
             let hash = prevHash ? parseInt(prevHash.substring(0, 8), 16) || 0 : 0;
             hash ^= (index * 31);
             hash ^= (Math.floor(pulseCount) * 97);
             hash ^= (decision ? 0xFFFFFFFF : 0x00000000);
             hash ^= (timestamp * 13);
             hash ^= (totalPulses * 7);
+            hash ^= (difficulty * 3);
             return (hash >>> 0).toString(16).padStart(16, '0');
         }
         
@@ -682,9 +829,6 @@
             return pulse;
         }
         
-        // ============================================================
-        // GENERATE PULSE DATA
-        // ============================================================
         function generatePulseData() {
             const values = [];
             for (let i = 0; i < NUM_CHANNELS; i++) {
@@ -709,9 +853,6 @@
             return values;
         }
         
-        // ============================================================
-        // PROCESS BINARY LOGIC
-        // ============================================================
         function processBinaryLogic(values) {
             const winners = [];
             for (let i = 0; i < values.length; i++) {
@@ -724,9 +865,6 @@
             return winners;
         }
         
-        // ============================================================
-        // FIND DOMINANT
-        // ============================================================
         function findDominant(values) {
             let maxIdx = 0, maxVal = values[0];
             for (let i = 1; i < values.length; i++) {
@@ -736,12 +874,17 @@
         }
         
         // ============================================================
-        // ADD BLOCK
+        // ADD BLOCK WITH COSMIC RESTRICTIONS
         // ============================================================
         function addBlock(values, decision) {
+            if (blockchain.length >= COSMIC.maxBlocks) {
+                alert('⚠️ Max blocks reached: 9,000,000');
+                return null;
+            }
+            
             const prevHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0000000000000000';
             const pulseCount = countPulses(values);
-            const decisionValue = decision !== undefined ? decision : (countPulses(values) > 10000);
+            const decisionValue = decision !== undefined ? decision : (pulseCount > 10000);
             
             const block = createBlock(
                 blockchain.length,
@@ -754,8 +897,14 @@
             blockchain.push(block);
             totalPulses += pulseCount;
             
-            // Auto-deposit (every 5 blocks)
+            // Auto-deposit every 5 blocks
             if (blockchain.length % 5 === 0) {
+                depositedBlocks = blockchain.length;
+            }
+            
+            // Check rollover
+            const rollovers = checkRollover();
+            if (rollovers.length > 0) {
                 depositedBlocks = blockchain.length;
             }
             
@@ -766,392 +915,10 @@
         }
         
         // ============================================================
-        // CALCULATE CREATION SPEED
+        // SPEED CALCULATION
         // ============================================================
         function calculateSpeed() {
             const now = Date.now();
-            const elapsed = (now - startTime) / 1000;
-            if (elapsed > 0) {
-                creationSpeed = blockchain.length / elapsed;
-            }
-        }
-        
-        // ============================================================
-        // SAVE/LOCAL STORAGE
-        // ============================================================
-        function saveChain() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                    blockchain: blockchain,
-                    totalPulses: totalPulses,
-                    depositedBlocks: depositedBlocks,
-                    timestamp: Date.now()
-                }));
-            } catch (e) {
-                console.log('Save failed:', e);
-            }
-        }
-        
-        function loadChain() {
-            try {
-                const data = localStorage.getItem(STORAGE_KEY);
-                if (data) {
-                    const parsed = JSON.parse(data);
-                    blockchain = parsed.blockchain || [];
-                    totalPulses = parsed.totalPulses || 0;
-                    depositedBlocks = parsed.depositedBlocks || blockchain.length;
-                    return true;
-                }
-            } catch (e) {
-                console.log('Load failed:', e);
-            }
-            return false;
-        }
-        
-        // ============================================================
-        // SAVE TO FOLDER (Download JSON)
-        // ============================================================
-        function saveToFolder(folderName) {
-            const data = {
-                name: folderName || 'medussa_chain',
-                version: '1.0',
-                matrix: '3-6-9',
-                created: Date.now(),
-                blockchain: blockchain,
-                totalPulses: totalPulses,
-                depositedBlocks: depositedBlocks,
-                blockCount: blockchain.length,
-                creationSpeed: creationSpeed
-            };
-            
-            const json = JSON.stringify(data, null, 2);
-            const blob = new Blob([json], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${folderName || 'medussa_chain'}_${Date.now()}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert('✅ Chain saved to Downloads folder!');
-        }
-        
-        // ============================================================
-        // LOAD FROM FOLDER
-        // ============================================================
-        function loadFromFolder() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        if (data.blockchain && Array.isArray(data.blockchain)) {
-                            blockchain = data.blockchain;
-                            totalPulses = data.totalPulses || 0;
-                            depositedBlocks = data.depositedBlocks || blockchain.length;
-                            saveChain();
-                            updateDashboard();
-                            alert(`✅ Loaded ${blockchain.length} blocks!`);
-                        } else {
-                            alert('❌ Invalid chain data');
-                        }
-                    } catch (err) {
-                        alert('❌ Failed to parse file');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-        
-        // ============================================================
-        // EXPORT/IMPORT
-        // ============================================================
-        function exportChain() {
-            const data = {
-                blockchain: blockchain,
-                totalPulses: totalPulses,
-                depositedBlocks: depositedBlocks,
-                timestamp: Date.now(),
-                version: '1.0',
-                matrix: '3-6-9'
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `medussa_chain_${Date.now()}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        
-        function importChain() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        if (data.blockchain && Array.isArray(data.blockchain)) {
-                            blockchain = data.blockchain;
-                            totalPulses = data.totalPulses || 0;
-                            depositedBlocks = data.depositedBlocks || blockchain.length;
-                            saveChain();
-                            updateDashboard();
-                            alert('✅ Chain imported successfully!');
-                        } else {
-                            alert('❌ Invalid chain data');
-                        }
-                    } catch (err) {
-                        alert('❌ Failed to parse file');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-        
-        // ============================================================
-        // CLEAR CHAIN
-        // ============================================================
-        function clearChain() {
-            if (confirm('⚠️ Clear ALL blocks? This cannot be undone.')) {
-                blockchain = [];
-                totalPulses = 0;
-                depositedBlocks = 0;
-                startTime = Date.now();
-                creationSpeed = 0;
-                saveChain();
-                updateDashboard();
-            }
-        }
-        
-        // ============================================================
-        // UPDATE DASHBOARD
-        // ============================================================
-        function updateDashboard() {
-            updateCount++;
-            
-            const values = generatePulseData();
-            const winners = processBinaryLogic(values);
-            const winnerCount = winners.filter(w => w).length;
-            const selectionRatio = (winnerCount / NUM_CHANNELS * 100);
-            const dominant = findDominant(values);
-            
-            // Calculate speed
-            calculateSpeed();
-            
-            // Stats
-            document.getElementById('blockCount').textContent = blockchain.length;
-            document.getElementById('creationSpeed').textContent = creationSpeed.toFixed(1) + '/s';
-            document.getElementById('totalPulses').textContent = Math.floor(totalPulses);
-            document.getElementById('depositedCount').textContent = depositedBlocks;
-            document.getElementById('winnersCount').textContent = `${winnerCount}/${NUM_CHANNELS}`;
-            document.getElementById('winnersCount').className = `value ${winnerCount < 4 ? 'danger' : winnerCount < 6 ? 'warning' : ''}`;
-            document.getElementById('selectionPower').textContent = `${selectionRatio.toFixed(1)}%`;
-            document.getElementById('selectionPower').className = `value ${selectionRatio < 40 ? 'danger' : selectionRatio < 55 ? 'warning' : ''}`;
-            
-            // Deposit Window
-            document.getElementById('depositDisplay').textContent = depositedBlocks;
-            
-            // Folder block count
-            document.getElementById('folderBlockCount').textContent = blockchain.length + ' blocks';
-            
-            // Footer speed
-            document.getElementById('speedDisplay').textContent = creationSpeed.toFixed(1) + '/s';
-            document.getElementById('depositFooter').textContent = depositedBlocks;
-            
-            // Channels
-            const grid = document.getElementById('channelsGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < NUM_CHANNELS; i++) {
-                const div = document.createElement('div');
-                div.className = `channel ${winners[i] ? 'winner' : 'loser'}`;
-                div.innerHTML = `
-                    <div class="ch-label">${CHANNEL_LABELS[i]}</div>
-                    <div class="ch-value">${values[i]}</div>
-                    <div class="ch-status ${winners[i] ? 'win' : 'lose'}">${winners[i] ? '▼ WIN' : '▲ LOSE'}</div>
-                `;
-                grid.appendChild(div);
-            }
-            
-            // Binary Map
-            const map = document.getElementById('binaryMap');
-            map.innerHTML = '';
-            for (let i = 0; i < NUM_CHANNELS; i++) {
-                const bit = document.createElement('div');
-                bit.className = `bit ${winners[i] ? 'on' : 'off'}`;
-                bit.textContent = winners[i] ? '1' : '0';
-                map.appendChild(bit);
-            }
-            
-            // Dominant
-            document.getElementById('dominantValue').textContent = dominant.value;
-            document.getElementById('dominantLabel').textContent = `Channel ${dominant.index} · ${CHANNEL_LABELS[dominant.index]}`;
-            
-            // Blockchain List
-            const list = document.getElementById('blockchainList');
-            const header = list.querySelector('.header');
-            list.innerHTML = '';
-            list.appendChild(header);
-            
-            const start = Math.max(0, blockchain.length - 20);
-            for (let i = blockchain.length - 1; i >= start; i--) {
-                const block = blockchain[i];
-                const div = document.createElement('div');
-                div.className = 'block-item';
-                const isDeposited = i < depositedBlocks;
-                div.innerHTML = `
-                    <span class="idx">#${block.index}</span>
-                    <span class="pulse">${Math.floor(block.pulseCount)}</span>
-                    <span class="decision ${block.decision ? 'win' : 'lose'}">${block.decision ? 'WIN' : 'LOSE'}</span>
-                    <span class="hash">${block.hash.substring(0, 6)}...</span>
-                    <span class="hash">${block.prevHash.substring(0, 6)}...</span>
-                    <span class="time">${new Date(block.timestamp).toLocaleTimeString()}</span>
-                    <span class="deposited">${isDeposited ? '📁' : '⏳'}</span>
-                `;
-                list.appendChild(div);
-            }
-            
-            // Status
-            document.getElementById('statusBadge').textContent = `● ${blockchain.length} BLOCKS · ${creationSpeed.toFixed(1)}/s`;
-            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
-        }
-        
-        // ============================================================
-        // AUTO MINE
-        // ============================================================
-        function toggleAutoMine() {
-            if (isAutoMining) {
-                stopAutoMine();
-            } else {
-                startAutoMine();
-            }
-        }
-        
-        function startAutoMine() {
-            if (isAutoMining) return;
-            isAutoMining = true;
-            document.getElementById('autoMineBtn').textContent = '⏹ STOP';
-            document.getElementById('autoMineBtn').className = 'danger';
-            
-            autoMineInterval = setInterval(() => {
-                const values = generatePulseData();
-                const winners = processBinaryLogic(values);
-                const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
-                addBlock(values, decision);
-                updateDashboard();
-            }, 1000);
-        }
-        
-        function stopAutoMine() {
-            isAutoMining = false;
-            if (autoMineInterval) {
-                clearInterval(autoMineInterval);
-                autoMineInterval = null;
-            }
-            document.getElementById('autoMineBtn').textContent = '🎲 AUTO MINE';
-            document.getElementById('autoMineBtn').className = '';
-        }
-        
-        // ============================================================
-        // EVENT LISTENERS
-        // ============================================================
-        document.getElementById('addBlockBtn').addEventListener('click', function() {
-            const values = generatePulseData();
-            const winners = processBinaryLogic(values);
-            const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
-            addBlock(values, decision);
-            updateDashboard();
-        });
-        
-        document.getElementById('autoMineBtn').addEventListener('click', toggleAutoMine);
-        
-        document.getElementById('simulateBtn').addEventListener('click', function() {
-            for (let i = 0; i < 10; i++) {
-                const values = generatePulseData();
-                const winners = processBinaryLogic(values);
-                const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
-                addBlock(values, decision);
-            }
-            updateDashboard();
-        });
-        
-        document.getElementById('clearBtn').addEventListener('click', clearChain);
-        document.getElementById('exportBtn').addEventListener('click', exportChain);
-        document.getElementById('importBtn').addEventListener('click', importChain);
-        
-        document.getElementById('saveToFolderBtn').addEventListener('click', function() {
-            const folderName = document.getElementById('folderName').value || 'medussa_chain';
-            saveToFolder(folderName);
-        });
-        
-        document.getElementById('loadFromFolderBtn').addEventListener('click', loadFromFolder);
-        
-        // ============================================================
-        // KEYBOARD SHORTCUTS
-        // ============================================================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === ' ' || e.key === 'Enter') {
-                e.preventDefault();
-                toggleAutoMine();
-            }
-            if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                exportChain();
-            }
-            if (e.key === 'c' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                clearChain();
-            }
-        });
-        
-        // ============================================================
-        // INITIALIZE
-        // ============================================================
-        function init() {
-            if (!loadChain()) {
-                const genesisValues = new Array(NUM_CHANNELS).fill(0);
-                addBlock(genesisValues, false);
-                depositedBlocks = 1;
-            }
-            
-            startTime = Date.now() - (blockchain.length * 1000);
-            updateDashboard();
-            
-            setInterval(() => {
-                updateDashboard();
-            }, 5000);
-            
-            console.log('🐍 MEDUSSA v1.0');
-            console.log(`Blocks: ${blockchain.length}`);
-            console.log(`Total Pulses: ${totalPulses}`);
-            console.log(`Deposited: ${depositedBlocks}`);
-            console.log(`Creation Speed: ${creationSpeed.toFixed(1)}/s`);
-            console.log('3-6-9 Matrix Active');
-            console.log('==============================');
-            console.log('Space: Toggle auto-mine');
-            console.log('Ctrl+S: Export chain');
-            console.log('Ctrl+C: Clear chain');
-            console.log('==============================');
-        }
-        
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
-</body>
-</html>
+            blockTimestamps = blockTimestamps.filter(t => now - t < 1000);
+            blockTimestamps.push(now);
+            creationSpeed = blockTimestamps.length / 
