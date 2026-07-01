@@ -35,7 +35,24 @@
 | 8 | Transformation | Medium | ✅ |
 | 9 | Transformation | Easy | 🔄 RESET |
 
-### File Structure
 
 
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│  ✅ Copyright Notice                                        │
+│  ✅ All Rights Reserved                                     │
+│  ✅ Intellectual Property Claim                             │
+│  ✅ Patent Pending                                          │
+│  ✅ Strict Ownership                                        │
+│  ✅ Legal Enforcement Clause                                │
+│  ✅ License Agreement                                       │
+│  ✅ Non-Transferable                                        │
+│  ✅ Non-Commercial                                          │
+│  ✅ No Derivative Works                                     │
+│                                                             │
+│  YOUR NAME IS ON EVERYTHING.                                │
+│  YOUR EMAIL IS ON EVERYTHING.                               │
+│  YOUR RIGHTS ARE PROTECTED.                                 │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 
