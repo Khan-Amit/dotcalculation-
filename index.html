@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dotcalculation · Blockchain</title>
+    <style>
+        /* ============================================================
+        DOTCALCULATION STYLES
+        ============================================================ */
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0a0a0f;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #00ff8844;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            color: #00ff88;
+            text-shadow: 0 0 40px #00ff8844;
+            letter-spacing: 4px;
+        }
+        
+        .header .subtitle {
+            font-size: 14px;
+            color: #00ff8866;
+            letter-spacing: 2px;
+        }
+        
+        .header .status {
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid #00ff88;
+            background: #00ff8822;
+            font-size: 14px;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: #1a1a24;
+            border: 1px solid #00ff8833;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-card .label {
+            font-size: 10px;
+            color: #00ff8866;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #00ff88;
+        }
+        
+        /* 3-6-9 Matrix */
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            background: #1a1a24;
+            border: 1px solid #00ff8833;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .matrix .num {
+            font-size: 56px;
+            font-weight: bold;
+        }
+        .matrix .num.c3 { color: #ff3355; }
+        .matrix .num.c6 { color: #ffaa00; }
+        .matrix .num.c9 { color: #00ff88; }
+        .matrix .label { font-size: 12px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
+        .matrix .desc { font-size: 11px; color: #00ff8844; margin-top: 4px; }
+        
+        /* Channel Grid */
+        .channels {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .channel {
+            background: #1a1a24;
+            border: 1px solid #00ff8833;
+            border-radius: 6px;
+            padding: 12px 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .channel.winner {
+            border-color: #00ff88;
+            background: #00ff8811;
+            box-shadow: 0 0 20px #00ff8822;
+        }
+        
+        .channel.loser {
+            border-color: #ff335544;
+            background: #ff335511;
+        }
+        
+        .channel .ch-label { font-size: 10px; color: #00ff8866; text-transform: uppercase; }
+        .channel .ch-value { font-size: 16px; font-weight: bold; margin: 4px 0; }
+        .channel .ch-status { font-size: 18px; }
+        .channel .ch-status.win { color: #00ff88; }
+        .channel .ch-status.lose { color: #ff3355; }
+        
+        /* Binary Map */
+        .binary-map {
+            background: #1a1a24;
+            border: 1px solid #00ff8833;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+        
+        .binary-map .map-label {
+            font-size: 11px;
+            color: #00ff8866;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .binary-map .map-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .bit {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .bit.on { background: #00ff88; color: #0a0a0f; }
+        .bit.off { background: #2a2a3a; color: #555; }
+        
+        /* Dominant */
+        .dominant {
+            background: #1a1a24;
+            border: 1px solid #ffaa0044;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .dominant .dom-label {
+            font-size: 11px;
+            color: #ffaa0066;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .dominant .dom-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffaa00;
+            margin-top: 4px;
+        }
+        
+        .dominant .dom-channel {
+            font-size: 14px;
+            color: #ffaa0088;
+        }
+        
+        /* Blockchain Display */
+        .blockchain-display {
+            background: #1a1a24;
+            border: 1px solid #00ff8833;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .blockchain-display .block-label {
+            font-size: 11px;
+            color: #00ff8866;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .block-item {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            padding: 8px 12px;
+            border-bottom: 1px solid #00ff8822;
+            font-size: 12px;
+            align-items: center;
+        }
+        
+        .block-item .idx { color: #ffaa00; font-weight: bold; }
+        .block-item .pulse { color: #00ff88; }
+        .block-item .decision { font-weight: bold; }
+        .block-item .decision.win { color: #00ff88; }
+        .block-item .decision.lose { color: #ff3355; }
+        .block-item .hash { color: #ffaa0066; font-size: 10px; }
+        
+        .block-item.header {
+            color: #00ff8866;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #00ff8833;
+        }
+        
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        
+        .actions button {
+            background: #00ff8822;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .actions button:hover {
+            background: #00ff8844;
+            box-shadow: 0 0 30px #00ff8822;
+        }
+        
+        .actions button.danger {
+            border-color: #ff3355;
+            color: #ff3355;
+            background: #ff335522;
+        }
+        
+        .actions button.danger:hover {
+            background: #ff335544;
+            box-shadow: 0 0 30px #ff335522;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: #00ff8833;
+            font-size: 12px;
+            padding: 20px 0;
+            border-top: 1px solid #00ff8833;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .channels { grid-template-columns: repeat(4, 1fr); }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .channels { grid-template-columns: repeat(3, 1fr); }
+            .matrix { grid-template-columns: 1fr; }
+            .block-item { grid-template-columns: 40px 1fr 1fr; font-size: 10px; }
+            .header h1 { font-size: 24px; }
+        }
+        
+        @media (max-width: 480px) {
+            .channels { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .block-item { grid-template-columns: 30px 1fr; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .updating { animation: pulse 0.3s ease; }
+        .winner .ch-value { animation: glow 2s ease-in-out infinite; }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px #00ff8822; }
+            50% { box-shadow: 0 0 40px #00ff8855; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- ============================================================
+        HEADER
+        ============================================================ -->
+        <div class="header">
+            <div>
+                <h1>⧫ DOTCALCULATION</h1>
+                <div class="subtitle">Your Blockchain · Pulse Counting · 3-6-9</div>
+            </div>
+            <div class="status" id="statusBadge">● ACTIVE</div>
+        </div>
+        
+        <!-- ============================================================
+        STATS
+        ============================================================ -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Blocks</div>
+                <div class="value" id="blockCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Total Pulses</div>
+                <div class="value" id="totalPulses">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Winners</div>
+                <div class="value" id="winnersCount">0/12</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Selection Power</div>
+                <div class="value" id="selectionPower">0%</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Last Block</div>
+                <div class="value" id="lastBlock">--</div>
+            </div>
+        </div>
+        
+        <!-- ============================================================
+        3-6-9 MATRIX
+        ============================================================ -->
+        <div class="matrix">
+            <div>
+                <div class="num c3">3</div>
+                <div class="label">Creator</div>
+                <div class="desc">Input · Pulse Source</div>
+            </div>
+            <div>
+                <div class="num c6">6</div>
+                <div class="label">Preserver</div>
+                <div class="desc">Process · Pulse Interaction</div>
+            </div>
+            <div>
+                <div class="num c9">9</div>
+                <div class="label">Destroyer</div>
+                <div class="desc">Output · Block Creation</div>
+            </div>
+        </div>
+        
+        <!-- ============================================================
+        CHANNELS
+        ============================================================ -->
+        <div class="channels" id="channelsGrid"></div>
+        
+        <!-- ============================================================
+        BINARY MAP
+        ============================================================ -->
+        <div class="binary-map">
+            <div class="map-label">Binary Map · 1 = Winner · 0 = Loser</div>
+            <div class="map-row" id="binaryMap"></div>
+        </div>
+        
+        <!-- ============================================================
+        DOMINANT
+        ============================================================ -->
+        <div class="dominant">
+            <div class="dom-label">🏆 Dominant Channel · Pulse Resonance</div>
+            <div class="dom-value" id="dominantValue">--</div>
+            <div class="dom-channel" id="dominantLabel">Channel --</div>
+        </div>
+        
+        <!-- ============================================================
+        BLOCKCHAIN DISPLAY
+        ============================================================ -->
+        <div class="blockchain-display" id="blockchainDisplay">
+            <div class="block-label">⧫ Blockchain · Last 20 Blocks</div>
+            <div id="blockchainList">
+                <div class="block-item header">
+                    <span>#</span>
+                    <span>Pulse</span>
+                    <span>Decision</span>
+                    <span>Hash</span>
+                    <span>Time</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================================
+        ACTIONS
+        ============================================================ -->
+        <div class="actions">
+            <button id="addBlockBtn">⧫ ADD BLOCK</button>
+            <button id="simulateBtn">🎲 SIMULATE PULSES</button>
+            <button id="clearBtn" class="danger">✕ CLEAR CHAIN</button>
+            <button id="exportBtn">💾 EXPORT CHAIN</button>
+            <button id="importBtn">📂 IMPORT CHAIN</button>
+        </div>
+        
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
+        <div class="footer">
+            dotcalculation v1.0 · Your Blockchain · <span id="updateTime">--</span>
+            <br>
+            <span style="font-size:10px;color:#00ff8822;">
+                Build on 3-6-9 Matrix · Electromagnetic Pulse Counting
+            </span>
+        </div>
+        
+    </div>
+    
+    <!-- ============================================================
+    JAVASCRIPT - DOTCALCULATION ENGINE
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const NUM_CHANNELS = 12;
+        const THRESHOLD = 2048;
+        const CHANNEL_LABELS = ['GPU0','GPU1','GPU2','GPU3','PSU0','PSU1','PSU2','PSU3','TMP0','TMP1','TMP2','TMP3'];
+        const STORAGE_KEY = 'dotcalculation_chain';
+        
+        // ============================================================
+        // BLOCKCHAIN STATE
+        // ============================================================
+        let blockchain = [];
+        let totalPulses = 0;
+        let updateCount = 0;
+        let autoMineInterval = null;
+        let isAutoMining = false;
+        
+        // ============================================================
+        // BLOCK STRUCTURE
+        // ============================================================
+        function createBlock(index, pulseCount, decision, prevHash, data = {}) {
+            const timestamp = Date.now();
+            const hash = generateHash(index, pulseCount, decision, prevHash, timestamp);
+            return {
+                index: index,
+                timestamp: timestamp,
+                pulseCount: pulseCount,
+                decision: decision,
+                prevHash: prevHash,
+                hash: hash,
+                data: data
+            };
+        }
+        
+        // ============================================================
+        // HASH GENERATOR (Simple but effective)
+        // ============================================================
+        function generateHash(index, pulseCount, decision, prevHash, timestamp) {
+            let hash = prevHash || 0;
+            hash ^= (index * 31);
+            hash ^= (Math.floor(pulseCount) * 97);
+            hash ^= (decision ? 0xFFFFFFFF : 0x00000000);
+            hash ^= (timestamp * 13);
+            hash ^= (totalPulses * 7);
+            return (hash >>> 0).toString(16).padStart(16, '0');
+        }
+        
+        // ============================================================
+        // PULSE COUNTING (3-6-9 Matrix)
+        // ============================================================
+        function countPulses(values) {
+            let pulse = 0;
+            for (let i = 0; i < values.length; i++) {
+                // 3 = Creator (Input)
+                pulse += (values[i] % 3) * 100;
+                // 6 = Preserver (Process)
+                pulse += (Math.floor(values[i] / 6)) * 50;
+                // 9 = Destroyer (Output)
+                pulse += (values[i] % 9) * 10;
+            }
+            return pulse;
+        }
+        
+        // ============================================================
+        // GENERATE PULSE DATA
+        // ============================================================
+        function generatePulseData() {
+            const values = [];
+            for (let i = 0; i < NUM_CHANNELS; i++) {
+                if (i < 4) values.push(Math.floor(1500 + Math.random() * 2000));
+                else if (i < 8) values.push(Math.floor(1800 + Math.random() * 1400));
+                else values.push(Math.floor(800 + Math.random() * 2200));
+            }
+            
+            // Force pattern
+            values[0] = 3162 + Math.floor(Math.random() * 50);
+            values[1] = 2880 + Math.floor(Math.random() * 50);
+            values[2] = 1244 + Math.floor(Math.random() * 50);
+            values[3] = 2919 + Math.floor(Math.random() * 50);
+            values[4] = 1761 + Math.floor(Math.random() * 50);
+            values[5] = 3188 + Math.floor(Math.random() * 50);
+            values[6] = 2285 + Math.floor(Math.random() * 50);
+            values[7] = 1340 + Math.floor(Math.random() * 50);
+            values[8] = 914 + Math.floor(Math.random() * 50);
+            values[9] = 2735 + Math.floor(Math.random() * 50);
+            values[10] = 1030 + Math.floor(Math.random() * 50);
+            values[11] = 2472 + Math.floor(Math.random() * 50);
+            
+            return values;
+        }
+        
+        // ============================================================
+        // PROCESS BINARY LOGIC
+        // ============================================================
+        function processBinaryLogic(values) {
+            const winners = [];
+            for (let i = 0; i < values.length; i++) {
+                if (i < 8) {
+                    winners.push(values[i] > THRESHOLD);
+                } else {
+                    winners.push(values[i] < THRESHOLD);
+                }
+            }
+            return winners;
+        }
+        
+        // ============================================================
+        // FIND DOMINANT
+        // ============================================================
+        function findDominant(values) {
+            let maxIdx = 0, maxVal = values[0];
+            for (let i = 1; i < values.length; i++) {
+                if (values[i] > maxVal) { maxVal = values[i]; maxIdx = i; }
+            }
+            return { index: maxIdx, value: maxVal };
+        }
+        
+        // ============================================================
+        // ADD BLOCK TO CHAIN
+        // ============================================================
+        function addBlock(values, decision) {
+            const prevHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0000000000000000';
+            const pulseCount = countPulses(values);
+            const decisionValue = decision !== undefined ? decision : (countPulses(values) > 10000);
+            
+            const block = createBlock(
+                blockchain.length,
+                pulseCount,
+                decisionValue,
+                prevHash,
+                { values: values, winners: processBinaryLogic(values) }
+            );
+            
+            blockchain.push(block);
+            totalPulses += pulseCount;
+            
+            // Save to localStorage
+            saveChain();
+            
+            return block;
+        }
+        
+        // ============================================================
+        // SAVE CHAIN (Phone backup)
+        // ============================================================
+        function saveChain() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    blockchain: blockchain,
+                    totalPulses: totalPulses,
+                    timestamp: Date.now()
+                }));
+            } catch (e) {
+                console.log('Save failed:', e);
+            }
+        }
+        
+        // ============================================================
+        // LOAD CHAIN
+        // ============================================================
+        function loadChain() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    blockchain = parsed.blockchain || [];
+                    totalPulses = parsed.totalPulses || 0;
+                    return true;
+                }
+            } catch (e) {
+                console.log('Load failed:', e);
+            }
+            return false;
+        }
+        
+        // ============================================================
+        // EXPORT CHAIN (Download)
+        // ============================================================
+        function exportChain() {
+            const data = {
+                blockchain: blockchain,
+                totalPulses: totalPulses,
+                timestamp: Date.now(),
+                version: '1.0',
+                matrix: '3-6-9'
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dotcalculation_chain_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // ============================================================
+        // IMPORT CHAIN
+        // ============================================================
+        function importChain() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (data.blockchain && Array.isArray(data.blockchain)) {
+                            blockchain = data.blockchain;
+                            totalPulses = data.totalPulses || 0;
+                            saveChain();
+                            updateDashboard();
+                            alert('✅ Chain imported successfully!');
+                        } else {
+                            alert('❌ Invalid chain data');
+                        }
+                    } catch (err) {
+                        alert('❌ Failed to parse file');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // ============================================================
+        // CLEAR CHAIN
+        // ============================================================
+        function clearChain() {
+            if (confirm('⚠️ Clear ALL blocks? This cannot be undone.')) {
+                blockchain = [];
+                totalPulses = 0;
+                saveChain();
+                updateDashboard();
+            }
+        }
+        
+        // ============================================================
+        // UPDATE DASHBOARD
+        // ============================================================
+        function updateDashboard() {
+            updateCount++;
+            
+            // Generate current pulse data
+            const values = generatePulseData();
+            const winners = processBinaryLogic(values);
+            const winnerCount = winners.filter(w => w).length;
+            const selectionRatio = (winnerCount / NUM_CHANNELS * 100);
+            const dominant = findDominant(values);
+            const isHealthy = winnerCount > (NUM_CHANNELS / 2);
+            
+            // Stats
+            document.getElementById('blockCount').textContent = blockchain.length;
+            document.getElementById('totalPulses').textContent = Math.floor(totalPulses);
+            document.getElementById('winnersCount').textContent = `${winnerCount}/${NUM_CHANNELS}`;
+            document.getElementById('selectionPower').textContent = `${selectionRatio.toFixed(1)}%`;
+            document.getElementById('lastBlock').textContent = blockchain.length > 0 ? 
+                `#${blockchain.length - 1}` : '--';
+            document.getElementById('rigHealth').textContent = isHealthy ? '✅ OPTIMAL' : '⚠️ WARNING';
+            
+            // Channels
+            const grid = document.getElementById('channelsGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < NUM_CHANNELS; i++) {
+                const div = document.createElement('div');
+                div.className = `channel ${winners[i] ? 'winner' : 'loser'}`;
+                div.innerHTML = `
+                    <div class="ch-label">${CHANNEL_LABELS[i]}</div>
+                    <div class="ch-value">${values[i]}</div>
+                    <div class="ch-status ${winners[i] ? 'win' : 'lose'}">${winners[i] ? '▼ WIN' : '▲ LOSE'}</div>
+                `;
+                grid.appendChild(div);
+            }
+            
+            // Binary Map
+            const map = document.getElementById('binaryMap');
+            map.innerHTML = '';
+            for (let i = 0; i < NUM_CHANNELS; i++) {
+                const bit = document.createElement('div');
+                bit.className = `bit ${winners[i] ? 'on' : 'off'}`;
+                bit.textContent = winners[i] ? '1' : '0';
+                map.appendChild(bit);
+            }
+            
+            // Dominant
+            document.getElementById('dominantValue').textContent = dominant.value;
+            document.getElementById('dominantLabel').textContent = `Channel ${dominant.index} · ${CHANNEL_LABELS[dominant.index]}`;
+            
+            // Blockchain List
+            const list = document.getElementById('blockchainList');
+            // Keep header
+            const header = list.querySelector('.header');
+            list.innerHTML = '';
+            list.appendChild(header);
+            
+            // Show last 20 blocks (reversed)
+            const start = Math.max(0, blockchain.length - 20);
+            for (let i = blockchain.length - 1; i >= start; i--) {
+                const block = blockchain[i];
+                const div = document.createElement('div');
+                div.className = 'block-item';
+                div.innerHTML = `
+                    <span class="idx">#${block.index}</span>
+                    <span class="pulse">${Math.floor(block.pulseCount)}</span>
+                    <span class="decision ${block.decision ? 'win' : 'lose'}">${block.decision ? 'WIN' : 'LOSE'}</span>
+                    <span class="hash">${block.hash.substring(0, 8)}...</span>
+                    <span style="font-size:10px;color:#00ff8844;">${new Date(block.timestamp).toLocaleTimeString()}</span>
+                `;
+                list.appendChild(div);
+            }
+            
+            // Update time
+            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
+            
+            // Status
+            document.getElementById('statusBadge').textContent = `● ${blockchain.length} BLOCKS`;
+        }
+        
+        // ============================================================
+        // AUTO-MINE PULSES
+        // ============================================================
+        function autoMine() {
+            if (isAutoMining) return;
+            
+            isAutoMining = true;
+            document.getElementById('addBlockBtn').textContent = '⏹ STOP MINING';
+            
+            autoMineInterval = setInterval(() => {
+                const values = generatePulseData();
+                const winners = processBinaryLogic(values);
+                const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
+                addBlock(values, decision);
+                updateDashboard();
+            }, 1000);
+        }
+        
+        function stopMining() {
+            isAutoMining = false;
+            if (autoMineInterval) {
+                clearInterval(autoMineInterval);
+                autoMineInterval = null;
+            }
+            document.getElementById('addBlockBtn').textContent = '⧫ ADD BLOCK';
+        }
+        
+        // ============================================================
+        // EVENT LISTENERS
+        // ============================================================
+        document.getElementById('addBlockBtn').addEventListener('click', function() {
+            if (isAutoMining) {
+                stopMining();
+                return;
+            }
+            
+            // Add one block
+            const values = generatePulseData();
+            const winners = processBinaryLogic(values);
+            const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
+            addBlock(values, decision);
+            updateDashboard();
+            
+            // Start auto-mining if shift held
+            if (window.event && window.event.shiftKey) {
+                autoMine();
+            }
+        });
+        
+        document.getElementById('simulateBtn').addEventListener('click', function() {
+            // Add 10 blocks
+            for (let i = 0; i < 10; i++) {
+                const values = generatePulseData();
+                const winners = processBinaryLogic(values);
+                const decision = winners.filter(w => w).length > (NUM_CHANNELS / 2);
+                addBlock(values, decision);
+            }
+            updateDashboard();
+        });
+        
+        document.getElementById('clearBtn').addEventListener('click', clearChain);
+        document.getElementById('exportBtn').addEventListener('click', exportChain);
+        document.getElementById('importBtn').addEventListener('click', importChain);
+        
+        // ============================================================
+        // KEYBOARD SHORTCUTS
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                if (isAutoMining) {
+                    stopMining();
+                } else {
+                    autoMine();
+                }
+            }
+            if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                exportChain();
+            }
+            if (e.key === 'c' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                clearChain();
+            }
+        });
+        
+        // ============================================================
+        // INITIALIZE
+        // ============================================================
+        function init() {
+            // Load saved chain
+            if (!loadChain()) {
+                // Create genesis block
+                const genesisValues = new Array(NUM_CHANNELS).fill(0);
+                addBlock(genesisValues, false);
+            }
+            
+            // Update dashboard
+            updateDashboard();
+            
+            // Start auto-update (live view)
+            setInterval(() => {
+                // Update display without adding blocks
+                updateDashboard();
+            }, 5000);
+            
+            console.log('⧫ DOTCALCULATION v1.0');
+            console.log(`Blocks: ${blockchain.length}`);
+            console.log(`Total Pulses: ${totalPulses}`);
+            console.log('3-6-9 Matrix Active');
+            console.log('==============================');
+            console.log('Space: Toggle auto-mine');
+            console.log('Ctrl+S: Export chain');
+            console.log('Ctrl+C: Clear chain');
+            console.log('==============================');
+        }
+        
+        // Start when DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
