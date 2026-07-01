@@ -1,21 +1,20 @@
-# dotcalculation-
-Game 
-# ⧫ DOTCALCULATION
+# 🐍 MEDUSSA Blockchain
 
-## Your Own Blockchain
+## Your Own Private Blockchain
 
 Built on 3-6-9 Matrix · Electromagnetic Pulse Counting
 
 ---
 
-## What Is This?
+## What Is Medussa?
 
-**dotcalculation** is a complete, self-contained blockchain system that:
+**Medussa** is a complete, self-contained blockchain system that:
 
 - ✅ Creates blocks from pulse data
 - ✅ Displays blockchain in real-time
-- ✅ Saves to your phone (localStorage)
-- ✅ Exports/Imports chain data
+- ✅ Saves to localStorage (phone backup)
+- ✅ **Save to folder** (Download JSON)
+- ✅ **Load from folder** (Import JSON)
 - ✅ Works offline - no internet needed
 - ✅ No crypto - just pure blockchain
 
@@ -46,6 +45,8 @@ Built on 3-6-9 Matrix · Electromagnetic Pulse Counting
 | **Live Dashboard** | Real-time display of 12 channels |
 | **Binary Map** | Visual 1/0 representation |
 | **Blockchain View** | Last 20 blocks displayed |
+| **Save to Folder** | Download JSON to any folder |
+| **Load from Folder** | Import JSON from any folder |
 | **Export/Import** | Save/load your chain |
 | **Auto-Mining** | Space bar to toggle |
 | **Phone Backup** | localStorage persistence |
