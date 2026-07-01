@@ -1,11 +1,14 @@
-# MEDUSSA COSMIC .gitignore
+# MEDUSSA SECURE .gitignore
 
+# Temporary files
 *.tmp
 *.temp
 *.log
 *.bak
 *.old
 *.orig
+
+# IDE files
 .DS_Store
 Thumbs.db
 *.swp
@@ -14,18 +17,26 @@ Thumbs.db
 .idea/
 .vscode/
 .vs/
+
+# Build files
 *.exe
 *.out
 *.app
 *.dll
 *.so
 *.dylib
+
+# Environment
 .env
 .env.local
 
-!index.html
+# Keep essential files
+!medussa_security.html
+!LICENSE.md
 !README.md
 !*.html
 !*.md
+
+# Chain backups (optional)
 *.json
 !package.json
