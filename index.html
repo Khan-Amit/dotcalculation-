@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEDUSSA · Cosmic Blockchain</title>
+    <title>MEDUSSA COSMIC · 369M Blockchain</title>
     <style>
-        /* ============================================================
-        MEDUSSA COSMIC STYLES
-        ============================================================ */
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             background: #0a0a0f;
             color: #00ff88;
@@ -18,8 +13,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
-        .container { max-width: 1400px; margin: 0 auto; }
+        .container { max-width: 1600px; margin: 0 auto; }
         
         .header {
             display: flex;
@@ -31,22 +25,18 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        
         .header h1 {
             font-size: 36px;
             color: #00ff88;
             text-shadow: 0 0 40px #00ff8844;
             letter-spacing: 6px;
         }
-        
         .header h1 span { color: #ff3355; }
-        
         .header .subtitle {
             font-size: 14px;
             color: #00ff8866;
             letter-spacing: 3px;
         }
-        
         .header .status {
             padding: 8px 20px;
             border-radius: 20px;
@@ -62,7 +52,6 @@
             gap: 15px;
             margin-bottom: 25px;
         }
-        
         .stat-card {
             background: #1a1a24;
             border: 1px solid #00ff8833;
@@ -70,25 +59,23 @@
             padding: 15px;
             text-align: center;
         }
-        
         .stat-card .label {
             font-size: 9px;
             color: #00ff8866;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
         .stat-card .value {
             font-size: 22px;
             font-weight: bold;
             margin-top: 5px;
             color: #00ff88;
         }
-        
         .stat-card .value.danger { color: #ff3355; }
         .stat-card .value.warning { color: #ffaa00; }
         .stat-card .value.speed { color: #ffaa00; animation: speedPulse 1s infinite; }
         .stat-card .value.cosmic { color: #8866ff; }
+        .stat-card .value.rollover { color: #ff3355; animation: pulse 1s infinite; }
         
         .matrix {
             display: grid;
@@ -101,7 +88,6 @@
             margin-bottom: 25px;
             text-align: center;
         }
-        
         .matrix .num {
             font-size: 28px;
             font-weight: bold;
@@ -111,7 +97,6 @@
         .matrix .num.c9 { color: #00ff88; }
         .matrix .num.c0 { color: #8866ff; }
         .matrix .label { font-size: 8px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
-        
         .matrix .hardship { border: 2px solid #ff3355; border-radius: 4px; padding: 8px; background: #ff335511; }
         .matrix .reset { border: 2px solid #8866ff; border-radius: 4px; padding: 8px; background: #8866ff11; }
         
@@ -121,7 +106,6 @@
             gap: 10px;
             margin-bottom: 25px;
         }
-        
         .channel {
             background: #1a1a24;
             border: 1px solid #00ff8833;
@@ -130,18 +114,8 @@
             text-align: center;
             transition: all 0.3s ease;
         }
-        
-        .channel.winner {
-            border-color: #00ff88;
-            background: #00ff8811;
-            box-shadow: 0 0 20px #00ff8822;
-        }
-        
-        .channel.loser {
-            border-color: #ff335544;
-            background: #ff335511;
-        }
-        
+        .channel.winner { border-color: #00ff88; background: #00ff8811; box-shadow: 0 0 20px #00ff8822; }
+        .channel.loser { border-color: #ff335544; background: #ff335511; }
         .channel .ch-label { font-size: 10px; color: #00ff8866; text-transform: uppercase; }
         .channel .ch-value { font-size: 16px; font-weight: bold; margin: 4px 0; }
         .channel .ch-status { font-size: 18px; }
@@ -155,7 +129,6 @@
             padding: 15px 20px;
             margin-bottom: 25px;
         }
-        
         .binary-map .map-label {
             font-size: 11px;
             color: #00ff8866;
@@ -163,13 +136,11 @@
             letter-spacing: 1px;
             margin-bottom: 8px;
         }
-        
         .binary-map .map-row {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-        
         .bit {
             width: 32px;
             height: 32px;
@@ -191,21 +162,18 @@
             margin-bottom: 25px;
             text-align: center;
         }
-        
         .dominant .dom-label {
             font-size: 11px;
             color: #ffaa0066;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
         .dominant .dom-value {
             font-size: 36px;
             font-weight: bold;
             color: #ffaa00;
             margin-top: 4px;
         }
-        
         .dominant .dom-channel {
             font-size: 14px;
             color: #ffaa0088;
@@ -220,7 +188,6 @@
             max-height: 350px;
             overflow-y: auto;
         }
-        
         .blockchain-display .block-label {
             font-size: 11px;
             color: #00ff8866;
@@ -228,7 +195,6 @@
             letter-spacing: 1px;
             margin-bottom: 10px;
         }
-        
         .block-item {
             display: grid;
             grid-template-columns: 35px 60px 50px 70px 70px 50px 70px;
@@ -238,7 +204,6 @@
             font-size: 9px;
             align-items: center;
         }
-        
         .block-item .idx { color: #ffaa00; font-weight: bold; }
         .block-item .pulse { color: #00ff88; }
         .block-item .decision { font-weight: bold; }
@@ -248,9 +213,6 @@
         .block-item .time { color: #00ff8844; font-size: 8px; }
         .block-item .deposited { color: #00ff8866; font-size: 9px; }
         .block-item .segment { font-size: 8px; padding: 2px 6px; border-radius: 10px; }
-        .block-item .segment.s1 { background: #ff335522; color: #ff3355; }
-        .block-item .segment.s2 { background: #ffaa0022; color: #ffaa00; }
-        .block-item .segment.s3 { background: #00ff8822; color: #00ff88; }
         
         .block-item.header {
             color: #00ff8866;
@@ -258,6 +220,33 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             border-bottom: 2px solid #00ff8833;
+        }
+        
+        .formula-panel {
+            background: #1a1a24;
+            border: 1px solid #8866ff44;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .formula-panel .formula-label {
+            font-size: 11px;
+            color: #8866ff66;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .formula-panel .formula-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #8866ff;
+            margin-top: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        .formula-panel .formula-sub {
+            font-size: 12px;
+            color: #8866ff88;
+            margin-top: 2px;
         }
         
         .folder-save {
@@ -271,14 +260,12 @@
             flex-wrap: wrap;
             align-items: center;
         }
-        
         .folder-save .label {
             font-size: 11px;
             color: #00ff8866;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
         .folder-save input {
             background: #0a0a0f;
             border: 1px solid #00ff8833;
@@ -289,12 +276,7 @@
             flex: 1;
             min-width: 150px;
         }
-        
-        .folder-save input:focus {
-            outline: none;
-            border-color: #00ff88;
-        }
-        
+        .folder-save input:focus { outline: none; border-color: #00ff88; }
         .folder-save button {
             background: #00ff8822;
             border: 1px solid #00ff88;
@@ -307,12 +289,7 @@
             transition: all 0.3s;
             font-size: 12px;
         }
-        
-        .folder-save button:hover {
-            background: #00ff8844;
-            box-shadow: 0 0 20px #00ff8822;
-        }
-        
+        .folder-save button:hover { background: #00ff8844; box-shadow: 0 0 20px #00ff8822; }
         .folder-save .count { color: #ffaa00; font-weight: bold; font-size: 14px; }
         
         .actions {
@@ -321,7 +298,6 @@
             flex-wrap: wrap;
             margin-bottom: 25px;
         }
-        
         .actions button {
             background: #00ff8822;
             border: 1px solid #00ff88;
@@ -336,113 +312,13 @@
             flex: 1;
             min-width: 100px;
         }
-        
-        .actions button:hover {
-            background: #00ff8844;
-            box-shadow: 0 0 30px #00ff8822;
-        }
-        
-        .actions button.danger {
-            border-color: #ff3355;
-            color: #ff3355;
-            background: #ff335522;
-        }
-        
-        .actions button.danger:hover {
-            background: #ff335544;
-            box-shadow: 0 0 30px #ff335522;
-        }
-        
-        .actions button.warning {
-            border-color: #ffaa00;
-            color: #ffaa00;
-            background: #ffaa0022;
-        }
-        
-        .actions button.warning:hover {
-            background: #ffaa0044;
-            box-shadow: 0 0 30px #ffaa0022;
-        }
-        
-        .actions button.cosmic {
-            border-color: #8866ff;
-            color: #8866ff;
-            background: #8866ff22;
-        }
-        
-        .actions button.cosmic:hover {
-            background: #8866ff44;
-            box-shadow: 0 0 30px #8866ff22;
-        }
-        
-        .deposit-window {
-            background: #1a1a24;
-            border: 2px solid #ffaa0044;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        
-        .deposit-window .deposit-label {
-            font-size: 11px;
-            color: #ffaa0066;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .deposit-window .deposit-value {
-            font-size: 32px;
-            font-weight: bold;
-            color: #ffaa00;
-            margin-top: 4px;
-        }
-        
-        .deposit-window .deposit-sub {
-            font-size: 14px;
-            color: #ffaa0088;
-            margin-top: 2px;
-        }
-        
-        .restriction-panel {
-            background: #1a1a24;
-            border: 1px solid #00ff8833;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-        }
-        
-        .restriction-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-        
-        .restriction-item {
-            text-align: center;
-            padding: 8px;
-            border-radius: 4px;
-            background: #0a0a0f;
-        }
-        
-        .restriction-item .rest-label {
-            font-size: 9px;
-            color: #00ff8866;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: block;
-        }
-        
-        .restriction-item .rest-value {
-            font-size: 18px;
-            font-weight: bold;
-            display: block;
-            margin-top: 4px;
-        }
-        
-        .restriction-item.ok .rest-value { color: #00ff88; }
-        .restriction-item.warning .rest-value { color: #ffaa00; }
-        .restriction-item.error .rest-value { color: #ff3355; }
+        .actions button:hover { background: #00ff8844; box-shadow: 0 0 30px #00ff8822; }
+        .actions button.danger { border-color: #ff3355; color: #ff3355; background: #ff335522; }
+        .actions button.danger:hover { background: #ff335544; box-shadow: 0 0 30px #ff335522; }
+        .actions button.warning { border-color: #ffaa00; color: #ffaa00; background: #ffaa0022; }
+        .actions button.warning:hover { background: #ffaa0044; box-shadow: 0 0 30px #ffaa0022; }
+        .actions button.cosmic { border-color: #8866ff; color: #8866ff; background: #8866ff22; }
+        .actions button.cosmic:hover { background: #8866ff44; box-shadow: 0 0 30px #8866ff22; }
         
         .footer {
             text-align: center;
@@ -452,21 +328,9 @@
             border-top: 1px solid #00ff8833;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        @keyframes speedPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.05); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px #00ff8822; }
-            50% { box-shadow: 0 0 40px #00ff8855; }
-        }
-        
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes speedPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px #00ff8822; } 50% { box-shadow: 0 0 40px #00ff8855; } }
         .winner .ch-value { animation: glow 2s ease-in-out infinite; }
         
         .blockchain-display::-webkit-scrollbar { width: 4px; }
@@ -478,9 +342,7 @@
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .matrix { grid-template-columns: repeat(3, 1fr); }
             .block-item { grid-template-columns: 25px 40px 40px 50px 40px 30px 40px; font-size: 7px; }
-            .restriction-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        
         @media (max-width: 768px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .channels { grid-template-columns: repeat(3, 1fr); }
@@ -490,9 +352,7 @@
             .actions button { min-width: 70px; font-size: 10px; padding: 6px 10px; }
             .block-item { grid-template-columns: 20px 30px 30px 40px 30px 25px 30px; font-size: 6px; gap: 2px; }
             .block-item .hash { display: none; }
-            .restriction-grid { grid-template-columns: 1fr 1fr; }
         }
-        
         @media (max-width: 480px) {
             .channels { grid-template-columns: repeat(2, 1fr); }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -501,7 +361,6 @@
             .block-item { grid-template-columns: 15px 25px 25px 30px 20px 20px; font-size: 5px; gap: 1px; }
             .block-item .hash { display: none; }
             .block-item .time { display: none; }
-            .restriction-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -511,63 +370,33 @@
         <div class="header">
             <div>
                 <h1>🐍 MED<span>US</span>SA</h1>
-                <div class="subtitle">Cosmic Blockchain · 3-6-9 · 9,000,000 Blocks</div>
+                <div class="subtitle">Cosmic Blockchain · 369,000,000 Blocks</div>
             </div>
             <div class="status" id="statusBadge">● ACTIVE</div>
         </div>
         
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="label">Blocks</div>
-                <div class="value" id="blockCount">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Creation Speed</div>
-                <div class="value speed" id="creationSpeed">0.0/s</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Total Pulses</div>
-                <div class="value" id="totalPulses">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Deposited</div>
-                <div class="value warning" id="depositedCount">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Segment</div>
-                <div class="value cosmic" id="currentSegment">1</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Rollover</div>
-                <div class="value" id="rolloverStatus">--</div>
-            </div>
+            <div class="stat-card"><div class="label">Blocks</div><div class="value" id="blockCount">0</div></div>
+            <div class="stat-card"><div class="label">Creation Speed</div><div class="value speed" id="creationSpeed">0.0/s</div></div>
+            <div class="stat-card"><div class="label">Total Pulses</div><div class="value" id="totalPulses">0</div></div>
+            <div class="stat-card"><div class="label">Deposited</div><div class="value warning" id="depositedCount">0</div></div>
+            <div class="stat-card"><div class="label">Segment</div><div class="value cosmic" id="currentSegment">1</div></div>
+            <div class="stat-card"><div class="label">Progression</div><div class="value rollover" id="progressionValue">0.0000</div></div>
         </div>
         
-        <div class="deposit-window">
-            <div class="deposit-label">📦 COSMIC DEPOSIT · Suriya Siddhanta Cycle</div>
-            <div class="deposit-value" id="depositDisplay">0</div>
-            <div class="deposit-sub">Blocks deposited · Next rollover: <span id="nextRollover">--</span></div>
+        <div class="formula-panel">
+            <div class="formula-label">⚡ TIME-SENSITIVE FORMULA · sa × z / (3 × t) × √(φ)</div>
+            <div class="formula-value" id="formulaDisplay">sa = 0.166 · z = -0.582 · t = 5944.27 · φ = 28.274</div>
+            <div class="formula-sub" id="formulaSub">Progression: <span id="progressionFormula">-0.0000287</span> · Phase: <span id="phaseFormula">ROLLOVER</span></div>
         </div>
         
         <div class="matrix" id="segmentMatrix">
-            <div class="num c3">3</div>
-            <div class="num c3">3</div>
-            <div class="num c3">3</div>
-            <div class="num c6">6</div>
-            <div class="num c6">6</div>
-            <div class="num c6 hardship">6</div>
-            <div class="num c9">9</div>
-            <div class="num c9">9</div>
-            <div class="num c9 reset">9</div>
-            <div class="label">Seg 1</div>
-            <div class="label">Seg 2</div>
-            <div class="label">Seg 3</div>
-            <div class="label">Seg 4</div>
-            <div class="label">Seg 5</div>
-            <div class="label hardship">Seg 6</div>
-            <div class="label">Seg 7</div>
-            <div class="label">Seg 8</div>
-            <div class="label reset">Seg 9</div>
+            <div class="num c3">3</div><div class="num c3">3</div><div class="num c3">3</div>
+            <div class="num c6">6</div><div class="num c6">6</div><div class="num c6 hardship">6</div>
+            <div class="num c9">9</div><div class="num c9">9</div><div class="num c9 reset">9</div>
+            <div class="label">Seg 1</div><div class="label">Seg 2</div><div class="label">Seg 3</div>
+            <div class="label">Seg 4</div><div class="label">Seg 5</div><div class="label hardship">Seg 6</div>
+            <div class="label">Seg 7</div><div class="label">Seg 8</div><div class="label reset">Seg 9</div>
         </div>
         
         <div class="channels" id="channelsGrid"></div>
@@ -584,44 +413,18 @@
         </div>
         
         <div class="blockchain-display" id="blockchainDisplay">
-            <div class="block-label">🐍 Medussa · Blockchain Index · Cosmic Cycle</div>
+            <div class="block-label">🐍 Medussa · Blockchain Index · 369M Cosmic Cycle</div>
             <div id="blockchainList">
                 <div class="block-item header">
-                    <span>#</span>
-                    <span>Pulse</span>
-                    <span>Decision</span>
-                    <span>Hash</span>
-                    <span>Prev</span>
-                    <span>Time</span>
-                    <span>Dep</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="restriction-panel" id="restrictionStatus">
-            <div class="restriction-grid">
-                <div class="restriction-item ok">
-                    <span class="rest-label">Chain Integrity</span>
-                    <span class="rest-value" id="chainIntegrity">100%</span>
-                </div>
-                <div class="restriction-item ok">
-                    <span class="rest-label">Speed Status</span>
-                    <span class="rest-value" id="speedStatus">OK</span>
-                </div>
-                <div class="restriction-item ok">
-                    <span class="rest-label">Deposit Ready</span>
-                    <span class="rest-value" id="depositReady">✅</span>
-                </div>
-                <div class="restriction-item ok">
-                    <span class="rest-label">3-6-9 Matrix</span>
-                    <span class="rest-value" id="matrixStatus">✅ ACTIVE</span>
+                    <span>#</span><span>Pulse</span><span>Decision</span>
+                    <span>Hash</span><span>Prev</span><span>Time</span><span>Dep</span>
                 </div>
             </div>
         </div>
         
         <div class="folder-save">
             <span class="label">💾 Save to Folder</span>
-            <input type="text" id="folderName" placeholder="Folder name" value="medussa_cosmic">
+            <input type="text" id="folderName" placeholder="Folder name" value="medussa_369m">
             <span class="count" id="folderBlockCount">0 blocks</span>
             <button id="saveToFolderBtn">📁 SAVE CHAIN</button>
             <button id="loadFromFolderBtn">📂 LOAD CHAIN</button>
@@ -638,10 +441,10 @@
         </div>
         
         <div class="footer">
-            🐍 MEDUSSA COSMIC v2.0 · 9,000,000 Blocks · 3-6-9 Segments · <span id="updateTime">--</span>
+            🐍 MEDUSSA COSMIC v3.0 · 369,000,000 Blocks · 3-6-9 Segments · <span id="updateTime">--</span>
             <br>
             <span style="font-size:10px;color:#00ff8822;">
-                Suriya Siddhanta Time Cycles · South Indian New Year · Sumerian Zagmuk
+                sa × z / (3 × t) × √(φ) · Suriya Siddhanta · Zagmuk · 3-6-9
             </span>
         </div>
         
@@ -649,31 +452,34 @@
     
     <script>
         // ============================================================
-        // MEDUSSA COSMIC ENGINE - 3-6-9 SEGMENTS · 9,000,000 BLOCKS
+        // MEDUSSA COSMIC v3.0 · 369 MILLION BLOCK BLOCKCHAIN
+        // Time-Sensitive Formula: sa × z / (3 × t) × √(φ)
         // ============================================================
         
         // ============================================================
         // COSMIC CONSTANTS
         // ============================================================
         const COSMIC = {
-            maxBlocks: 9000000,
+            maxBlocks: 369000000,        // 369 Million blocks
             segments: 9,
-            blocksPerSegment: 1000000,
+            blocksPerSegment: 41000000,   // 369M / 9
             creationDays: 18,
-            blocksPerDay: 500000,
+            blocksPerDay: 20500000,      // 369M / 18
             hardshipStart: 4,
             hardshipPeak: 6,
             resetAt: 9,
-            rolloverDates: {
-                southIndianNewYear: { month: 3, day: 14, name: 'South Indian New Year' },
-                sumerianZagmuk: { month: 2, day: 21, name: 'Sumerian Zagmuk' }
-            }
+            // Time constants
+            secondsPerBlock: 1,
+            pi: 3.141592653589793,
+            saCycle: 18,
+            zagmukMonth: 3,
+            zagmukDay: 21
         };
         
         const NUM_CHANNELS = 12;
         const THRESHOLD = 2048;
         const CHANNEL_LABELS = ['GPU0','GPU1','GPU2','GPU3','PSU0','PSU1','PSU2','PSU3','TMP0','TMP1','TMP2','TMP3'];
-        const STORAGE_KEY = 'medussa_cosmic_chain';
+        const STORAGE_KEY = 'medussa_369m_chain';
         
         // ============================================================
         // STATE
@@ -687,6 +493,46 @@
         let isAutoMining = false;
         let autoMineInterval = null;
         let updateCount = 0;
+        
+        // ============================================================
+        // TIME-SENSITIVE FORMULA
+        // sa × z / (3 × t) × √(φ)
+        // ============================================================
+        function calculateProgression() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth() + 1;
+            const year = now.getFullYear();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            // sa = (day % 18) / 18
+            const sa = (day % COSMIC.saCycle) / COSMIC.saCycle;
+            
+            // z = (month / 12) × cos(2π × day / 365)
+            const z = (month / 12) * Math.cos(2 * Math.PI * day / 365);
+            
+            // t = 3^9 × (hour / 24) × (minute / 60)
+            const t = Math.pow(3, 9) * (hours / 24) * (minutes / 60);
+            
+            // φ = π × 9
+            const phi = COSMIC.pi * 9;
+            
+            // progression = sa × z / (3 × t) × √(φ)
+            const progression = (sa * z) / (3 * t) * Math.sqrt(phi);
+            
+            return {
+                sa: sa,
+                z: z,
+                t: t,
+                phi: phi,
+                progression: progression,
+                isRollover: progression < 0,
+                isHardship: progression < -0.00001,
+                isReset: progression > 0.00001
+            };
+        }
         
         // ============================================================
         // COSMIC FUNCTIONS
@@ -712,12 +558,8 @@
         
         function getDifficulty(blockIndex) {
             const segment = getSegment(blockIndex);
-            const difficultyMap = {
-                1: 4, 2: 4, 3: 4,
-                4: 3, 5: 2, 6: 1,
-                7: 2, 8: 3, 9: 4
-            };
-            return difficultyMap[segment] || 4;
+            const diffMap = { 1: 4, 2: 4, 3: 4, 4: 3, 5: 2, 6: 1, 7: 2, 8: 3, 9: 4 };
+            return diffMap[segment] || 4;
         }
         
         function isHardship(blockIndex) {
@@ -726,60 +568,11 @@
         }
         
         function isHardshipPeak(blockIndex) {
-            const segment = getSegment(blockIndex);
-            return segment === 6;
+            return getSegment(blockIndex) === 6;
         }
         
         function isResetPoint(blockIndex) {
-            const segment = getSegment(blockIndex);
-            return segment === 9;
-        }
-        
-        function getTimeCycle(blockIndex) {
-            const day = Math.floor(blockIndex / COSMIC.blocksPerDay) + 1;
-            const month = Math.floor((day - 1) / 30) + 1;
-            const year = Math.floor((month - 1) / 12) + 1;
-            return { day, month, year, totalDays: day };
-        }
-        
-        function checkRollover() {
-            const now = new Date();
-            const month = now.getMonth() + 1;
-            const day = now.getDate();
-            
-            const rollovers = [];
-            
-            for (const [key, date] of Object.entries(COSMIC.rolloverDates)) {
-                if (month === date.month && day === date.day) {
-                    rollovers.push(date.name);
-                }
-            }
-            
-            return rollovers;
-        }
-        
-        function getNextRollover() {
-            const now = new Date();
-            const month = now.getMonth() + 1;
-            const day = now.getDate();
-            
-            let next = null;
-            let minDays = 999;
-            
-            for (const [key, date] of Object.entries(COSMIC.rolloverDates)) {
-                let days = 0;
-                if (date.month > month || (date.month === month && date.day > day)) {
-                    days = (date.month - month) * 30 + (date.day - day);
-                } else {
-                    days = (12 - month + date.month) * 30 + (date.day - day);
-                }
-                if (days < minDays) {
-                    minDays = days;
-                    next = date.name;
-                }
-            }
-            
-            return next || '--';
+            return getSegment(blockIndex) === 9;
         }
         
         // ============================================================
@@ -789,7 +582,8 @@
             const timestamp = Date.now();
             const segment = getSegment(index);
             const difficulty = getDifficulty(index);
-            const hash = generateHash(index, pulseCount, decision, prevHash, timestamp, difficulty);
+            const prog = calculateProgression();
+            const hash = generateHash(index, pulseCount, decision, prevHash, timestamp, difficulty, prog);
             
             return {
                 index: index,
@@ -800,12 +594,14 @@
                 hash: hash,
                 segment: segment,
                 difficulty: difficulty,
+                progression: prog.progression,
+                isRollover: prog.isRollover,
                 data: data,
                 deposited: false
             };
         }
         
-        function generateHash(index, pulseCount, decision, prevHash, timestamp, difficulty) {
+        function generateHash(index, pulseCount, decision, prevHash, timestamp, difficulty, prog) {
             let hash = prevHash ? parseInt(prevHash.substring(0, 8), 16) || 0 : 0;
             hash ^= (index * 31);
             hash ^= (Math.floor(pulseCount) * 97);
@@ -813,6 +609,7 @@
             hash ^= (timestamp * 13);
             hash ^= (totalPulses * 7);
             hash ^= (difficulty * 3);
+            hash ^= (Math.floor(prog.progression * 1000000) * 17);
             return (hash >>> 0).toString(16).padStart(16, '0');
         }
         
@@ -878,8 +675,16 @@
         // ============================================================
         function addBlock(values, decision) {
             if (blockchain.length >= COSMIC.maxBlocks) {
-                alert('⚠️ Max blocks reached: 9,000,000');
+                alert('⚠️ Max blocks reached: 369,000,000');
                 return null;
+            }
+            
+            const prog = calculateProgression();
+            
+            // If progression is negative (rollover), slow down
+            if (prog.isRollover) {
+                // Hardship: slower creation
+                if (Math.random() > 0.3) return null;
             }
             
             const prevHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0000000000000000';
@@ -903,8 +708,7 @@
             }
             
             // Check rollover
-            const rollovers = checkRollover();
-            if (rollovers.length > 0) {
+            if (prog.isRollover) {
                 depositedBlocks = blockchain.length;
             }
             
@@ -923,18 +727,9 @@
             blockTimestamps.push(now);
             creationSpeed = blockTimestamps.length / 1.0;
             
-            // Cosmic speed limit based on segment
-            const currentSegment = getSegment(blockchain.length);
-            let maxSpeed = 10;
-            if (currentSegment >= 4 && currentSegment <= 6) {
-                maxSpeed = 5; // Hardship: slower
-            }
-            if (currentSegment === 6) {
-                maxSpeed = 2; // Peak hardship: very slow
-            }
-            
-            if (creationSpeed > maxSpeed) {
-                creationSpeed = maxSpeed;
+            const prog = calculateProgression();
+            if (prog.isRollover) {
+                creationSpeed = creationSpeed * 0.3;
             }
             
             return creationSpeed;
@@ -972,12 +767,15 @@
         // SAVE TO FOLDER
         // ============================================================
         function saveToFolder(folderName) {
+            const prog = calculateProgression();
             const data = {
-                name: folderName || 'medussa_cosmic',
-                version: '2.0',
+                name: folderName || 'medussa_369m',
+                version: '3.0',
                 matrix: '3-6-9',
                 maxBlocks: COSMIC.maxBlocks,
                 segments: COSMIC.segments,
+                formula: 'sa × z / (3 × t) × √(φ)',
+                progression: prog,
                 created: Date.now(),
                 blockchain: blockchain,
                 totalPulses: totalPulses,
@@ -991,7 +789,7 @@
             
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${folderName || 'medussa_cosmic'}_${Date.now()}.json`;
+            a.download = `${folderName || 'medussa_369m'}_${Date.now()}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1032,12 +830,14 @@
         }
         
         function exportChain() {
+            const prog = calculateProgression();
             const data = {
                 blockchain: blockchain,
                 totalPulses: totalPulses,
                 depositedBlocks: depositedBlocks,
+                progression: prog,
                 timestamp: Date.now(),
-                version: '2.0',
+                version: '3.0',
                 matrix: '3-6-9',
                 maxBlocks: COSMIC.maxBlocks
             };
@@ -1046,7 +846,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `medussa_cosmic_${Date.now()}.json`;
+            a.download = `medussa_369m_${Date.now()}.json`;
             a.click();
             URL.revokeObjectURL(url);
         }
@@ -1100,20 +900,11 @@
         // ============================================================
         function performRollover() {
             if (confirm('🌙 Perform Cosmic Rollover? This resets the ledger.')) {
-                const rollovers = checkRollover();
-                if (rollovers.length === 0) {
-                    alert('No rollover date today. Forcing rollover...');
-                }
-                
                 // Reset deposited blocks
                 depositedBlocks = 0;
                 saveChain();
                 updateDashboard();
-                
-                const msg = rollovers.length > 0 ? 
-                    `✅ Rollover complete! ${rollovers.join(', ')}` :
-                    '✅ Rollover complete!';
-                alert(msg);
+                alert('✅ Rollover complete!');
             }
         }
         
@@ -1132,47 +923,29 @@
             const isHardshipPhase = isHardship(blockchain.length);
             const isPeak = isHardshipPeak(blockchain.length);
             const isReset = isResetPoint(blockchain.length);
-            const timeCycle = getTimeCycle(blockchain.length);
-            const nextRollover = getNextRollover();
+            const prog = calculateProgression();
             
             // Stats
-            document.getElementById('blockCount').textContent = blockchain.length;
+            document.getElementById('blockCount').textContent = blockchain.length.toLocaleString();
             document.getElementById('creationSpeed').textContent = creationSpeed.toFixed(1) + '/s';
-            document.getElementById('totalPulses').textContent = Math.floor(totalPulses);
-            document.getElementById('depositedCount').textContent = depositedBlocks;
-            document.getElementById('depositDisplay').textContent = depositedBlocks;
-            document.getElementById('nextRollover').textContent = nextRollover;
-            
-            document.getElementById('winnersCount').textContent = `${winnerCount}/${NUM_CHANNELS}`;
-            document.getElementById('winnersCount').className = `value ${winnerCount < 4 ? 'danger' : winnerCount < 6 ? 'warning' : ''}`;
-            document.getElementById('selectionPower').textContent = `${selectionRatio.toFixed(1)}%`;
-            
-            // Segment
+            document.getElementById('totalPulses').textContent = Math.floor(totalPulses).toLocaleString();
+            document.getElementById('depositedCount').textContent = depositedBlocks.toLocaleString();
             document.getElementById('currentSegment').textContent = currentSegment;
             document.getElementById('currentSegment').className = `value cosmic ${isPeak ? 'danger' : isHardshipPhase ? 'warning' : ''}`;
             
-            // Rollover status
-            const rollovers = checkRollover();
-            document.getElementById('rolloverStatus').textContent = rollovers.length > 0 ? `✅ ${rollovers.join(', ')}` : '--';
-            document.getElementById('rolloverStatus').className = `value ${rollovers.length > 0 ? 'warning' : ''}`;
+            // Progression
+            document.getElementById('progressionValue').textContent = prog.progression.toFixed(7);
+            document.getElementById('progressionValue').className = `value ${prog.isRollover ? 'rollover' : ''}`;
             
-            // Restriction status
-            const integrity = blockchain.length > 0 ? 
-                (blockchain.filter(b => b.hash).length / blockchain.length * 100) : 100;
-            document.getElementById('chainIntegrity').textContent = integrity.toFixed(1) + '%';
-            document.getElementById('chainIntegrity').className = `rest-value ${integrity > 95 ? '' : integrity > 80 ? 'warning' : 'error'}`;
-            
-            document.getElementById('speedStatus').textContent = creationSpeed < 10 ? 'OK' : 'WARNING';
-            document.getElementById('speedStatus').className = `rest-value ${creationSpeed < 10 ? '' : 'warning'}`;
-            
-            document.getElementById('depositReady').textContent = blockchain.length % 5 === 0 ? '✅' : '⏳';
-            document.getElementById('depositReady').className = `rest-value ${blockchain.length % 5 === 0 ? '' : 'warning'}`;
-            
-            document.getElementById('matrixStatus').textContent = '✅ ACTIVE';
-            document.getElementById('matrixStatus').className = `rest-value ${isPeak ? 'warning' : ''}`;
-            
-            // Folder block count
-            document.getElementById('folderBlockCount').textContent = blockchain.length + ' blocks';
+            // Formula display
+            document.getElementById('formulaDisplay').textContent = 
+                `sa = ${prog.sa.toFixed(3)} · z = ${prog.z.toFixed(3)} · t = ${prog.t.toFixed(2)} · φ = ${prog.phi.toFixed(3)}`;
+            document.getElementById('progressionFormula').textContent = prog.progression.toFixed(7);
+            document.getElementById('phaseFormula').textContent = prog.isRollover ? 'ROLLOVER' : 
+                                                              prog.isHardship ? 'HARDSHIP' : 
+                                                              prog.isReset ? 'RESET' : 'CREATION';
+            document.getElementById('phaseFormula').style.color = prog.isRollover ? '#ff3355' : 
+                                                               prog.isHardship ? '#ffaa00' : '#00ff88';
             
             // Channels
             const grid = document.getElementById('channelsGrid');
@@ -1228,12 +1001,11 @@
             }
             
             // Status
-            const statusText = isPeak ? '⚠️ PEAK HARDSHIP' : 
-                              isHardshipPhase ? '⚠️ HARDSHIP' : 
-                              isReset ? '🔄 RESET' : '● ACTIVE';
-            document.getElementById('statusBadge').textContent = `${statusText} · ${blockchain.length} BLOCKS`;
-            document.getElementById('statusBadge').className = `status ${isPeak ? 'danger' : isHardshipPhase ? 'warning' : ''}`;
+            document.getElementById('statusBadge').textContent = `${blockchain.length.toLocaleString()} BLOCKS · ${creationSpeed.toFixed(1)}/s`;
             document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
+            
+            // Folder count
+            document.getElementById('folderBlockCount').textContent = blockchain.length.toLocaleString() + ' blocks';
         }
         
         // ============================================================
@@ -1250,7 +1022,7 @@
         function startAutoMine() {
             if (isAutoMining) return;
             if (blockchain.length >= COSMIC.maxBlocks) {
-                alert('⚠️ Max blocks reached!');
+                alert('⚠️ Max blocks reached: 369,000,000');
                 return;
             }
             
@@ -1261,7 +1033,7 @@
             autoMineInterval = setInterval(() => {
                 if (blockchain.length >= COSMIC.maxBlocks) {
                     stopAutoMine();
-                    alert('✅ Max blocks reached: 9,000,000');
+                    alert('✅ Max blocks reached: 369,000,000');
                     return;
                 }
                 
@@ -1311,7 +1083,7 @@
         document.getElementById('importBtn').addEventListener('click', importChain);
         
         document.getElementById('saveToFolderBtn').addEventListener('click', function() {
-            const folderName = document.getElementById('folderName').value || 'medussa_cosmic';
+            const folderName = document.getElementById('folderName').value || 'medussa_369m';
             saveToFolder(folderName);
         });
         
@@ -1357,12 +1129,11 @@
                 updateDashboard();
             }, 5000);
             
-            console.log('🐍 MEDUSSA COSMIC v2.0');
+            console.log('🐍 MEDUSSA COSMIC v3.0');
             console.log(`Max Blocks: ${COSMIC.maxBlocks.toLocaleString()}`);
-            console.log(`Segments: ${COSMIC.segments}`);
-            console.log(`Blocks: ${blockchain.length}`);
+            console.log(`Formula: sa × z / (3 × t) × √(φ)`);
+            console.log(`Blocks: ${blockchain.length.toLocaleString()}`);
             console.log(`Segment: ${getSegment(blockchain.length)}`);
-            console.log(`Hardship: ${isHardship(blockchain.length) ? '⚠️ ACTIVE' : '✅ NONE'}`);
             console.log('3-6-9 Matrix Active');
             console.log('==============================');
             console.log('Space: Toggle auto-mine');
