@@ -5,25 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MEDUSSA REAL · 9-Node Blockchain</title>
     <style>
+        /* ============================================================
+        STYLES (same as before, compressed for length)
+        ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0a0a0f; color: #00ff88; font-family: 'Courier New', monospace; padding: 20px; min-height: 100vh; }
         .container { max-width: 1600px; margin: 0 auto; }
-
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ffaa0044; padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
         .header h1 { font-size: 36px; color: #ffaa00; text-shadow: 0 0 40px #ffaa0044; letter-spacing: 6px; }
         .header h1 span { color: #00ff88; }
         .header .subtitle { font-size: 14px; color: #ffaa0066; letter-spacing: 3px; }
         .header .status { padding: 8px 20px; border-radius: 20px; border: 1px solid #ffaa00; background: #ffaa0022; font-size: 14px; animation: pulse 2s infinite; }
-
         .license-banner { background: #1a1a24; border: 2px solid #ffaa0044; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; text-align: center; }
         .license-banner .license-text { font-size: 12px; color: #ffaa0088; letter-spacing: 1px; }
         .license-banner .license-text strong { color: #ffaa00; }
         .license-banner .license-text .owner { color: #00ff88; font-weight: bold; }
-
         .recalled-banner { background: #1a1a24; border: 2px solid #00ff88; border-radius: 8px; padding: 10px 20px; margin-bottom: 25px; text-align: center; display: none; }
         .recalled-banner .recalled-text { color: #00ff88; font-size: 18px; letter-spacing: 2px; }
         .recalled-banner .recalled-text span { color: #ffaa00; font-weight: bold; }
-
         .dial-heat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
         .clock-dial { background: #1a1a24; border: 2px solid #ffaa0044; border-radius: 12px; padding: 20px; text-align: center; }
         .clock-dial .dial-label { font-size: 11px; color: #ffaa0066; text-transform: uppercase; letter-spacing: 1px; }
@@ -31,14 +30,12 @@
         .clock-dial .dial-sub { font-size: 14px; color: #ffaa0088; }
         .clock-dial .dial-progress { width: 100%; height: 8px; background: #0a0a0f; border-radius: 4px; margin-top: 10px; overflow: hidden; }
         .clock-dial .dial-progress-bar { height: 100%; background: linear-gradient(90deg, #ffaa00, #00ff88); border-radius: 4px; transition: width 1s ease; width: 0%; }
-
         .speed-heat { background: #1a1a24; border: 2px solid #00ff8844; border-radius: 12px; padding: 20px; text-align: center; }
         .speed-heat .heat-label { font-size: 11px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
         .speed-heat .heat-display { font-size: 48px; font-weight: bold; font-family: 'Courier New', monospace; margin: 10px 0; }
         .speed-heat .heat-sub { font-size: 14px; color: #00ff8866; }
         .speed-heat .heat-bar { width: 100%; height: 8px; background: #0a0a0f; border-radius: 4px; margin-top: 10px; overflow: hidden; }
         .speed-heat .heat-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; width: 0%; }
-
         .node-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 10px; margin-bottom: 25px; }
         .node-card { background: #1a1a24; border: 1px solid #ffaa0033; border-radius: 8px; padding: 12px 10px; text-align: center; }
         .node-card .node-label { font-size: 9px; color: #ffaa0066; text-transform: uppercase; letter-spacing: 1px; }
@@ -47,7 +44,6 @@
         .node-card .node-status.offline { color: #ff3355; }
         .node-card .node-status.mining { color: #ffaa00; animation: pulse 1s infinite; }
         .node-card .node-blocks { font-size: 10px; color: #ffaa0088; margin-top: 4px; }
-
         .rolling-window { background: #0a0a0f; border: 2px solid #ffaa0044; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; max-height: 350px; overflow-y: auto; }
         .rolling-window .window-title { font-size: 11px; color: #ffaa0066; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; justify-content: space-between; }
         .rolling-window .window-title .recalled-tag { color: #00ff88; font-weight: bold; display: none; }
@@ -60,7 +56,6 @@
         .rolling-window .window-content .block-line .hash { color: #ffaa0066; font-size: 9px; }
         .rolling-window .window-content .block-line .node { color: #8866ff; }
         .rolling-window .window-content .block-line .time { color: #ffaa0044; font-size: 9px; }
-
         .stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 25px; }
         .stat-card { background: #1a1a24; border: 1px solid #ffaa0033; border-radius: 8px; padding: 15px; text-align: center; }
         .stat-card .label { font-size: 9px; color: #ffaa0066; text-transform: uppercase; letter-spacing: 1px; }
@@ -70,13 +65,11 @@
         .stat-card .value.speed { color: #00ff88; animation: speedPulse 1s infinite; }
         .stat-card .value.vault { color: #ffaa00; animation: securePulse 2s infinite; }
         .stat-card .value.medb { color: #ffaa00; text-shadow: 0 0 20px #ffaa0044; }
-
         .vault-status { background: #1a1a24; border: 2px solid #00ff8844; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .vault-status .vault-label { font-size: 11px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
         .vault-status .vault-value { font-size: 20px; font-weight: bold; color: #00ff88; }
         .vault-status .vault-value .safe { color: #00ff88; animation: securePulse 2s infinite; }
         .vault-status .vault-value .heat { color: #ffaa00; }
-
         .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
         .actions button { background: #ffaa0022; border: 1px solid #ffaa00; color: #ffaa00; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold; transition: all 0.3s; flex: 1; min-width: 100px; }
         .actions button:hover { background: #ffaa0044; box-shadow: 0 0 30px #ffaa0022; }
@@ -85,18 +78,14 @@
         .actions button.cosmic { border-color: #00ff88; color: #00ff88; background: #00ff8822; }
         .actions button.cosmic:hover { background: #00ff8844; box-shadow: 0 0 30px #00ff8822; }
         .actions button.active { border-color: #ff3355; color: #ff3355; background: #ff335522; animation: pulse 1s infinite; }
-
         .footer { text-align: center; color: #ffaa0033; font-size: 12px; padding: 20px 0; border-top: 1px solid #ffaa0033; }
         .footer .owner { color: #00ff88; font-weight: bold; }
-
         .rolling-window::-webkit-scrollbar { width: 4px; }
         .rolling-window::-webkit-scrollbar-track { background: #0a0a0f; }
         .rolling-window::-webkit-scrollbar-thumb { background: #ffaa0033; border-radius: 2px; }
-
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         @keyframes speedPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
         @keyframes securePulse { 0%, 100% { opacity: 1; text-shadow: 0 0 20px #00ff8844; } 50% { opacity: 0.7; text-shadow: 0 0 40px #00ff8888; } }
-
         @media (max-width: 992px) { .dial-heat-grid { grid-template-columns: 1fr; } .node-grid { grid-template-columns: repeat(3, 1fr); } .stats-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } .node-grid { grid-template-columns: repeat(3, 1fr); } .rolling-window .window-content .block-line { grid-template-columns: 30px 50px 40px 60px 50px 40px 40px; font-size: 9px; } .header h1 { font-size: 28px; } .actions button { min-width: 70px; font-size: 10px; padding: 6px 10px; } .vault-status { flex-direction: column; text-align: center; } }
         @media (max-width: 480px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .node-grid { grid-template-columns: repeat(3, 1fr); } .rolling-window { max-height: 250px; } .rolling-window .window-content .block-line { grid-template-columns: 20px 40px 30px 50px 40px 30px 30px; font-size: 7px; gap: 2px; } }
@@ -154,7 +143,6 @@
             <div class="stat-card"><div class="label">Consensus</div><div class="value" id="consensusStatus">100%</div></div>
         </div>
 
-        <!-- ADDED MEDB STAT -->
         <div class="stats-grid" style="margin-top: -10px;">
             <div class="stat-card"><div class="label">🪙 MEDB MINED</div><div class="value medb" id="medbCount">0</div></div>
         </div>
@@ -181,15 +169,212 @@
         </div>
     </div>
 
-    <script type="importmap">
-        { "imports": { "./blockchain.js": "./blockchain.js" } }
-    </script>
+    <!-- ============================================================
+    SELF-CONTAINED BLOCKCHAIN ENGINE (No external imports)
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // SHA256 (Real Cryptographic Hash)
+        // ============================================================
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
-    <script type="module">
-        import { Blockchain } from './blockchain.js';
+        // ============================================================
+        // BLOCK CLASS
+        // ============================================================
+        class Block {
+            constructor(index, timestamp, data, previousHash, nonce = 0) {
+                this.index = index;
+                this.timestamp = timestamp;
+                this.data = data;
+                this.previousHash = previousHash;
+                this.nonce = nonce;
+                this.hash = '';
+            }
+            async calculateHash() {
+                const payload = this.index + this.timestamp + this.data + this.previousHash + this.nonce;
+                return await sha256(payload);
+            }
+            async mineBlock(difficulty) {
+                const target = '0'.repeat(difficulty);
+                while (true) {
+                    this.hash = await this.calculateHash();
+                    if (this.hash.startsWith(target)) break;
+                    this.nonce++;
+                }
+            }
+        }
 
+        // ============================================================
+        // BLOCKCHAIN CLASS
+        // ============================================================
+        class Blockchain {
+            constructor(difficulty = 4) {
+                this.chain = [];
+                this.difficulty = difficulty;
+                this.totalBlocks = 0;
+                this.totalPulses = 0;
+                this.vaulted = 0;
+                this.segment = 1;
+                this.consensus = 100;
+                this.sessionStart = Date.now();
+                this.nodes = ['ALPHA', 'BETA', 'GAMMA', 'DELTA', 'EPSILON', 'ZETA', 'ETA', 'THETA', 'IOTA'];
+                this.nodeBlocks = {};
+                this.nodes.forEach(n => this.nodeBlocks[n] = 0);
+                this.isMining = false;
+                this.miningInterval = null;
+                this.lastBlockTime = Date.now();
+                this.speed = 0;
+                this.heat = 25;
+                this.genesisCreated = false;
+                this.medbRewardCounter = 0;
+                this.totalMedb = 0;
+                this.chainFile = 'blockchain.json';
+            }
+
+            async createGenesis() {
+                if (this.genesisCreated || this.chain.length > 0) return;
+                const genesis = new Block(
+                    0,
+                    Date.now(),
+                    'GENESIS BLOCK — MEDUSSA BORN',
+                    '0000000000000000000000000000000000000000000000000000000000000000'
+                );
+                await genesis.mineBlock(this.difficulty);
+                this.chain.push(genesis);
+                this.totalBlocks = 1;
+                this.vaulted = 1;
+                this.genesisCreated = true;
+                this.updateNodeBlock('GENESIS');
+            }
+
+            async addBlock(nodeName, data) {
+                const index = this.chain.length;
+                const timestamp = Date.now();
+                const previousHash = this.chain[this.chain.length - 1].hash;
+                const block = new Block(index, timestamp, data, previousHash);
+                await block.mineBlock(this.difficulty);
+                this.chain.push(block);
+                this.totalBlocks = this.chain.length;
+                this.vaulted = this.chain.length;
+                this.totalPulses += Math.floor(Math.random() * 1000) + 100;
+                this.updateNodeBlock(nodeName);
+                this.lastBlockTime = Date.now();
+                this.updateSpeed();
+                this.updateHeat();
+                this.updateConsensus();
+
+                // 3 BLOCKS = 1 MEDB
+                this.medbRewardCounter++;
+                if (this.medbRewardCounter === 3) {
+                    this.medbRewardCounter = 0;
+                    this.totalMedb++;
+                    console.log(`🪙 +1 MEDB MINED! (Total: ${this.totalMedb} MEDB)`);
+                }
+            }
+
+            updateNodeBlock(nodeName) {
+                if (this.nodeBlocks[nodeName] !== undefined) this.nodeBlocks[nodeName]++;
+            }
+            updateSpeed() {
+                const now = Date.now();
+                const diff = (now - this.lastBlockTime) / 1000;
+                this.speed = diff > 0 ? Math.min(5.0, 1 / diff) : 0;
+            }
+            updateHeat() {
+                const base = 25;
+                const activity = this.isMining ? 15 : 0;
+                this.heat = Math.min(45, base + activity + Math.random() * 5);
+            }
+            updateConsensus() {
+                const active = Object.values(this.nodeBlocks).filter(b => b > 0).length;
+                this.consensus = Math.round((active / this.nodes.length) * 100);
+                if (this.consensus < 60) this.consensus = 60;
+            }
+            getLatestBlock() { return this.chain[this.chain.length - 1]; }
+            isChainValid() {
+                for (let i = 1; i < this.chain.length; i++) {
+                    if (this.chain[i].previousHash !== this.chain[i - 1].hash) return false;
+                }
+                return true;
+            }
+            getRollingWindow(size = 20) {
+                const start = Math.max(0, this.chain.length - size);
+                return this.chain.slice(start);
+            }
+            getStats() {
+                const activeNodes = Object.values(this.nodeBlocks).filter(b => b > 0).length;
+                return {
+                    totalBlocks: this.chain.length,
+                    activeNodes: `${activeNodes}/${this.nodes.length}`,
+                    totalPulses: this.totalPulses,
+                    vaulted: this.vaulted,
+                    segment: this.segment,
+                    consensus: `${this.consensus}%`,
+                    session: this.getSessionTime(),
+                    nodesSynced: `${activeNodes}/${this.nodes.length}`,
+                    speed: this.speed,
+                    heat: this.heat,
+                    totalMedb: this.totalMedb
+                };
+            }
+            getSessionTime() {
+                const elapsed = Math.floor((Date.now() - this.sessionStart) / 1000);
+                const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+                const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+                const s = String(elapsed % 60).padStart(2, '0');
+                return `${h}:${m}:${s}`;
+            }
+            toJSON() {
+                return {
+                    chain: this.chain,
+                    totalBlocks: this.totalBlocks,
+                    totalPulses: this.totalPulses,
+                    vaulted: this.vaulted,
+                    segment: this.segment,
+                    consensus: this.consensus,
+                    session: this.getSessionTime(),
+                    nodesSynced: `${Object.values(this.nodeBlocks).filter(b => b > 0).length}/${this.nodes.length}`,
+                    nodeBlocks: this.nodeBlocks,
+                    totalMedb: this.totalMedb,
+                    timestamp: new Date().toISOString()
+                };
+            }
+            async loadFromFile(file) {
+                try {
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    this.chain = data.chain || [];
+                    this.totalBlocks = data.totalBlocks || 0;
+                    this.totalPulses = data.totalPulses || 0;
+                    this.vaulted = data.vaulted || 0;
+                    this.segment = data.segment || 1;
+                    this.consensus = data.consensus || 100;
+                    this.nodeBlocks = data.nodeBlocks || {};
+                    this.totalMedb = data.totalMedb || 0;
+                    this.nodes.forEach(n => { if (!this.nodeBlocks[n]) this.nodeBlocks[n] = 0; });
+                    this.genesisCreated = this.chain.length > 0;
+                    this.sessionStart = Date.now();
+                    if (this.chain.length > 0) {
+                        this.lastBlockTime = this.chain[this.chain.length - 1].timestamp;
+                    }
+                    return true;
+                } catch (e) {
+                    console.warn('Failed to load:', e);
+                    return false;
+                }
+            }
+        }
+
+        // ============================================================
+        // INITIALIZE MEDUSSA
+        // ============================================================
         const medussa = new Blockchain(4);
-        let isRecalled = false; // Track if we are viewing a loaded file
+        let isRecalled = false;
 
         // ============================================================
         // UI UPDATE FUNCTIONS
@@ -286,17 +471,12 @@
             container.innerHTML = html;
         }
 
-        // ============================================================
-        // DISPLAY LOADED DATA (RECALLED)
-        // ============================================================
         function displayLoadedData(data) {
             isRecalled = true;
-            // Show recalled banner
             document.getElementById('recalledBanner').style.display = 'block';
             document.getElementById('recalledFileName').textContent = 'RECALLED';
             document.getElementById('recalledTag').style.display = 'inline';
 
-            // Update stats from loaded data
             document.getElementById('blockCount').textContent = data.totalBlocks || data.chain.length;
             document.getElementById('totalPulses').textContent = (data.totalPulses || 0).toLocaleString();
             document.getElementById('vaultedCount').textContent = data.vaulted || data.chain.length;
@@ -305,7 +485,6 @@
             document.getElementById('nodesSynced').textContent = data.nodesSynced || '0/9';
             document.getElementById('medbCount').textContent = data.totalMedb || 0;
 
-            // Update rolling window with loaded chain
             const container = document.getElementById('windowContent');
             const chain = data.chain || [];
             if (chain.length === 0) {
@@ -336,17 +515,13 @@
             });
             container.innerHTML = html;
 
-            // Update progress bar
             const target = 369000000;
             const progress = (chain.length / target) * 100;
             document.getElementById('progressBar').style.width = `${Math.min(100, progress)}%`;
             document.getElementById('progressText').textContent = `${progress.toFixed(4)}% Complete · ${chain.length} / ${target}`;
             document.getElementById('clockDisplay').textContent = formatClock(chain.length);
 
-            // Pause mining when viewing recalled data
-            if (medussa.isMining) {
-                pauseMining();
-            }
+            if (medussa.isMining) pauseMining();
         }
 
         // ============================================================
@@ -363,7 +538,6 @@
 
         function startMining() {
             if (medussa.isMining) return;
-            // Clear recalled state
             isRecalled = false;
             document.getElementById('recalledBanner').style.display = 'none';
             document.getElementById('recalledTag').style.display = 'none';
@@ -387,7 +561,7 @@
         }
 
         // ============================================================
-        // LOAD VAULT (Day-based JSON)
+        // LOAD VAULT
         // ============================================================
         async function loadVault() {
             const input = document.createElement('input');
@@ -399,10 +573,8 @@
                 try {
                     const text = await file.text();
                     const data = JSON.parse(text);
-                    // Check if it's a valid Medussa vault
                     if (data.chain && Array.isArray(data.chain)) {
                         displayLoadedData(data);
-                        // Also load into engine for verification
                         await medussa.loadFromFile(file);
                     } else {
                         alert('❌ Invalid Medussa vault file.');
