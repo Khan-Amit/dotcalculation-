@@ -1,610 +1,569 @@
 #!/usr/bin/env node
 /**
- * MEDUSSA CRYPTOCURRENCY BLOCKCHAIN
- * Complete implementation - Ready for Ubuntu
- * Run: node medussa-crypto.js
+ * ⚡ MEDUSA CRYPTOCURRENCY BLOCKCHAIN
+ * Complete Implementation - No Editing Required
+ * Run: node medusa-crypto.js
  */
 
 const crypto = require('crypto');
 const fs = require('fs');
+const path = require('path');
+
+// ============================================
+// CONFIGURATION
+// ============================================
+
+const CONFIG = {
+    TIMEZONE: 'Europe/Vilnius',
+    FILE_PREFIX: '1000019890_',
+    DATA_DIR: './medusa_backups/',
+    MAX_BLOCKS: 9000000,
+    SEGMENTS: 9,
+    BLOCKS_PER_SEGMENT: 1000000,
+    HARDSHIP_START: 4,
+    HARDSHIP_PEAK: 6,
+    RESET_POINT: 9,
+    REQUIRED_FIELDS: ['owner', 'email', 'date', 'location', 'timestamp', 'data'],
+    MIN_VALUES_LENGTH: 14,
+    MAX_VALUES_LENGTH: 14
+};
 
 // ============================================
 // CRYPTOGRAPHIC HELPERS
 // ============================================
+
 class CryptoUtils {
     static sha256(data) {
-        return crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex');
+        return crypto.createHash('sha256').update(data).digest('hex');
     }
 
     static generatePrivateKey() {
-        return crypto.randomBytes(32).toString('hex');
+        return crypto.randomBytes(32).toString('base64');
     }
 
-    static derivePublicKey(privateKey) {
-        // Simplified - In production use ECDSA
-        return crypto.createHash('sha256').update(privateKey).digest('hex').slice(0, 64);
-    }
-
-    static deriveAddress(publicKey) {
-        return '0x' + crypto.createHash('ripemd160').update(publicKey).digest('hex').slice(0, 40);
+    static generatePublicKey(privateKey) {
+        const hash = crypto.createHash('sha256');
+        hash.update(privateKey);
+        return hash.digest('hex');
     }
 
     static sign(data, privateKey) {
-        const hash = this.sha256(data);
-        const signature = crypto.createHmac('sha256', privateKey).update(hash).digest('hex');
-        return signature;
+        const hash = crypto.createHash('sha256');
+        hash.update(data + privateKey);
+        return hash.digest('hex');
     }
 
-    static verifySignature(data, signature, publicKey) {
-        // Simplified verification
-        const hash = this.sha256(data);
-        const expected = crypto.createHmac('sha256', publicKey).update(hash).digest('hex');
+    static verify(data, signature, publicKey) {
+        const expected = this.sign(data, publicKey);
         return signature === expected;
     }
-}
 
-// ============================================
-// WALLET SYSTEM
-// ============================================
-class Wallet {
-    constructor() {
-        this.privateKey = CryptoUtils.generatePrivateKey();
-        this.publicKey = CryptoUtils.derivePublicKey(this.privateKey);
-        this.address = CryptoUtils.deriveAddress(this.publicKey);
-        this.balance = 0;
-        this.transactions = [];
-    }
-
-    toJSON() {
-        return {
-            address: this.address,
-            publicKey: this.publicKey,
-            balance: this.balance,
-            transactionCount: this.transactions.length
-        };
-    }
-
-    send(toAddress, amount, fee = 0.001) {
-        if (amount <= 0) throw new Error('Amount must be positive');
-        if (amount + fee > this.balance) throw new Error('Insufficient balance');
-
-        const tx = new Transaction(this.address, toAddress, amount, fee);
-        tx.sign(this.privateKey);
-        return tx;
+    static randomHash() {
+        return crypto.randomBytes(32).toString('hex');
     }
 }
 
 // ============================================
-// TRANSACTION SYSTEM
+// TIME & LOCATION HELPERS (LITHUANIA)
 // ============================================
-class Transaction {
-    constructor(from, to, amount, fee = 0.001) {
-        this.id = crypto.randomBytes(16).toString('hex');
-        this.from = from;
-        this.to = to;
-        this.amount = amount;
-        this.fee = fee;
-        this.timestamp = Date.now();
-        this.signature = null;
-        this.confirmed = false;
-        this.blockIndex = null;
+
+class LocationUtils {
+    static getLithuaniaTime() {
+        return new Date().toLocaleString('en-US', {
+            timeZone: CONFIG.TIMEZONE
+        });
     }
 
-    sign(privateKey) {
-        const data = `${this.id}${this.from}${this.to}${this.amount}${this.fee}${this.timestamp}`;
-        this.signature = CryptoUtils.sign(data, privateKey);
-        return this;
+    static getLithuaniaDate() {
+        return new Date().toLocaleDateString('en-CA', {
+            timeZone: CONFIG.TIMEZONE
+        });
     }
 
-    isValid() {
-        if (!this.from || !this.to || this.amount <= 0 || this.fee < 0) return false;
-        if (!this.signature) return false;
-        
-        // For coinbase transactions (mining rewards)
-        if (this.from === 'COINBASE') return true;
-        
-        // Verify signature
-        const data = `${this.id}${this.from}${this.to}${this.amount}${this.fee}${this.timestamp}`;
-        return CryptoUtils.verifySignature(data, this.signature, this.from);
+    static getFormattedDate() {
+        const now = new Date();
+        const lt = new Date(now.toLocaleString('en-US', {
+            timeZone: CONFIG.TIMEZONE
+        }));
+        const year = lt.getFullYear();
+        const month = String(lt.getMonth() + 1).padStart(2, '0');
+        const day = String(lt.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 
-    toJSON() {
-        return {
-            id: this.id,
-            from: this.from,
-            to: this.to,
-            amount: this.amount,
-            fee: this.fee,
-            timestamp: this.timestamp,
-            confirmed: this.confirmed,
-            blockIndex: this.blockIndex
-        };
+    static getLocation() {
+        try {
+            // Default to Vilnius, Lithuania
+            return 'Vilnius_LT';
+        } catch (e) {
+            return 'Vilnius_LT';
+        }
+    }
+
+    static getTimestamp() {
+        return Date.now();
     }
 }
 
 // ============================================
-// BLOCK SYSTEM
+// BLOCK CLASS
 // ============================================
+
 class Block {
-    constructor(index, transactions, prevHash, miner, reward) {
+    constructor(index, data, prevHash = '') {
         this.index = index;
-        this.timestamp = Date.now();
-        this.transactions = transactions;
+        this.timestamp = LocationUtils.getTimestamp();
+        this.date = LocationUtils.getLithuaniaDate();
+        this.location = LocationUtils.getLocation();
+        this.data = data;
         this.prevHash = prevHash;
-        this.miner = miner;
-        this.reward = reward;
         this.nonce = 0;
-        this.hash = null;
-        this.difficulty = 4; // Number of leading zeros required
+        this.hash = this.calculateHash();
     }
 
     calculateHash() {
-        const data = {
-            index: this.index,
-            timestamp: this.timestamp,
-            transactions: this.transactions.map(tx => tx.id),
-            prevHash: this.prevHash,
-            miner: this.miner,
-            reward: this.reward,
-            nonce: this.nonce
-        };
-        return CryptoUtils.sha256(data);
+        const blockData = 
+            this.index +
+            this.timestamp +
+            this.date +
+            this.location +
+            JSON.stringify(this.data) +
+            this.prevHash +
+            this.nonce;
+        return CryptoUtils.sha256(blockData);
     }
 
-    mine() {
-        console.log(`⛏️  Mining block ${this.index}...`);
-        let hash = this.calculateHash();
-        let attempts = 0;
-        const startTime = Date.now();
-
-        while (!hash.startsWith('0'.repeat(this.difficulty))) {
+    mineBlock(difficulty) {
+        const target = '0'.repeat(difficulty);
+        while (this.hash.substring(0, difficulty) !== target) {
             this.nonce++;
-            hash = this.calculateHash();
-            attempts++;
-            
-            // Progress indicator every 100k attempts
-            if (attempts % 100000 === 0) {
-                console.log(`   Attempts: ${attempts}, Current hash: ${hash.slice(0, 12)}...`);
-            }
+            this.hash = this.calculateHash();
         }
+        console.log(`✅ Block ${this.index} mined: ${this.hash}`);
+    }
+}
 
-        this.hash = hash;
-        const timeTaken = ((Date.now() - startTime) / 1000).toFixed(2);
-        console.log(`   ✅ Block mined in ${timeTaken}s, Nonce: ${this.nonce}, Attempts: ${attempts}`);
-        console.log(`   Hash: ${hash}`);
-        return hash;
+// ============================================
+// MEDUSA BLOCKCHAIN
+// ============================================
+
+class MedusaBlockchain {
+    constructor() {
+        this.chain = [this.createGenesisBlock()];
+        this.difficulty = 4;
+        this.segment = 1;
+        this.pulseCount = 0;
+        this.hardshipLevel = 0;
+    }
+
+    createGenesisBlock() {
+        const data = {
+            values: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            winners: [false, false, false, false, false, false, false, true, false, false, false, false, false, false, 1],
+            owner: 'Selim Ahmed',
+            email: 'amit.khanna.1082@gmail.com',
+            copyright: '© 2026 Selim Ahmed',
+            patent: 'Pending',
+            system: 'MEDUSA'
+        };
+        return new Block(0, data, '0000000000000000');
+    }
+
+    getLatestBlock() {
+        return this.chain[this.chain.length - 1];
+    }
+
+    addBlock(data) {
+        const latestBlock = this.getLatestBlock();
+        const newBlock = new Block(
+            this.chain.length,
+            data,
+            latestBlock.hash
+        );
+        newBlock.mineBlock(this.difficulty);
+        this.pulseCount++;
+        this.updateSegment();
+        this.chain.push(newBlock);
+        return newBlock;
+    }
+
+    updateSegment() {
+        const blockCount = this.chain.length;
+        if (blockCount <= 1000000) {
+            this.segment = 1;
+            this.hardshipLevel = 0;
+        } else if (blockCount <= 2000000) {
+            this.segment = 2;
+            this.hardshipLevel = 0;
+        } else if (blockCount <= 3000000) {
+            this.segment = 3;
+            this.hardshipLevel = 0;
+        } else if (blockCount <= 4000000) {
+            this.segment = 4;
+            this.hardshipLevel = 1;
+        } else if (blockCount <= 5000000) {
+            this.segment = 5;
+            this.hardshipLevel = 2;
+        } else if (blockCount <= 6000000) {
+            this.segment = 6;
+            this.hardshipLevel = 3;
+        } else if (blockCount <= 7000000) {
+            this.segment = 7;
+            this.hardshipLevel = 2;
+        } else if (blockCount <= 8000000) {
+            this.segment = 8;
+            this.hardshipLevel = 1;
+        } else if (blockCount <= 9000000) {
+            this.segment = 9;
+            this.hardshipLevel = 0;
+        }
     }
 
     isValid() {
-        if (!this.hash) return false;
-        if (this.hash !== this.calculateHash()) return false;
-        if (!this.hash.startsWith('0'.repeat(this.difficulty))) return false;
-        
-        // Validate all transactions
-        for (const tx of this.transactions) {
-            if (!tx.isValid()) return false;
+        for (let i = 1; i < this.chain.length; i++) {
+            const currentBlock = this.chain[i];
+            const prevBlock = this.chain[i - 1];
+
+            if (currentBlock.hash !== currentBlock.calculateHash()) {
+                console.error(`❌ Invalid hash at block ${i}`);
+                return false;
+            }
+
+            if (currentBlock.prevHash !== prevBlock.hash) {
+                console.error(`❌ Invalid previous hash at block ${i}`);
+                return false;
+            }
+
+            if (!this.validateBlockData(currentBlock.data)) {
+                console.error(`❌ Invalid data at block ${i}`);
+                return false;
+            }
         }
-        
+        console.log('✅ Blockchain is valid!');
         return true;
+    }
+
+    validateBlockData(data) {
+        for (const field of CONFIG.REQUIRED_FIELDS) {
+            if (!data.hasOwnProperty(field)) {
+                console.error(`❌ Missing field: ${field}`);
+                return false;
+            }
+        }
+
+        if (!Array.isArray(data.values)) {
+            console.error('❌ Values must be an array');
+            return false;
+        }
+
+        if (data.values.length !== CONFIG.MIN_VALUES_LENGTH) {
+            console.error(`❌ Values must have ${CONFIG.MIN_VALUES_LENGTH} elements`);
+            return false;
+        }
+
+        if (data.winners && !Array.isArray(data.winners)) {
+            console.error('❌ Winners must be an array');
+            return false;
+        }
+
+        return true;
+    }
+
+    getBlockByDate(date) {
+        return this.chain.filter(block => block.date === date);
+    }
+
+    getBlocksByLocation(location) {
+        return this.chain.filter(block => block.location === location);
+    }
+
+    getSummary() {
+        return {
+            totalBlocks: this.chain.length,
+            segment: this.segment,
+            hardshipLevel: this.hardshipLevel,
+            pulseCount: this.pulseCount,
+            difficulty: this.difficulty,
+            latestBlock: this.getLatestBlock().hash,
+            timestamp: LocationUtils.getLithuaniaTime(),
+            location: LocationUtils.getLocation(),
+            date: LocationUtils.getLithuaniaDate()
+        };
     }
 
     toJSON() {
         return {
-            index: this.index,
-            timestamp: this.timestamp,
-            transactions: this.transactions.map(tx => tx.toJSON()),
-            prevHash: this.prevHash,
-            miner: this.miner,
-            reward: this.reward,
-            nonce: this.nonce,
-            hash: this.hash,
-            difficulty: this.difficulty
+            owner: 'Selim Ahmed',
+            email: 'amit.khanna.1082@gmail.com',
+            copyright: '© 2026 Selim Ahmed',
+            patent: 'Pending',
+            system: 'MEDUSA',
+            date: LocationUtils.getLithuaniaDate(),
+            location: LocationUtils.getLocation(),
+            timestamp: LocationUtils.getTimestamp(),
+            summary: this.getSummary(),
+            blockchain: this.chain.map(block => ({
+                index: block.index,
+                timestamp: block.timestamp,
+                date: block.date,
+                location: block.location,
+                data: block.data,
+                prevHash: block.prevHash,
+                hash: block.hash,
+                nonce: block.nonce
+            }))
         };
+    }
+
+    saveToFile() {
+        const date = LocationUtils.getFormattedDate();
+        const location = LocationUtils.getLocation();
+        const filename = `${CONFIG.FILE_PREFIX}${date}_${location}.json`;
+        const filepath = path.join(CONFIG.DATA_DIR, filename);
+
+        if (!fs.existsSync(CONFIG.DATA_DIR)) {
+            fs.mkdirSync(CONFIG.DATA_DIR, { recursive: true });
+        }
+
+        fs.writeFileSync(
+            filepath,
+            JSON.stringify(this.toJSON(), null, 2),
+            'utf8'
+        );
+
+        console.log(`✅ File saved: ${filename}`);
+        console.log(`📁 Path: ${filepath}`);
+        return filepath;
+    }
+
+    static downloadFromFile(filepath) {
+        if (!fs.existsSync(filepath)) {
+            console.error(`❌ File not found: ${filepath}`);
+            return null;
+        }
+
+        try {
+            const content = fs.readFileSync(filepath, 'utf8');
+            const data = JSON.parse(content);
+            
+            if (!data.blockchain || !Array.isArray(data.blockchain)) {
+                console.error('❌ Invalid blockchain data');
+                return null;
+            }
+
+            console.log(`✅ Downloaded: ${path.basename(filepath)}`);
+            console.log(`📅 Date: ${data.date || 'Unknown'}`);
+            console.log(`📍 Location: ${data.location || 'Unknown'}`);
+            console.log(`📊 Blocks: ${data.blockchain.length}`);
+
+            return data;
+        } catch (e) {
+            console.error(`❌ Error reading file: ${e.message}`);
+            return null;
+        }
     }
 }
 
 // ============================================
-// BLOCKCHAIN CORE
+// VALIDATION FUNCTION
 // ============================================
-class MedussaCrypto {
-    constructor() {
-        this.chain = [];
-        this.pendingTransactions = [];
-        this.balances = {};
-        this.wallets = {};
-        this.reward = 2.5;
-        this.difficulty = 4;
-        this.totalSupply = 0;
-        this.networkNodes = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota'];
-        
-        // Initialize genesis block
-        this.createGenesisBlock();
+
+function validateMedusaFile(filepath) {
+    console.log('\n🔍 Validating MEDUSA file...');
+    console.log('='.repeat(50));
+
+    if (!fs.existsSync(filepath)) {
+        console.error(`❌ File not found: ${filepath}`);
+        return false;
     }
 
-    createGenesisBlock() {
-        const genesisTx = new Transaction('COINBASE', 'GENESIS', 0, 0);
-        genesisTx.confirmed = true;
-        genesisTx.blockIndex = 0;
-        
-        const genesisBlock = new Block(0, [genesisTx], '0'.repeat(64), 'Genesis', 0);
-        genesisBlock.nonce = 0;
-        genesisBlock.hash = CryptoUtils.sha256({
-            index: 0,
-            timestamp: genesisBlock.timestamp,
-            transactions: ['GENESIS'],
-            prevHash: '0'.repeat(64),
-            miner: 'Genesis',
-            reward: 0,
-            nonce: 0
-        });
-        genesisBlock.difficulty = 0;
-        
-        this.chain.push(genesisBlock);
-        console.log('🌱 Genesis block created');
-    }
+    try {
+        const content = fs.readFileSync(filepath, 'utf8');
+        const data = JSON.parse(content);
 
-    // ===== WALLET MANAGEMENT =====
-    createWallet() {
-        const wallet = new Wallet();
-        wallet.balance = 0;
-        this.wallets[wallet.address] = wallet;
-        this.balances[wallet.address] = 0;
-        return wallet;
-    }
+        const checks = {
+            hasOwner: data.owner && data.owner === 'Selim Ahmed',
+            hasEmail: data.email && data.email.includes('@'),
+            hasDate: data.date && data.date.match(/^\d{4}-\d{2}-\d{2}$/),
+            hasLocation: data.location && data.location.includes('_'),
+            hasTimestamp: data.timestamp && typeof data.timestamp === 'number',
+            hasBlockchain: data.blockchain && Array.isArray(data.blockchain) && data.blockchain.length > 0,
+            hasValidBlocks: true
+        };
 
-    getBalance(address) {
-        return this.balances[address] || 0;
-    }
-
-    getWallet(address) {
-        return this.wallets[address] || null;
-    }
-
-    // ===== TRANSACTION MANAGEMENT =====
-    addTransaction(tx) {
-        if (!tx.isValid()) {
-            throw new Error('Invalid transaction');
-        }
-        
-        // Check sender balance
-        if (tx.from !== 'COINBASE') {
-            const balance = this.getBalance(tx.from);
-            const totalCost = tx.amount + tx.fee;
-            if (balance < totalCost) {
-                throw new Error(`Insufficient balance: ${balance} < ${totalCost}`);
-            }
-        }
-        
-        this.pendingTransactions.push(tx);
-        console.log(`📝 Transaction ${tx.id.slice(0, 8)}... added to pool (${this.pendingTransactions.length} pending)`);
-        return tx;
-    }
-
-    // ===== MINING =====
-    mineBlock(minerAddress) {
-        // Validate miner exists
-        if (!this.wallets[minerAddress]) {
-            throw new Error('Miner wallet not found');
-        }
-
-        // Create coinbase transaction (reward)
-        const coinbaseTx = new Transaction('COINBASE', minerAddress, this.reward, 0);
-        coinbaseTx.confirmed = true;
-        coinbaseTx.sign('COINBASE_KEY'); // Special signature for coinbase
-
-        // Combine coinbase with pending transactions
-        const transactions = [coinbaseTx, ...this.pendingTransactions];
-        
-        // Create block
-        const prevHash = this.chain[this.chain.length - 1].hash;
-        const block = new Block(this.chain.length, transactions, prevHash, minerAddress, this.reward);
-        block.difficulty = this.difficulty;
-        
-        // Mine block
-        block.mine();
-        
-        // Validate block
-        if (!block.isValid()) {
-            throw new Error('Invalid block mined');
-        }
-        
-        // Add to chain
-        this.chain.push(block);
-        
-        // Update balances
-        this.processBlock(block);
-        
-        // Clear pending transactions
-        this.pendingTransactions = [];
-        
-        console.log(`✅ Block ${block.index} added to chain`);
-        console.log(`💰 Total supply: ${this.totalSupply} MED`);
-        console.log(`📊 Total blocks: ${this.chain.length}`);
-        
-        return block;
-    }
-
-    processBlock(block) {
-        for (const tx of block.transactions) {
-            if (tx.from === 'COINBASE') {
-                // Mining reward
-                this.balances[tx.to] = (this.balances[tx.to] || 0) + tx.amount;
-                this.totalSupply += tx.amount;
-                tx.confirmed = true;
-                tx.blockIndex = block.index;
-                console.log(`   💰 Reward: ${tx.amount} MED → ${tx.to.slice(0, 10)}...`);
-            } else {
-                // Regular transaction
-                if (this.balances[tx.from] >= tx.amount + tx.fee) {
-                    this.balances[tx.from] -= tx.amount + tx.fee;
-                    this.balances[tx.to] = (this.balances[tx.to] || 0) + tx.amount;
-                    tx.confirmed = true;
-                    tx.blockIndex = block.index;
-                    
-                    // Update wallet objects
-                    if (this.wallets[tx.from]) {
-                        this.wallets[tx.from].balance = this.balances[tx.from];
-                        this.wallets[tx.from].transactions.push(tx);
-                    }
-                    if (this.wallets[tx.to]) {
-                        this.wallets[tx.to].balance = this.balances[tx.to];
-                        this.wallets[tx.to].transactions.push(tx);
-                    }
-                    
-                    console.log(`   💸 ${tx.from.slice(0, 10)}... → ${tx.to.slice(0, 10)}... : ${tx.amount} MED`);
+        if (checks.hasBlockchain) {
+            for (const block of data.blockchain) {
+                if (!block.hash || !block.data || !block.data.values) {
+                    checks.hasValidBlocks = false;
+                    break;
                 }
             }
         }
-    }
 
-    // ===== BLOCKCHAIN EXPLORER =====
-    getBlock(index) {
-        return this.chain[index] || null;
-    }
+        console.log('\n📋 Validation Results:');
+        console.log('-'.repeat(40));
+        console.log(`✅ Owner: ${checks.hasOwner ? 'PASS' : 'FAIL'}`);
+        console.log(`✅ Email: ${checks.hasEmail ? 'PASS' : 'FAIL'}`);
+        console.log(`✅ Date: ${checks.hasDate ? 'PASS' : 'FAIL'}`);
+        console.log(`✅ Location: ${checks.hasLocation ? 'PASS' : 'FAIL'}`);
+        console.log(`✅ Timestamp: ${checks.hasTimestamp ? 'PASS' : 'FAIL'}`);
+        console.log(`✅ Blockchain: ${checks.hasBlockchain ? 'PASS' : 'FAIL'}`);
+        console.log(`✅ Block Data: ${checks.hasValidBlocks ? 'PASS' : 'FAIL'}`);
 
-    getLastBlock() {
-        return this.chain[this.chain.length - 1];
-    }
+        const allPass = Object.values(checks).every(v => v === true);
+        console.log('-'.repeat(40));
+        console.log(allPass ? '✅ VALIDATION PASSED!' : '❌ VALIDATION FAILED!');
 
-    getTransaction(txId) {
-        for (const block of this.chain) {
-            for (const tx of block.transactions) {
-                if (tx.id === txId) return tx;
-            }
+        if (checks.hasBlockchain) {
+            console.log(`\n📊 Summary:`);
+            console.log(`   Blocks: ${data.blockchain.length}`);
+            console.log(`   Date: ${data.date}`);
+            console.log(`   Location: ${data.location}`);
         }
+
+        return allPass;
+
+    } catch (e) {
+        console.error(`❌ Validation error: ${e.message}`);
+        return false;
+    }
+}
+
+// ============================================
+// DOWNLOAD FUNCTION
+// ============================================
+
+function downloadMedusaFile(date, location = 'Vilnius_LT') {
+    console.log('\n📥 Downloading MEDUSA file...');
+    console.log('='.repeat(50));
+
+    const filename = `${CONFIG.FILE_PREFIX}${date}_${location}.json`;
+    const filepath = path.join(CONFIG.DATA_DIR, filename);
+
+    if (!fs.existsSync(filepath)) {
+        console.error(`❌ File not found: ${filename}`);
+        console.log(`   Try: node medusa-crypto.js download ${date}`);
         return null;
     }
 
-    getTransactionsByAddress(address) {
-        const txs = [];
-        for (const block of this.chain) {
-            for (const tx of block.transactions) {
-                if (tx.from === address || tx.to === address) {
-                    txs.push(tx);
-                }
-            }
-        }
-        return txs;
+    const data = MedusaBlockchain.downloadFromFile(filepath);
+    if (data) {
+        validateMedusaFile(filepath);
     }
 
-    isChainValid() {
-        for (let i = 1; i < this.chain.length; i++) {
-            const current = this.chain[i];
-            const previous = this.chain[i - 1];
-            
-            if (!current.isValid()) {
-                console.log(`❌ Block ${i} is invalid`);
-                return false;
-            }
-            
-            if (current.prevHash !== previous.hash) {
-                console.log(`❌ Block ${i} has invalid previous hash`);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // ===== STATISTICS =====
-    getStats() {
-        return {
-            chainLength: this.chain.length,
-            pendingTransactions: this.pendingTransactions.length,
-            totalSupply: this.totalSupply,
-            networkNodes: this.networkNodes.length,
-            difficulty: this.difficulty,
-            lastBlock: this.getLastBlock().index,
-            lastBlockHash: this.getLastBlock().hash.slice(0, 16) + '...',
-            blockReward: this.reward
-        };
-    }
-
-    // ===== PERSISTENCE =====
-    save(filename = 'medussa-chain.json') {
-        const data = {
-            chain: this.chain.map(block => block.toJSON()),
-            balances: this.balances,
-            totalSupply: this.totalSupply,
-            timestamp: Date.now()
-        };
-        fs.writeFileSync(filename, JSON.stringify(data, null, 2));
-        console.log(`💾 Blockchain saved to ${filename}`);
-    }
-
-    load(filename = 'medussa-chain.json') {
-        if (!fs.existsSync(filename)) {
-            console.log('📂 No saved chain found, starting fresh');
-            return;
-        }
-        
-        try {
-            const data = JSON.parse(fs.readFileSync(filename, 'utf8'));
-            this.totalSupply = data.totalSupply;
-            this.balances = data.balances;
-            console.log(`📂 Loaded chain with ${data.chain.length} blocks`);
-        } catch (e) {
-            console.log('⚠️  Error loading chain, starting fresh');
-        }
-    }
+    return data;
 }
 
 // ============================================
-// DEMO AND TESTING
+// MAIN COMMAND LINE
 // ============================================
-function runDemo() {
-    console.log('\n' + '='.repeat(60));
-    console.log('🚀 MEDUSSA CRYPTOCURRENCY BLOCKCHAIN');
-    console.log('='.repeat(60));
-    
-    // Initialize blockchain
-    const chain = new MedussaCrypto();
-    
-    // Create wallets
-    console.log('\n📱 CREATING WALLETS');
-    console.log('─'.repeat(40));
-    
-    const alice = chain.createWallet();
-    const bob = chain.createWallet();
-    const miner = chain.createWallet();
-    const charlie = chain.createWallet();
-    
-    console.log('✅ Alice:', alice.address.slice(0, 16) + '...');
-    console.log('✅ Bob:', bob.address.slice(0, 16) + '...');
-    console.log('✅ Miner:', miner.address.slice(0, 16) + '...');
-    console.log('✅ Charlie:', charlie.address.slice(0, 16) + '...');
-    
-    // Initial balances
-    console.log('\n💰 INITIAL BALANCES');
-    console.log('─'.repeat(40));
-    console.log(`Alice: ${chain.getBalance(alice.address)} MED`);
-    console.log(`Bob: ${chain.getBalance(bob.address)} MED`);
-    console.log(`Miner: ${chain.getBalance(miner.address)} MED`);
-    console.log(`Charlie: ${chain.getBalance(charlie.address)} MED`);
-    
-    // Give Alice some coins (mine first block)
-    console.log('\n⛏️  FIRST MINING - ALICE GETS REWARD');
-    console.log('─'.repeat(40));
-    chain.mineBlock(alice.address);
-    console.log(`Alice balance: ${chain.getBalance(alice.address)} MED`);
-    
-    // Send transaction: Alice → Bob
-    console.log('\n💸 SENDING TRANSACTION');
-    console.log('─'.repeat(40));
-    const tx1 = alice.send(bob.address, 5, 0.001);
-    chain.addTransaction(tx1);
-    console.log(`  ${tx1.amount} MED → Bob (fee: ${tx1.fee})`);
-    
-    // Send transaction: Alice → Charlie
-    const tx2 = alice.send(charlie.address, 2.5, 0.001);
-    chain.addTransaction(tx2);
-    console.log(`  ${tx2.amount} MED → Charlie (fee: ${tx2.fee})`);
-    
-    // Mine block to confirm transactions
-    console.log('\n⛏️  MINING BLOCK 2');
-    console.log('─'.repeat(40));
-    chain.mineBlock(miner.address);
-    
-    // Check final balances
-    console.log('\n💎 FINAL BALANCES');
-    console.log('─'.repeat(40));
-    console.log(`Alice: ${chain.getBalance(alice.address)} MED`);
-    console.log(`Bob: ${chain.getBalance(bob.address)} MED`);
-    console.log(`Miner: ${chain.getBalance(miner.address)} MED`);
-    console.log(`Charlie: ${chain.getBalance(charlie.address)} MED`);
-    
-    // Check total supply
-    console.log(`\n💰 Total Supply: ${chain.totalSupply} MED`);
-    console.log(`📊 Chain Length: ${chain.chain.length} blocks`);
-    
-    // Show last block
-    console.log('\n📦 LAST BLOCK');
-    console.log('─'.repeat(40));
-    const lastBlock = chain.getLastBlock();
-    console.log(`Index: ${lastBlock.index}`);
-    console.log(`Hash: ${lastBlock.hash.slice(0, 20)}...`);
-    console.log(`Transactions: ${lastBlock.transactions.length}`);
-    console.log(`Miner: ${lastBlock.miner.slice(0, 16)}...`);
-    console.log(`Reward: ${lastBlock.reward} MED`);
-    
-    // Validate chain
-    console.log('\n🔍 CHAIN VALIDATION');
-    console.log('─'.repeat(40));
-    const isValid = chain.isChainValid();
-    console.log(`✅ Chain is ${isValid ? 'VALID' : 'INVALID'}`);
-    
-    // Save chain
-    console.log('\n💾 SAVING CHAIN');
-    console.log('─'.repeat(40));
-    chain.save('medussa-crypto-chain.json');
-    
-    // Export wallet keys
-    console.log('\n🔑 WALLET BACKUP');
-    console.log('─'.repeat(40));
-    console.log('Alice Private Key:', alice.privateKey.slice(0, 20) + '...');
-    console.log('Bob Private Key:', bob.privateKey.slice(0, 20) + '...');
-    console.log('Miner Private Key:', miner.privateKey.slice(0, 20) + '...');
-    console.log('Charlie Private Key:', charlie.privateKey.slice(0, 20) + '...');
-    
-    console.log('\n✅ DEMO COMPLETE');
-    console.log('='.repeat(60));
-    console.log('📝 Save your private keys to access wallets later!');
-    console.log('🔗 Chain saved to: medussa-crypto-chain.json');
-    console.log('='.repeat(60) + '\n');
-}
 
-// ============================================
-// COMMAND LINE INTERFACE
-// ============================================
-function showHelp() {
-    console.log(`
-MEDUSSA CRYPTOCURRENCY BLOCKCHAIN CLI
-═══════════════════════════════════════════
-
-Commands:
-  node medussa-crypto.js demo          - Run the demo
-  node medussa-crypto.js stats         - Show blockchain stats
-  node medussa-crypto.js wallet        - Create a new wallet
-  node medussa-crypto.js send <from> <to> <amount> - Send transaction
-  
-Example:
-  node medussa-crypto.js demo
-`);
-}
-
-// ============================================
-// MAIN EXECUTION
-// ============================================
-if (require.main === module) {
+function main() {
     const args = process.argv.slice(2);
-    
-    switch(args[0]) {
-        case 'demo':
-            runDemo();
+    const command = args[0] || 'help';
+
+    console.log('\n⚡ MEDUSA CRYPTOCURRENCY BLOCKCHAIN');
+    console.log('='.repeat(50));
+
+    switch (command) {
+        case 'init':
+            console.log('🔧 Initializing new MEDUSA blockchain...');
+            const blockchain = new MedusaBlockchain();
+            
+            for (let i = 1; i <= 10; i++) {
+                const data = {
+                    values: Array.from({length: 14}, () => Math.floor(Math.random() * 1000)),
+                    winners: Array.from({length: 15}, () => Math.random() > 0.5),
+                    owner: 'Selim Ahmed',
+                    email: 'amit.khanna.1082@gmail.com'
+                };
+                blockchain.addBlock(data);
+            }
+            
+            blockchain.isValid();
+            const filepath = blockchain.saveToFile();
+            console.log(`\n✅ Blockchain saved to: ${filepath}`);
             break;
-        case 'stats':
-            const chain = new MedussaCrypto();
-            chain.load();
-            console.log(chain.getStats());
+
+        case 'validate':
+            const fileToValidate = args[1];
+            if (!fileToValidate) {
+                console.log('❌ Please specify a file to validate');
+                console.log('   Usage: node medusa-crypto.js validate <filename>');
+                break;
+            }
+            validateMedusaFile(fileToValidate);
             break;
-        case 'wallet':
-            const w = new MedussaCrypto();
-            const wallet = w.createWallet();
-            console.log('\n🔑 NEW WALLET');
-            console.log('─'.repeat(40));
-            console.log('Address:', wallet.address);
-            console.log('Public Key:', wallet.publicKey.slice(0, 30) + '...');
-            console.log('Private Key:', wallet.privateKey);
-            console.log('\n⚠️  SAVE YOUR PRIVATE KEY SAFELY!');
+
+        case 'download':
+            const dateToDownload = args[1] || LocationUtils.getFormattedDate();
+            const locationToDownload = args[2] || LocationUtils.getLocation();
+            downloadMedusaFile(dateToDownload, locationToDownload);
             break;
+
+        case 'today':
+            const today = LocationUtils.getFormattedDate();
+            const loc = LocationUtils.getLocation();
+            console.log(`📅 Today: ${today}`);
+            console.log(`📍 Location: ${loc}`);
+            downloadMedusaFile(today, loc);
+            break;
+
+        case 'status':
+            console.log('📊 Current Status:');
+            console.log(`   Date: ${LocationUtils.getLithuaniaDate()}`);
+            console.log(`   Time: ${LocationUtils.getLithuaniaTime()}`);
+            console.log(`   Location: ${LocationUtils.getLocation()}`);
+            console.log(`   Files available:`);
+            if (fs.existsSync(CONFIG.DATA_DIR)) {
+                const files = fs.readdirSync(CONFIG.DATA_DIR)
+                    .filter(f => f.startsWith(CONFIG.FILE_PREFIX));
+                files.forEach(f => console.log(`   📄 ${f}`));
+                console.log(`   Total: ${files.length} files`);
+            } else {
+                console.log('   No files yet');
+            }
+            break;
+
+        case 'help':
         default:
-            showHelp();
+            console.log(`
+📋 MEDUSA - Commands:
+
+  node medusa-crypto.js init          - Initialize new blockchain
+  node medusa-crypto.js validate <file> - Validate a file
+  node medusa-crypto.js download [date] [location] - Download specific file
+  node medusa-crypto.js today         - Download today's file
+  node medusa-crypto.js status        - Show current status
+  node medusa-crypto.js help          - Show this help
+
+Examples:
+  node medusa-crypto.js init
+  node medusa-crypto.js validate ./medusa_backups/1000019890_2026-07-02_Vilnius_LT.json
+  node medusa-crypto.js download 2026-07-02 Vilnius_LT
+  node medusa-crypto.js today
+
+📍 Current Location: ${LocationUtils.getLocation()}
+📅 Current Date: ${LocationUtils.getLithuaniaDate()}
+            `);
+            break;
     }
 }
 
-module.exports = { 
-    MedussaCrypto, 
-    Wallet, 
-    Transaction, 
+// ============================================
+// EXPORTS
+// ============================================
+
+module.exports = {
+    CryptoUtils,
+    LocationUtils,
     Block,
-    CryptoUtils 
+    MedusaBlockchain,
+    validateMedusaFile,
+    downloadMedusaFile,
+    CONFIG
 };
+
+if (require.main === module) {
+    main();
+}
