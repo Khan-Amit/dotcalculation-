@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MEDUSSA REAL · 9-Node Blockchain</title>
     <style>
-        /* ============================================================
-        MEDUSSA REAL STYLES
-        ============================================================ */
+        /* Same styles as before — keep them here or in a separate .css file */
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +22,6 @@
             max-width: 1600px;
             margin: 0 auto;
         }
-
         .header {
             display: flex;
             justify-content: space-between;
@@ -57,7 +54,6 @@
             font-size: 14px;
             animation: pulse 2s infinite;
         }
-
         .license-banner {
             background: #1a1a24;
             border: 2px solid #ffaa0044;
@@ -78,17 +74,12 @@
             color: #00ff88;
             font-weight: bold;
         }
-
-        /* ============================================================
-        CLOCK DIAL + SPEED HEAT
-        ============================================================ */
         .dial-heat-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
             margin-bottom: 25px;
         }
-
         .clock-dial {
             background: #1a1a24;
             border: 2px solid #ffaa0044;
@@ -130,7 +121,6 @@
             transition: width 1s ease;
             width: 0%;
         }
-
         .speed-heat {
             background: #1a1a24;
             border: 2px solid #00ff8844;
@@ -168,10 +158,6 @@
             transition: width 1s ease;
             width: 0%;
         }
-
-        /* ============================================================
-        NODE GRID (9 NODES)
-        ============================================================ */
         .node-grid {
             display: grid;
             grid-template-columns: repeat(9, 1fr);
@@ -210,10 +196,6 @@
             color: #ffaa0088;
             margin-top: 4px;
         }
-
-        /* ============================================================
-        ROLLING WINDOW
-        ============================================================ */
         .rolling-window {
             background: #0a0a0f;
             border: 2px solid #ffaa0044;
@@ -267,10 +249,6 @@
             color: #ffaa0044;
             font-size: 9px;
         }
-
-        /* ============================================================
-        STATS
-        ============================================================ */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -310,10 +288,6 @@
             color: #ffaa00;
             animation: securePulse 2s infinite;
         }
-
-        /* ============================================================
-        VAULT STATUS
-        ============================================================ */
         .vault-status {
             background: #1a1a24;
             border: 2px solid #00ff8844;
@@ -344,10 +318,6 @@
         .vault-status .vault-value .heat {
             color: #ffaa00;
         }
-
-        /* ============================================================
-        ACTIONS
-        ============================================================ */
         .actions {
             display: flex;
             gap: 10px;
@@ -396,7 +366,6 @@
             background: #ff335522;
             animation: pulse 1s infinite;
         }
-
         .footer {
             text-align: center;
             color: #ffaa0033;
@@ -408,10 +377,6 @@
             color: #00ff88;
             font-weight: bold;
         }
-
-        /* ============================================================
-        SCROLLBAR
-        ============================================================ */
         .rolling-window::-webkit-scrollbar {
             width: 4px;
         }
@@ -422,10 +387,6 @@
             background: #ffaa0033;
             border-radius: 2px;
         }
-
-        /* ============================================================
-        ANIMATIONS
-        ============================================================ */
         @keyframes pulse {
             0%,
             100% {
@@ -457,10 +418,6 @@
                 text-shadow: 0 0 40px #00ff8888;
             }
         }
-
-        /* ============================================================
-        RESPONSIVE
-        ============================================================ */
         @media (max-width: 992px) {
             .dial-heat-grid {
                 grid-template-columns: 1fr;
@@ -517,9 +474,7 @@
 <body>
     <div class="container">
 
-        <!-- ============================================================
-        HEADER
-        ============================================================ -->
+        <!-- HEADER -->
         <div class="header">
             <div>
                 <h1>⚡ MED<span>US</span>SA</h1>
@@ -528,9 +483,7 @@
             <div class="status" id="statusBadge">● ACTIVE</div>
         </div>
 
-        <!-- ============================================================
-        LICENSE
-        ============================================================ -->
+        <!-- LICENSE -->
         <div class="license-banner">
             <div class="license-text">
                 <strong>© 2026 SELIIM AHMED</strong> ·
@@ -543,11 +496,8 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        CLOCK DIAL + SPEED HEAT
-        ============================================================ -->
+        <!-- CLOCK + HEAT -->
         <div class="dial-heat-grid">
-            <!-- Clock Dial -->
             <div class="clock-dial">
                 <div class="dial-label">⏱️ BLOCKCHAIN CLOCK · 369,000,000 TARGET</div>
                 <div class="dial-display" id="clockDisplay">00:00:00:00</div>
@@ -557,8 +507,6 @@
                 </div>
                 <div class="dial-sub" style="margin-top: 8px;" id="progressText">0% Complete · 0 / 369,000,000</div>
             </div>
-
-            <!-- Speed Heat -->
             <div class="speed-heat">
                 <div class="heat-label">🔥 SPEED HEAT · BLOCKS PER SECOND</div>
                 <div class="heat-display" id="heatDisplay" style="color: #00ff88;">0.0</div>
@@ -570,16 +518,10 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        NODE GRID (9 NODES)
-        ============================================================ -->
-        <div class="node-grid" id="nodeGrid">
-            <!-- Generated by JavaScript -->
-        </div>
+        <!-- NODES -->
+        <div class="node-grid" id="nodeGrid"></div>
 
-        <!-- ============================================================
-        ROLLING WINDOW
-        ============================================================ -->
+        <!-- ROLLING WINDOW -->
         <div class="rolling-window" id="rollingWindow">
             <div class="window-title">📜 ROLLING BLOCKCHAIN · 9-NODE CONSENSUS</div>
             <div class="window-content" id="windowContent">
@@ -589,9 +531,7 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        STATS GRID
-        ============================================================ -->
+        <!-- STATS -->
         <div class="stats-grid">
             <div class="stat-card"><div class="label">Total Blocks</div><div class="value vault" id="blockCount">0</div></div>
             <div class="stat-card"><div class="label">Active Nodes</div><div class="value" id="activeNodes">0/9</div></div>
@@ -601,9 +541,7 @@
             <div class="stat-card"><div class="label">Consensus</div><div class="value" id="consensusStatus">100%</div></div>
         </div>
 
-        <!-- ============================================================
-        VAULT STATUS
-        ============================================================ -->
+        <!-- VAULT -->
         <div class="vault-status">
             <div>
                 <span class="vault-label">📁 VAULT STATUS</span>
@@ -623,9 +561,7 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        ACTIONS
-        ============================================================ -->
+        <!-- ACTIONS -->
         <div class="actions">
             <button id="startBtn" class="cosmic">▶ START 9-NODE</button>
             <button id="pauseBtn" class="warning">⏸ PAUSE</button>
@@ -635,9 +571,7 @@
             <button id="resetBtn" class="danger">↻ RESET NODES</button>
         </div>
 
-        <!-- ============================================================
-        FOOTER
-        ============================================================ -->
+        <!-- FOOTER -->
         <div class="footer">
             ⚡ MEDUSSA REAL v3.0 · 9 Nodes · © 2026 SELIIM AHMED ·
             <span class="owner">amit.khanna.1082@gmail.com</span> ·
@@ -647,203 +581,18 @@
     </div>
 
     <!-- ============================================================
-    JAVASCRIPT — REAL BLOCKCHAIN ENGINE
+    LOAD BLOCKCHAIN ENGINE + DATA
     ============================================================ -->
-    <script>
-        // ============================================================
-        // SHA256 (Real Cryptographic Hash)
-        // ============================================================
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
-        // ============================================================
-        // BLOCK CLASS (Real Block)
-        // ============================================================
-        class Block {
-            constructor(index, timestamp, data, previousHash, nonce = 0) {
-                this.index = index;
-                this.timestamp = timestamp;
-                this.data = data;
-                this.previousHash = previousHash;
-                this.nonce = nonce;
-                this.hash = ''; // Will be calculated
-            }
-
-            async calculateHash() {
-                const payload = this.index + this.timestamp + this.data + this.previousHash + this.nonce;
-                return await sha256(payload);
-            }
-
-            async mineBlock(difficulty) {
-                const target = '0'.repeat(difficulty);
-                while (true) {
-                    this.hash = await this.calculateHash();
-                    if (this.hash.startsWith(target)) break;
-                    this.nonce++;
-                }
+    <script type="importmap">
+        {
+            "imports": {
+                "./blockchain.js": "./blockchain.js"
             }
         }
+    </script>
 
-        // ============================================================
-        // BLOCKCHAIN CLASS (Real Chain)
-        // ============================================================
-        class Blockchain {
-            constructor(difficulty = 4) {
-                this.chain = [];
-                this.difficulty = difficulty;
-                this.totalBlocks = 0;
-                this.totalPulses = 0;
-                this.vaulted = 0;
-                this.segment = 1;
-                this.consensus = 100;
-                this.sessionStart = Date.now();
-                this.nodes = [
-                    'ALPHA', 'BETA', 'GAMMA', 'DELTA',
-                    'EPSILON', 'ZETA', 'ETA', 'THETA', 'IOTA'
-                ];
-                this.nodeBlocks = {};
-                this.nodes.forEach(n => this.nodeBlocks[n] = 0);
-                this.isMining = false;
-                this.miningInterval = null;
-                this.lastBlockTime = Date.now();
-                this.speed = 0;
-                this.heat = 25; // Simulated phone heat sensor
-                this.genesisCreated = false;
-            }
-
-            async createGenesis() {
-                if (this.genesisCreated) return;
-                const genesis = new Block(
-                    0,
-                    Date.now(),
-                    'GENESIS BLOCK — MEDUSSA BORN',
-                    '0000000000000000000000000000000000000000000000000000000000000000'
-                );
-                await genesis.mineBlock(this.difficulty);
-                this.chain.push(genesis);
-                this.totalBlocks = 1;
-                this.vaulted = 1;
-                this.genesisCreated = true;
-                this.updateNodeBlock('GENESIS');
-            }
-
-            async addBlock(nodeName, data) {
-                const index = this.chain.length;
-                const timestamp = Date.now();
-                const previousHash = this.chain[this.chain.length - 1].hash;
-                const block = new Block(index, timestamp, data, previousHash);
-                await block.mineBlock(this.difficulty);
-                this.chain.push(block);
-                this.totalBlocks = this.chain.length;
-                this.vaulted = this.chain.length;
-                this.totalPulses += Math.floor(Math.random() * 1000) + 100; // Real pulse simulation
-                this.updateNodeBlock(nodeName);
-                this.lastBlockTime = Date.now();
-                this.updateSpeed();
-                this.updateHeat();
-                this.updateConsensus();
-            }
-
-            updateNodeBlock(nodeName) {
-                if (this.nodeBlocks[nodeName] !== undefined) {
-                    this.nodeBlocks[nodeName]++;
-                }
-            }
-
-            updateSpeed() {
-                // Real speed calculation based on time between blocks
-                const now = Date.now();
-                const diff = (now - this.lastBlockTime) / 1000;
-                if (diff > 0) {
-                    this.speed = Math.min(5.0, 1 / diff);
-                } else {
-                    this.speed = 0;
-                }
-            }
-
-            updateHeat() {
-                // Simulate phone heat sensor (25-45% based on mining activity)
-                const base = 25;
-                const activity = this.isMining ? 15 : 0;
-                const random = Math.random() * 5;
-                this.heat = Math.min(45, base + activity + random);
-            }
-
-            updateConsensus() {
-                // Real consensus based on node participation
-                const active = Object.values(this.nodeBlocks).filter(b => b > 0).length;
-                this.consensus = Math.round((active / this.nodes.length) * 100);
-                if (this.consensus < 60) this.consensus = 60;
-            }
-
-            getLatestBlock() {
-                return this.chain[this.chain.length - 1];
-            }
-
-            isChainValid() {
-                for (let i = 1; i < this.chain.length; i++) {
-                    const current = this.chain[i];
-                    const previous = this.chain[i - 1];
-                    if (current.previousHash !== previous.hash) return false;
-                }
-                return true;
-            }
-
-            getRollingWindow(size = 20) {
-                const start = Math.max(0, this.chain.length - size);
-                return this.chain.slice(start);
-            }
-
-            getStats() {
-                const activeNodes = Object.values(this.nodeBlocks).filter(b => b > 0).length;
-                const totalBlocks = this.chain.length;
-                const totalPulses = this.totalPulses;
-                const vaulted = this.vaulted;
-                const segment = this.segment;
-                const consensus = this.consensus;
-                const session = this.getSessionTime();
-                const nodesSynced = `${activeNodes}/${this.nodes.length}`;
-                return {
-                    totalBlocks,
-                    activeNodes: `${activeNodes}/${this.nodes.length}`,
-                    totalPulses,
-                    vaulted,
-                    segment,
-                    consensus: `${consensus}%`,
-                    session,
-                    nodesSynced,
-                    speed: this.speed,
-                    heat: this.heat
-                };
-            }
-
-            getSessionTime() {
-                const elapsed = Math.floor((Date.now() - this.sessionStart) / 1000);
-                const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-                const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-                const s = String(elapsed % 60).padStart(2, '0');
-                return `${h}:${m}:${s}`;
-            }
-
-            toJSON() {
-                return {
-                    chain: this.chain,
-                    totalBlocks: this.totalBlocks,
-                    totalPulses: this.totalPulses,
-                    vaulted: this.vaulted,
-                    segment: this.segment,
-                    consensus: this.consensus,
-                    session: this.getSessionTime(),
-                    nodesSynced: `${Object.values(this.nodeBlocks).filter(b => b > 0).length}/${this.nodes.length}`,
-                    nodeBlocks: this.nodeBlocks,
-                    timestamp: new Date().toISOString()
-                };
-            }
-        }
+    <script type="module">
+        import { Blockchain } from './blockchain.js';
 
         // ============================================================
         // INITIALIZE MEDUSSA
@@ -855,47 +604,38 @@
         // ============================================================
         function updateUI() {
             const stats = medussa.getStats();
-
-            // Clock
             const target = 369000000;
             const progress = (stats.totalBlocks / target) * 100;
+
             document.getElementById('clockDisplay').textContent = formatClock(stats.totalBlocks);
             document.getElementById('progressBar').style.width = `${Math.min(100, progress)}%`;
             document.getElementById('progressText').textContent =
                 `${progress.toFixed(4)}% Complete · ${stats.totalBlocks} / ${target}`;
 
-            // Speed + Heat
             document.getElementById('heatDisplay').textContent = stats.speed.toFixed(1);
             document.getElementById('heatText').textContent =
                 `Speed: ${stats.speed.toFixed(1)} blocks/second · Heat: ${stats.heat.toFixed(1)}%`;
             document.getElementById('heatBar').style.width = `${stats.heat}%`;
 
-            // Stats
             document.getElementById('blockCount').textContent = stats.totalBlocks;
             document.getElementById('activeNodes').textContent = stats.activeNodes;
             document.getElementById('totalPulses').textContent = stats.totalPulses.toLocaleString();
             document.getElementById('vaultedCount').textContent = stats.vaulted;
             document.getElementById('currentSegment').textContent = stats.segment;
             document.getElementById('consensusStatus').textContent = stats.consensus;
-
-            // Vault
             document.getElementById('vaultSize').textContent = stats.vaulted;
             document.getElementById('sessionTime').textContent = stats.session;
             document.getElementById('nodesSynced').textContent = stats.nodesSynced;
 
-            // Node Grid
             updateNodeGrid();
-
-            // Rolling Window
             updateRollingWindow();
 
-            // Status badge
             document.getElementById('statusBadge').textContent = medussa.isMining ? '● MINING' : '● PAUSED';
             document.getElementById('statusBadge').style.color = medussa.isMining ? '#00ff88' : '#ffaa00';
         }
 
         function formatClock(blocks) {
-            const seconds = Math.floor(blocks / 5); // 5 blocks/sec = real time
+            const seconds = Math.floor(blocks / 5);
             const d = String(Math.floor(seconds / 86400)).padStart(2, '0');
             const h = String(Math.floor((seconds % 86400) / 3600)).padStart(2, '0');
             const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
@@ -905,9 +645,8 @@
 
         function updateNodeGrid() {
             const grid = document.getElementById('nodeGrid');
-            const activeNodes = Object.values(medussa.nodeBlocks).filter(b => b > 0).length;
             grid.innerHTML = '';
-            medussa.nodes.forEach((name, i) => {
+            medussa.nodes.forEach((name) => {
                 const blocks = medussa.nodeBlocks[name] || 0;
                 const isActive = blocks > 0;
                 const isMining = medussa.isMining && isActive;
@@ -916,7 +655,7 @@
                 const card = document.createElement('div');
                 card.className = 'node-card';
                 card.innerHTML = `
-                    <div class="node-label">NODE ${i+1}</div>
+                    <div class="node-label">NODE</div>
                     <div class="node-status ${statusClass}">${statusSymbol}</div>
                     <div style="font-size:10px;color:#ffaa0088;">${name}</div>
                     <div class="node-blocks">${blocks} blocks</div>
@@ -958,7 +697,7 @@
         }
 
         // ============================================================
-        // MINING ENGINE (Real)
+        // MINING ENGINE
         // ============================================================
         async function mineNextBlock() {
             if (!medussa.isMining) return;
@@ -974,7 +713,6 @@
             medussa.isMining = true;
             document.getElementById('startBtn').textContent = '⛏️ MINING...';
             document.getElementById('startBtn').classList.add('active');
-            // Mine a block immediately, then every 1-3 seconds
             mineNextBlock();
             medussa.miningInterval = setInterval(mineNextBlock, 1000 + Math.random() * 2000);
         }
@@ -991,29 +729,53 @@
         }
 
         // ============================================================
+        // LOAD BLOCKCHAIN FROM FILE
+        // ============================================================
+        async function loadBlockchainFromFile() {
+            try {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                const file = await new Promise((resolve) => {
+                    input.onchange = () => resolve(input.files[0]);
+                    input.click();
+                });
+                if (file) {
+                    const loaded = await medussa.loadFromFile(file);
+                    if (loaded) {
+                        console.log('✅ Blockchain loaded successfully');
+                        updateUI();
+                        return true;
+                    }
+                }
+                return false;
+            } catch (e) {
+                console.warn('No blockchain.json found — creating new chain');
+                return false;
+            }
+        }
+
+        // ============================================================
         // EVENT LISTENERS
         // ============================================================
         document.addEventListener('DOMContentLoaded', async () => {
-            // Create genesis block
-            await medussa.createGenesis();
+            const loaded = await loadBlockchainFromFile();
+            if (!loaded || medussa.chain.length === 0) {
+                await medussa.createGenesis();
+            }
             updateUI();
 
-            // Start mining automatically
             setTimeout(() => {
                 startMining();
             }, 1000);
 
-            // Start button
             document.getElementById('startBtn').addEventListener('click', startMining);
-
-            // Pause button
             document.getElementById('pauseBtn').addEventListener('click', pauseMining);
 
-            // Export button
             document.getElementById('exportBtn').addEventListener('click', () => {
                 const data = medussa.toJSON();
                 const date = new Date().toISOString().slice(0, 10);
-                const loc = 'Vilnius'; // Or prompt user
+                const loc = 'Vilnius';
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -1023,7 +785,6 @@
                 URL.revokeObjectURL(url);
             });
 
-            // Clear button (reset UI only, not chain)
             document.getElementById('clearBtn').addEventListener('click', () => {
                 if (confirm('Clear display? (Chain data remains intact)')) {
                     document.getElementById('windowContent').innerHTML =
@@ -1031,13 +792,11 @@
                 }
             });
 
-            // Verify button
             document.getElementById('verifyBtn').addEventListener('click', () => {
                 const valid = medussa.isChainValid();
                 alert(`🔍 Chain verification: ${valid ? '✅ VALID' : '❌ INVALID'}`);
             });
 
-            // Reset nodes (clear all node block counts)
             document.getElementById('resetBtn').addEventListener('click', () => {
                 if (confirm('Reset all node block counts?')) {
                     medussa.nodes.forEach(n => medussa.nodeBlocks[n] = 0);
