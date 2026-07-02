@@ -55,4 +55,19 @@
 │  YOUR RIGHTS ARE PROTECTED.                                 │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
+# MEDUSSA Cryptocurrency Blockchain 🚀
+
+## Quick Start
+
+### Install & Run
+```bash
+# Clone or create the project
+mkdir medussa-crypto
+cd medussa-crypto
+
+# Copy the files
+# Save medussa-crypto.js, package.json, README.md
+
+# Install dependencies (none needed!)
+npm start
 
