@@ -2,9 +2,6 @@
 // blockchain.js — MEDUSSA REAL Blockchain Engine
 // ============================================================
 
-// ============================================================
-// SHA256 (Real Cryptographic Hash)
-// ============================================================
 async function sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -12,9 +9,6 @@ async function sha256(message) {
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// ============================================================
-// BLOCK CLASS
-// ============================================================
 class Block {
     constructor(index, timestamp, data, previousHash, nonce = 0) {
         this.index = index;
@@ -24,12 +18,10 @@ class Block {
         this.nonce = nonce;
         this.hash = '';
     }
-
     async calculateHash() {
         const payload = this.index + this.timestamp + this.data + this.previousHash + this.nonce;
         return await sha256(payload);
     }
-
     async mineBlock(difficulty) {
         const target = '0'.repeat(difficulty);
         while (true) {
@@ -40,9 +32,6 @@ class Block {
     }
 }
 
-// ============================================================
-// BLOCKCHAIN CLASS
-// ============================================================
 class Blockchain {
     constructor(difficulty = 4) {
         this.chain = [];
@@ -63,11 +52,10 @@ class Blockchain {
         this.heat = 25;
         this.genesisCreated = false;
         this.chainFile = 'blockchain.json';
+        this.medbRewardCounter = 0;
+        this.totalMedb = 0;
     }
 
-    // ============================================================
-    // GENESIS
-    // ============================================================
     async createGenesis() {
         if (this.genesisCreated || this.chain.length > 0) return;
         const genesis = new Block(
@@ -85,9 +73,6 @@ class Blockchain {
         await this.saveToFile();
     }
 
-    // ============================================================
-    // ADD BLOCK
-    // ============================================================
     async addBlock(nodeName, data) {
         const index = this.chain.length;
         const timestamp = Date.now();
@@ -103,56 +88,46 @@ class Blockchain {
         this.updateSpeed();
         this.updateHeat();
         this.updateConsensus();
+
+        // 3 BLOCKS = 1 MEDB
+        this.medbRewardCounter++;
+        if (this.medbRewardCounter === 3) {
+            this.medbRewardCounter = 0;
+            this.totalMedb++;
+            console.log(`🪙 +1 MEDB MINED! (Total: ${this.totalMedb} MEDB)`);
+        }
         await this.saveToFile();
     }
 
-    // ============================================================
-    // INTERNAL UPDATES
-    // ============================================================
     updateNodeBlock(nodeName) {
-        if (this.nodeBlocks[nodeName] !== undefined) {
-            this.nodeBlocks[nodeName]++;
-        }
+        if (this.nodeBlocks[nodeName] !== undefined) this.nodeBlocks[nodeName]++;
     }
-
     updateSpeed() {
         const now = Date.now();
         const diff = (now - this.lastBlockTime) / 1000;
         this.speed = diff > 0 ? Math.min(5.0, 1 / diff) : 0;
     }
-
     updateHeat() {
         const base = 25;
         const activity = this.isMining ? 15 : 0;
-        const random = Math.random() * 5;
-        this.heat = Math.min(45, base + activity + random);
+        this.heat = Math.min(45, base + activity + Math.random() * 5);
     }
-
     updateConsensus() {
         const active = Object.values(this.nodeBlocks).filter(b => b > 0).length;
         this.consensus = Math.round((active / this.nodes.length) * 100);
         if (this.consensus < 60) this.consensus = 60;
     }
-
-    // ============================================================
-    // GETTERS
-    // ============================================================
-    getLatestBlock() {
-        return this.chain[this.chain.length - 1];
-    }
-
+    getLatestBlock() { return this.chain[this.chain.length - 1]; }
     isChainValid() {
         for (let i = 1; i < this.chain.length; i++) {
             if (this.chain[i].previousHash !== this.chain[i - 1].hash) return false;
         }
         return true;
     }
-
     getRollingWindow(size = 20) {
         const start = Math.max(0, this.chain.length - size);
         return this.chain.slice(start);
     }
-
     getStats() {
         const activeNodes = Object.values(this.nodeBlocks).filter(b => b > 0).length;
         return {
@@ -165,10 +140,10 @@ class Blockchain {
             session: this.getSessionTime(),
             nodesSynced: `${activeNodes}/${this.nodes.length}`,
             speed: this.speed,
-            heat: this.heat
+            heat: this.heat,
+            totalMedb: this.totalMedb
         };
     }
-
     getSessionTime() {
         const elapsed = Math.floor((Date.now() - this.sessionStart) / 1000);
         const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
@@ -176,7 +151,6 @@ class Blockchain {
         const s = String(elapsed % 60).padStart(2, '0');
         return `${h}:${m}:${s}`;
     }
-
     toJSON() {
         return {
             chain: this.chain,
@@ -188,13 +162,11 @@ class Blockchain {
             session: this.getSessionTime(),
             nodesSynced: `${Object.values(this.nodeBlocks).filter(b => b > 0).length}/${this.nodes.length}`,
             nodeBlocks: this.nodeBlocks,
+            totalMedb: this.totalMedb,
             timestamp: new Date().toISOString()
         };
     }
 
-    // ============================================================
-    // SAVE / LOAD blockchain.json (via File System API)
-    // ============================================================
     async saveToFile() {
         try {
             const data = this.toJSON();
@@ -217,9 +189,7 @@ class Blockchain {
             a.download = this.chainFile;
             a.click();
             URL.revokeObjectURL(url);
-        } catch (e) {
-            console.warn('Auto-save failed:', e);
-        }
+        } catch (e) { console.warn('Save failed:', e); }
     }
 
     async loadFromFile(file) {
@@ -233,6 +203,7 @@ class Blockchain {
             this.segment = data.segment || 1;
             this.consensus = data.consensus || 100;
             this.nodeBlocks = data.nodeBlocks || {};
+            this.totalMedb = data.totalMedb || 0;
             this.nodes.forEach(n => { if (!this.nodeBlocks[n]) this.nodeBlocks[n] = 0; });
             this.genesisCreated = this.chain.length > 0;
             this.sessionStart = Date.now();
@@ -241,13 +212,10 @@ class Blockchain {
             }
             return true;
         } catch (e) {
-            console.warn('Failed to load blockchain.json:', e);
+            console.warn('Failed to load:', e);
             return false;
         }
     }
 }
 
-// ============================================================
-// EXPORT FOR USE IN HTML
-// ============================================================
 export { Blockchain, Block, sha256 };
