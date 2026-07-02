@@ -1,427 +1,286 @@
 <?php
 // ============================================
-// MEDUSSA - Main Dashboard
+// MEDUSA - Daily Backup System
 // ============================================
-require_once 'config.php';
 
-// Auto-create today's file
-createTodayFile();
+// Configuration
+define('DATA_DIR', 'medusa_backups/');
+define('FILE_PREFIX', '1000019890_');
+date_default_timezone_set('Asia/Dhaka');
+
+// Create directory
+if (!file_exists(DATA_DIR)) {
+    mkdir(DATA_DIR, 0777, true);
+}
+
+// Get location
+function getLocation() {
+    try {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        if ($ip == '127.0.0.1' || $ip == '::1') {
+            return 'Dhaka_BD';
+        }
+        $url = "http://ip-api.com/json/{$ip}?fields=city,countryCode";
+        $data = json_decode(file_get_contents($url), true);
+        if (isset($data['city'])) {
+            return $data['city'] . '_' . $data['countryCode'];
+        }
+    } catch (Exception $e) {}
+    return 'Dhaka_BD';
+}
+
+// Get all dates
+function getDates() {
+    $files = glob(DATA_DIR . '*.json');
+    $dates = [];
+    foreach ($files as $file) {
+        if (preg_match('/' . FILE_PREFIX . '(\d{4}-\d{2}-\d{2})_/', basename($file), $m)) {
+            $dates[] = $m[1];
+        }
+    }
+    sort($dates);
+    return $dates;
+}
+
+// Create today's file
+function createToday() {
+    $today = date('Y-m-d');
+    $loc = getLocation();
+    $file = DATA_DIR . FILE_PREFIX . $today . '_' . $loc . '.json';
+    
+    if (file_exists($file)) return $file;
+    
+    $data = [
+        "owner" => "Selim Ahmed",
+        "email" => "amit.khanna.1082@gmail.com",
+        "copyright" => "© 2026 Selim Ahmed",
+        "patent" => "Pending",
+        "system" => "MEDUSA",
+        "date" => $today,
+        "location" => $loc,
+        "timestamp" => round(microtime(true) * 1000),
+        "data" => [
+            "values" => [0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+            "winners" => [false,false,false,false,false,false,false,true,false,false,false,false,false,false,1]
+        ]
+    ];
+    
+    file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
+    return $file;
+}
+
+// Create today
+createToday();
 
 // Get data
-$dates = getAvailableDates();
+$dates = getDates();
 $today = date('Y-m-d');
-$location = getUserLocation();
-$totalFiles = count($dates);
+$loc = getLocation();
+$total = count($dates);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEDUSSA - Daily Backups</title>
+    <title>MEDUSA - Daily Backups</title>
     <style>
-        /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            font-family: Arial, sans-serif;
+            background: #0a0a0a;
             min-height: 100vh;
             padding: 20px;
+            color: #fff;
         }
-        
-        /* ===== CONTAINER ===== */
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
+            background: #141414;
+            border-radius: 16px;
             padding: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            border: 1px solid #2a2a2a;
         }
-        
-        /* ===== HEADER ===== */
         .header {
             text-align: center;
-            padding-bottom: 25px;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #2a2a2a;
+            margin-bottom: 25px;
         }
-        
-        .header .logo {
-            font-size: 48px;
+        .header h1 {
+            font-size: 42px;
             font-weight: 900;
-            background: linear-gradient(135deg, #f093fb, #f5576c, #4facfe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 3px;
-        }
-        
-        .header .subtitle {
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
-            margin-top: 5px;
+            color: #00d4ff;
             letter-spacing: 2px;
         }
-        
-        /* ===== STATS ===== */
+        .header p {
+            color: #666;
+            font-size: 13px;
+            margin-top: 5px;
+        }
         .stats {
             display: flex;
             justify-content: space-around;
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.05);
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #2a2a2a;
         }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-item .number {
-            font-size: 26px;
-            font-weight: bold;
-            color: #4facfe;
-        }
-        
-        .stat-item .label {
-            font-size: 11px;
-            color: rgba(255,255,255,0.4);
-            margin-top: 3px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        /* ===== TODAY BANNER ===== */
-        .today-banner {
-            background: linear-gradient(135deg, rgba(79,172,254,0.2), rgba(245,87,108,0.2));
-            border: 1px solid rgba(79,172,254,0.3);
-            color: white;
+        .stats div { text-align: center; }
+        .stats .num { font-size: 24px; font-weight: bold; color: #00d4ff; }
+        .stats .lbl { font-size: 11px; color: #555; margin-top: 3px; text-transform: uppercase; }
+        .today-box {
+            background: linear-gradient(135deg, #00d4ff22, #00d4ff11);
+            border: 1px solid #00d4ff44;
+            border-radius: 12px;
             padding: 18px 22px;
-            border-radius: 14px;
             margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
         }
-        
-        .today-banner .today-label {
-            font-weight: bold;
-            font-size: 18px;
-            color: #4facfe;
-        }
-        
-        .today-banner .today-date {
-            font-size: 14px;
-            color: rgba(255,255,255,0.6);
-        }
-        
-        .today-banner .btn-download {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            color: #0f0c29;
+        .today-box .label { font-weight: bold; color: #00d4ff; font-size: 17px; }
+        .today-box .date { color: #888; font-size: 14px; }
+        .btn {
+            background: #00d4ff;
+            color: #000;
             padding: 10px 24px;
-            border-radius: 10px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
             font-size: 14px;
-            transition: transform 0.2s;
+            transition: 0.3s;
             display: inline-block;
         }
-        
-        .today-banner .btn-download:hover {
-            transform: scale(1.05);
-        }
-        
-        /* ===== DATE LIST ===== */
+        .btn:hover { transform: scale(1.05); background: #00bbee; }
         .date-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
-        
         .date-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 12px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
             padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
-        
-        .date-item:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(79,172,254,0.3);
-            transform: translateX(5px);
-        }
-        
-        .date-item.today {
-            background: rgba(79,172,254,0.1);
-            border-color: rgba(79,172,254,0.4);
-            border-width: 2px;
-        }
-        
-        .date-item .date-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .date-item .date-text {
-            font-weight: 600;
-            font-size: 15px;
-            color: white;
-        }
-        
-        .date-item .day-name {
-            font-size: 13px;
-            color: rgba(255,255,255,0.3);
-        }
-        
+        .date-item:hover { border-color: #00d4ff44; }
+        .date-item.today { border-color: #00d4ff88; background: #00d4ff11; }
+        .date-item .info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .date-item .info .d { font-weight: 600; color: #fff; }
+        .date-item .info .day { color: #555; font-size: 13px; }
         .date-item .badge {
-            padding: 3px 12px;
+            padding: 2px 12px;
             border-radius: 20px;
             font-size: 10px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
-        
-        .date-item .badge.today {
-            background: #4facfe;
-            color: #0f0c29;
-        }
-        
-        .date-item .badge.past {
-            background: rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.4);
-        }
-        
-        .date-item .badge.future {
-            background: rgba(245,87,108,0.2);
-            color: #f5576c;
-        }
-        
-        .date-item .file-size {
-            font-size: 11px;
-            color: rgba(255,255,255,0.25);
-        }
-        
-        .date-item .btn-download {
-            background: rgba(79,172,254,0.15);
-            color: #4facfe;
-            border: 1px solid rgba(79,172,254,0.2);
-            padding: 7px 18px;
-            border-radius: 8px;
+        .badge.today { background: #00d4ff; color: #000; }
+        .badge.past { background: #2a2a2a; color: #555; }
+        .badge.future { background: #ff444422; color: #ff4444; }
+        .date-item .size { color: #444; font-size: 11px; }
+        .btn-sm {
+            background: #00d4ff22;
+            color: #00d4ff;
+            border: 1px solid #00d4ff44;
+            padding: 6px 16px;
+            border-radius: 6px;
             text-decoration: none;
             font-size: 13px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
-        
-        .date-item .btn-download:hover {
-            background: #4facfe;
-            color: #0f0c29;
-        }
-        
-        .date-item .btn-download.disabled {
-            background: rgba(255,255,255,0.05);
-            color: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.05);
-            cursor: not-allowed;
-        }
-        
-        /* ===== FOOTER ===== */
+        .btn-sm:hover { background: #00d4ff; color: #000; }
+        .btn-sm.disabled { opacity: 0.3; cursor: not-allowed; }
         .footer {
             text-align: center;
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: rgba(255,255,255,0.2);
+            border-top: 1px solid #2a2a2a;
+            color: #333;
             font-size: 12px;
-            letter-spacing: 1px;
         }
-        
-        .footer .medussa {
-            color: rgba(79,172,254,0.3);
-            font-weight: bold;
-        }
-        
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: rgba(255,255,255,0.3);
-        }
-        
-        .empty-state .emoji {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-        
-        /* ===== RESPONSIVE ===== */
+        .footer span { color: #00d4ff44; font-weight: bold; }
         @media (max-width: 600px) {
-            .container {
-                padding: 16px;
-            }
-            
-            .header .logo {
-                font-size: 32px;
-            }
-            
-            .date-item {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            
-            .date-item .date-info {
-                width: 100%;
-            }
-            
-            .date-item .btn-download {
-                width: 100%;
-                text-align: center;
-                padding: 10px;
-            }
-            
-            .stats {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .today-banner {
-                flex-direction: column;
-                text-align: center;
-                gap: 12px;
-            }
-        }
-        
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .date-item {
-            animation: fadeInUp 0.4s ease forwards;
-            opacity: 0;
+            .container { padding: 16px; }
+            .header h1 { font-size: 30px; }
+            .stats { flex-direction: column; gap: 10px; }
+            .today-box { flex-direction: column; text-align: center; gap: 12px; }
+            .date-item { flex-wrap: wrap; gap: 8px; }
+            .date-item .info { width: 100%; }
+            .btn-sm { width: 100%; text-align: center; padding: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- HEADER -->
         <div class="header">
-            <div class="logo">⚡ MEDUSSA</div>
-            <div class="subtitle">Daily Blockchain Backups • Selim Ahmed</div>
+            <h1>⚡ MEDUSA</h1>
+            <p>Daily Backup System • Selim Ahmed</p>
         </div>
         
-        <!-- STATS -->
         <div class="stats">
-            <div class="stat-item">
-                <div class="number"><?php echo $totalFiles; ?></div>
-                <div class="label">📄 Total Files</div>
-            </div>
-            <div class="stat-item">
-                <div class="number"><?php echo date('M j, Y'); ?></div>
-                <div class="label">📅 Today</div>
-            </div>
-            <div class="stat-item">
-                <div class="number"><?php echo $location; ?></div>
-                <div class="label">📍 Location</div>
-            </div>
+            <div><div class="num"><?php echo $total; ?></div><div class="lbl">📄 Files</div></div>
+            <div><div class="num"><?php echo date('M j'); ?></div><div class="lbl">📅 Today</div></div>
+            <div><div class="num"><?php echo $loc; ?></div><div class="lbl">📍 Location</div></div>
         </div>
         
-        <!-- TODAY BANNER -->
-        <div class="today-banner">
+        <div class="today-box">
             <div>
-                <div class="today-label">✅ Today's File Ready</div>
-                <div class="today-date"><?php echo date('l, F j, Y'); ?></div>
+                <div class="label">✅ Today's File</div>
+                <div class="date"><?php echo date('l, F j, Y'); ?></div>
             </div>
-            <a href="download.php?date=<?php echo $today; ?>" class="btn-download">
-                ⬇️ Download Today
-            </a>
+            <a href="download.php?date=<?php echo $today; ?>" class="btn">⬇ Download</a>
         </div>
         
-        <!-- DATE LIST -->
         <div class="date-list">
             <?php if (empty($dates)): ?>
-                <div class="empty-state">
-                    <div class="emoji">📂</div>
-                    <p>No backup files found yet.</p>
-                    <p style="font-size: 13px; margin-top: 8px; opacity: 0.6;">Today's file will be created automatically.</p>
+                <div style="text-align:center;padding:40px;color:#444;">
+                    <div style="font-size:40px;">📂</div>
+                    <p style="margin-top:10px;">No files yet</p>
                 </div>
             <?php else: ?>
-                <?php 
-                $delay = 0;
-                foreach (array_reverse($dates) as $date): 
-                    $isToday = isToday($date);
-                    $displayDate = formatDisplayDate($date);
-                    $dayName = date('D', strtotime($date));
-                    $file = getFileForDate($date);
-                    $fileExists = $file && file_exists(DATA_DIR . $file);
-                    $fileSize = $fileExists ? round(filesize(DATA_DIR . $file) / 1024, 1) . ' KB' : 'N/A';
-                    
-                    // Badge
-                    if ($isToday) {
-                        $badge = '<span class="badge today">🔥 Today</span>';
-                    } elseif (strtotime($date) > strtotime('today')) {
-                        $badge = '<span class="badge future">⏳ Future</span>';
-                    } else {
-                        $badge = '<span class="badge past">📁 Past</span>';
+                <?php foreach (array_reverse($dates) as $date):
+                    $isToday = ($date == $today);
+                    $display = date('F j, Y', strtotime($date));
+                    $day = date('D', strtotime($date));
+                    $file = DATA_DIR . FILE_PREFIX . $date . '_' . $loc . '.json';
+                    if (!file_exists($file)) {
+                        $files = glob(DATA_DIR . FILE_PREFIX . $date . '_*.json');
+                        $file = !empty($files) ? $files[0] : null;
                     }
+                    $exists = $file && file_exists($file);
+                    $size = $exists ? round(filesize($file) / 1024, 1) . ' KB' : 'N/A';
+                    $badge = $isToday ? '<span class="badge today">🔥 Today</span>' : 
+                             (strtotime($date) > strtotime('today') ? '<span class="badge future">⏳ Future</span>' : 
+                             '<span class="badge past">📁 Past</span>');
                 ?>
-                <div class="date-item <?php echo $isToday ? 'today' : ''; ?>" style="animation-delay: <?php echo $delay; ?>s;">
-                    <div class="date-info">
-                        <span class="date-text"><?php echo $displayDate; ?></span>
-                        <span class="day-name">(<?php echo $dayName; ?>)</span>
+                <div class="date-item <?php echo $isToday ? 'today' : ''; ?>">
+                    <div class="info">
+                        <span class="d"><?php echo $display; ?></span>
+                        <span class="day">(<?php echo $day; ?>)</span>
                         <?php echo $badge; ?>
-                        <?php if ($fileExists): ?>
-                            <span class="file-size">📦 <?php echo $fileSize; ?></span>
-                        <?php endif; ?>
+                        <span class="size">📦 <?php echo $size; ?></span>
                     </div>
-                    <?php if ($fileExists): ?>
-                        <a href="download.php?date=<?php echo $date; ?>" class="btn-download">
-                            ⬇️ Download
-                        </a>
+                    <?php if ($exists): ?>
+                        <a href="download.php?date=<?php echo $date; ?>" class="btn-sm">⬇ Download</a>
                     <?php else: ?>
-                        <span class="btn-download disabled">❌ Missing</span>
+                        <span class="btn-sm disabled">❌ Missing</span>
                     <?php endif; ?>
                 </div>
-                <?php 
-                $delay += 0.05;
-                endforeach; 
-                ?>
+                <?php endforeach; ?>
             <?php endif; ?>
         </div>
         
-        <!-- FOOTER -->
         <div class="footer">
-            <span class="medussa">⚡ MEDUSSA</span> • © 2026 Selim Ahmed • Patent Pending
-            <br>
-            <span style="font-size: 10px; opacity: 0.5;">Auto-created daily • Location: <?php echo $location; ?></span>
+            <span>⚡ MEDUSA</span> • © 2026 Selim Ahmed • Patent Pending
         </div>
     </div>
-    
-    <script>
-        // Auto-refresh every 5 minutes
-        setTimeout(() => location.reload(), 300000);
-    </script>
 </body>
 </html>
