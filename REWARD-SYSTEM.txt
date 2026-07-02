@@ -1,10 +1,12 @@
+MEDUSSA ™
+REWARDS SYSTEM 
+---
 
-
-📄 REWARD-SYSTEM.txt
+📄 REWARD-SYSTEM.txt (UPDATED)
 
 Medussa (MEDB) – Reward System (Idiot-Proof Version)
 
-Updated: Base Reward = 0.0003% for Everyone (Buyers & Miners)
+Updated: Total Supply Locked + MED-S Sub-Units Added
 
 ---
 
@@ -18,7 +20,36 @@ SECTION 1: THE ONLY RULES YOU NEED TO KNOW
 4. Everyone wins, but early adopters win more.
 
 ═══════════════════════════════════════════════════════════════
-SECTION 2: REWARD FOR GOLD BUYERS (BY PURCHASE NUMBER)
+SECTION 2: TOTAL SUPPLY & DIVISIBILITY (NEW)
+═══════════════════════════════════════════════════════════════
+
+TOTAL SUPPLY (LOCKED):
+
+9,639,639 MEDB (maximum ever created)
+This number is fixed forever. No more can ever be minted.
+
+DIVISIBILITY:
+
+1 MEDB = 963,963,963 sub-units (called MED-S)
+
+SMALLEST UNIT:
+
+1 MED-S = 1 / 963,963,963 of 1 MEDB
+(You can send as little as 1 MED-S)
+
+EXAMPLE:
+
+· 1 MEDB = 963,963,963 MED-S
+· 0.5 MEDB = 481,981,981.5 MED-S
+· 0.000000001 MEDB = ~1 MED-S
+
+Think of it like Bitcoin:
+
+· 1 BTC = 100,000,000 satoshis
+· 1 MEDB = 963,963,963 MED-S
+
+═══════════════════════════════════════════════════════════════
+SECTION 3: REWARD FOR GOLD BUYERS (BY PURCHASE NUMBER)
 ═══════════════════════════════════════════════════════════════
 
 You are the... Your reward rate
@@ -37,7 +68,7 @@ You are the... Your reward rate
 After 100,000 purchases, the reward stays at 0.0003% forever.
 
 ═══════════════════════════════════════════════════════════════
-SECTION 3: REWARD FOR MINERS (BLOCK CREATORS)
+SECTION 4: REWARD FOR MINERS (BLOCK CREATORS)
 ═══════════════════════════════════════════════════════════════
 
 Who Reward
@@ -48,7 +79,7 @@ Frequency Every block you mine
 This reward never decreases — it stays at 0.0003% forever.
 
 ═══════════════════════════════════════════════════════════════
-SECTION 4: EXAMPLES (IDIOT-PROOF)
+SECTION 5: EXAMPLES (IDIOT-PROOF)
 ═══════════════════════════════════════════════════════════════
 
 EXAMPLE 1: GOLD BUYER (EARLY)
@@ -81,9 +112,21 @@ EXAMPLE 5: MINER (MANY BLOCKS)
 · Total block reward = 1,000 MEDB
 · Miner reward = 0.0003% × 1,000 = 0.003 MEDB
 
+EXAMPLE 6: MED-S (SUB-UNITS)
+
+· 1 MEDB = 963,963,963 MED-S
+· If you send 0.000001 MEDB = ~964 MED-S
+· Minimum transaction = 1 MED-S
+
 ═══════════════════════════════════════════════════════════════
-SECTION 5: CHEAT SHEET (PRINT THIS)
+SECTION 6: CHEAT SHEET (PRINT THIS)
 ═══════════════════════════════════════════════════════════════
+
+TOTAL SUPPLY:
+
+· Maximum MEDB: 9,639,639 (locked forever)
+· 1 MEDB = 963,963,963 MED-S
+· Smallest unit: 1 MED-S
 
 GOLD BUYER REWARDS:
 
@@ -107,8 +150,17 @@ Every block 0.0003% of block reward
 Always Never changes
 
 ═══════════════════════════════════════════════════════════════
-SECTION 6: FAQ (FREQUENTLY ASKED QUESTIONS)
+SECTION 7: FAQ (FREQUENTLY ASKED QUESTIONS)
 ═══════════════════════════════════════════════════════════════
+
+Q: What is the total supply of MEDB?
+A: 9,639,639 MEDB. Locked forever. No more can be created.
+
+Q: What is MED-S?
+A: The smallest unit of MEDB. 1 MEDB = 963,963,963 MED-S.
+
+Q: Can I send less than 1 MEDB?
+A: Yes — you can send as little as 1 MED-S.
 
 Q: Do gold buyers get a reward?
 A: Yes — starts high, ends at 0.0003%.
@@ -129,7 +181,7 @@ Q: What if I'm both a miner and a gold buyer?
 A: You get both rewards. They stack.
 
 ═══════════════════════════════════════════════════════════════
-SECTION 7: FORMULA (FOR GEEKS ONLY — YOU DON'T NEED THIS)
+SECTION 8: FORMULA (FOR GEEKS ONLY — YOU DON'T NEED THIS)
 ═══════════════════════════════════════════════════════════════
 
 Gold buyer reward:
@@ -139,10 +191,18 @@ Where H = total gold purchases so far
 Miner reward:
 R_miner = 0.0003% (fixed)
 
+Total supply:
+S_total = 9,639,639 MEDB (locked)
+
+Sub-units:
+1 MEDB = 963,963,963 MED-S
+
 ═══════════════════════════════════════════════════════════════
-SECTION 8: FINAL NOTE
+SECTION 9: FINAL NOTE
 ═══════════════════════════════════════════════════════════════
 
+· Total supply is fixed at 9,639,639 MEDB.
+· 1 MEDB = 963,963,963 MED-S.
 · Gold buyers get rewarded for being early.
 · Miners get rewarded for securing the network.
 · Both get at least 0.0003% forever.
@@ -151,6 +211,18 @@ SECTION 8: FINAL NOTE
 ═══════════════════════════════════════════════════════════════
 END OF REWARD-SYSTEM.txt
 ═══════════════════════════════════════════════════════════════
+
+---
+
+✅ Summary of Changes
+
+Added Details
+Total supply 9,639,639 MEDB (locked forever)
+Sub-unit name MED-S
+Divisibility 1 MEDB = 963,963,963 MED-S
+Examples Added MED-S transaction example
+FAQ Added Q&A for supply and MED-S
+Cheat sheet Updated with supply & divisibility
 
 ---
 
