@@ -1,6 +1,10 @@
 <?php
-// Configuration File
-define('DATA_DIR', 'daily_backups/');
+// ============================================
+// MEDUSSA - Configuration File
+// ============================================
+
+// Directory Settings
+define('DATA_DIR', 'medussa_backups/');
 define('FILE_PREFIX', '1000019890_');
 define('TIMEZONE', 'Asia/Dhaka');
 
@@ -12,13 +16,16 @@ if (!file_exists(DATA_DIR)) {
     mkdir(DATA_DIR, 0777, true);
 }
 
-// Get user location from IP
+// ============================================
+// Get User Location from IP
+// ============================================
 function getUserLocation() {
     try {
         $ip = $_SERVER['REMOTE_ADDR'];
+        
         // Check if localhost
         if ($ip == '127.0.0.1' || $ip == '::1') {
-            return 'Dhaka_BD'; // Default
+            return 'Dhaka_BD';
         }
         
         $url = "http://ip-api.com/json/{$ip}?fields=city,countryCode";
@@ -29,19 +36,20 @@ function getUserLocation() {
             return $data['city'] . '_' . $data['countryCode'];
         }
     } catch (Exception $e) {
-        // Fallback to default
+        // Fallback
     }
     return 'Dhaka_BD';
 }
 
-// Get all available dates
+// ============================================
+// Get All Available Dates
+// ============================================
 function getAvailableDates() {
     $files = glob(DATA_DIR . FILE_PREFIX . '*.json');
     $dates = [];
     
     foreach ($files as $file) {
         $filename = basename($file);
-        // Extract date from filename: 1000019890_2026-07-02_Dhaka_BD.json
         if (preg_match('/' . FILE_PREFIX . '(\d{4}-\d{2}-\d{2})_/', $filename, $matches)) {
             $dates[] = $matches[1];
         }
@@ -51,7 +59,9 @@ function getAvailableDates() {
     return $dates;
 }
 
-// Create today's file
+// ============================================
+// Create Today's MEDUSSA File
+// ============================================
 function createTodayFile() {
     $today = date('Y-m-d');
     $location = getUserLocation();
@@ -62,16 +72,24 @@ function createTodayFile() {
         return $filename;
     }
     
-    // Default data structure
+    // ============================================
+    // MEDUSSA Data Structure
+    // ============================================
     $data = [
         "owner" => "Selim Ahmed",
         "email" => "amit.khanna.1082@gmail.com",
         "copyright" => "© 2026 Selim Ahmed",
         "patent" => "Pending",
+        "system" => "MEDUSSA",
         "date" => $today,
         "location" => $location,
         "timestamp" => round(microtime(true) * 1000),
+        
+        // ========================================
+        // MEDUSSA Blockchain Data
+        // ========================================
         "blockchain" => [
+            // ---------- ALPHA NODE ----------
             [
                 "index" => 0,
                 "timestamp" => round(microtime(true) * 1000),
@@ -89,6 +107,8 @@ function createTodayFile() {
                     "winners" => [false,false,false,false,false,false,false,true,false,false,false,false,false,false,1]
                 ]
             ],
+            
+            // ---------- IOTA NODE ----------
             [
                 "index" => 1,
                 "timestamp" => round(microtime(true) * 1000),
@@ -114,6 +134,8 @@ function createTodayFile() {
                     ]
                 ]
             ],
+            
+            // ---------- BETA NODE ----------
             [
                 "index" => 2,
                 "timestamp" => round(microtime(true) * 1000),
@@ -144,22 +166,21 @@ function createTodayFile() {
     return $filename;
 }
 
-// Format date for display
+// ============================================
+// Helper Functions
+// ============================================
 function formatDisplayDate($date) {
     return date('F j, Y', strtotime($date));
 }
 
-// Check if date is today
 function isToday($date) {
     return $date == date('Y-m-d');
 }
 
-// Get file for specific date
 function getFileForDate($date) {
     $location = getUserLocation();
     $filename = DATA_DIR . FILE_PREFIX . $date . '_' . $location . '.json';
     
-    // Try with different locations if not found
     if (!file_exists($filename)) {
         $files = glob(DATA_DIR . FILE_PREFIX . $date . '_*.json');
         if (!empty($files)) {
