@@ -5,533 +5,146 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MEDUSSA REAL · 9-Node Blockchain</title>
     <style>
-        /* Same styles as before — keep them here or in a separate .css file */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #0a0a0f;
-            color: #00ff88;
-            font-family: 'Courier New', monospace;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ffaa0044;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .header h1 {
-            font-size: 36px;
-            color: #ffaa00;
-            text-shadow: 0 0 40px #ffaa0044;
-            letter-spacing: 6px;
-        }
-        .header h1 span {
-            color: #00ff88;
-        }
-        .header .subtitle {
-            font-size: 14px;
-            color: #ffaa0066;
-            letter-spacing: 3px;
-        }
-        .header .status {
-            padding: 8px 20px;
-            border-radius: 20px;
-            border: 1px solid #ffaa00;
-            background: #ffaa0022;
-            font-size: 14px;
-            animation: pulse 2s infinite;
-        }
-        .license-banner {
-            background: #1a1a24;
-            border: 2px solid #ffaa0044;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        .license-banner .license-text {
-            font-size: 12px;
-            color: #ffaa0088;
-            letter-spacing: 1px;
-        }
-        .license-banner .license-text strong {
-            color: #ffaa00;
-        }
-        .license-banner .license-text .owner {
-            color: #00ff88;
-            font-weight: bold;
-        }
-        .dial-heat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-        .clock-dial {
-            background: #1a1a24;
-            border: 2px solid #ffaa0044;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .clock-dial .dial-label {
-            font-size: 11px;
-            color: #ffaa0066;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .clock-dial .dial-display {
-            font-size: 48px;
-            font-weight: bold;
-            color: #ffaa00;
-            font-family: 'Courier New', monospace;
-            margin: 10px 0;
-            letter-spacing: 4px;
-            text-shadow: 0 0 30px #ffaa0033;
-        }
-        .clock-dial .dial-sub {
-            font-size: 14px;
-            color: #ffaa0088;
-        }
-        .clock-dial .dial-progress {
-            width: 100%;
-            height: 8px;
-            background: #0a0a0f;
-            border-radius: 4px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        .clock-dial .dial-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ffaa00, #00ff88);
-            border-radius: 4px;
-            transition: width 1s ease;
-            width: 0%;
-        }
-        .speed-heat {
-            background: #1a1a24;
-            border: 2px solid #00ff8844;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .speed-heat .heat-label {
-            font-size: 11px;
-            color: #00ff8866;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .speed-heat .heat-display {
-            font-size: 48px;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            margin: 10px 0;
-        }
-        .speed-heat .heat-sub {
-            font-size: 14px;
-            color: #00ff8866;
-        }
-        .speed-heat .heat-bar {
-            width: 100%;
-            height: 8px;
-            background: #0a0a0f;
-            border-radius: 4px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        .speed-heat .heat-bar-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 1s ease;
-            width: 0%;
-        }
-        .node-grid {
-            display: grid;
-            grid-template-columns: repeat(9, 1fr);
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-        .node-card {
-            background: #1a1a24;
-            border: 1px solid #ffaa0033;
-            border-radius: 8px;
-            padding: 12px 10px;
-            text-align: center;
-        }
-        .node-card .node-label {
-            font-size: 9px;
-            color: #ffaa0066;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .node-card .node-status {
-            font-size: 20px;
-            margin-top: 4px;
-        }
-        .node-card .node-status.online {
-            color: #00ff88;
-        }
-        .node-card .node-status.offline {
-            color: #ff3355;
-        }
-        .node-card .node-status.mining {
-            color: #ffaa00;
-            animation: pulse 1s infinite;
-        }
-        .node-card .node-blocks {
-            font-size: 10px;
-            color: #ffaa0088;
-            margin-top: 4px;
-        }
-        .rolling-window {
-            background: #0a0a0f;
-            border: 2px solid #ffaa0044;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            max-height: 350px;
-            overflow-y: auto;
-        }
-        .rolling-window .window-title {
-            font-size: 11px;
-            color: #ffaa0066;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-        .rolling-window .window-content {
-            font-size: 11px;
-            color: #ffaa00;
-            font-family: 'Courier New', monospace;
-            line-height: 1.8;
-        }
-        .rolling-window .window-content .block-line {
-            border-bottom: 1px solid #ffaa0011;
-            padding: 4px 0;
-            display: grid;
-            grid-template-columns: 40px 70px 60px 80px 80px 60px 60px;
-            gap: 5px;
-        }
-        .rolling-window .window-content .block-line .idx {
-            color: #ffaa00;
-            font-weight: bold;
-        }
-        .rolling-window .window-content .block-line .pulse {
-            color: #00ff88;
-        }
-        .rolling-window .window-content .block-line .decision.win {
-            color: #00ff88;
-        }
-        .rolling-window .window-content .block-line .decision.lose {
-            color: #ff3355;
-        }
-        .rolling-window .window-content .block-line .hash {
-            color: #ffaa0066;
-            font-size: 9px;
-        }
-        .rolling-window .window-content .block-line .node {
-            color: #8866ff;
-        }
-        .rolling-window .window-content .block-line .time {
-            color: #ffaa0044;
-            font-size: 9px;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .stat-card {
-            background: #1a1a24;
-            border: 1px solid #ffaa0033;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-        }
-        .stat-card .label {
-            font-size: 9px;
-            color: #ffaa0066;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .stat-card .value {
-            font-size: 22px;
-            font-weight: bold;
-            margin-top: 5px;
-            color: #ffaa00;
-        }
-        .stat-card .value.danger {
-            color: #ff3355;
-        }
-        .stat-card .value.warning {
-            color: #ffaa00;
-        }
-        .stat-card .value.speed {
-            color: #00ff88;
-            animation: speedPulse 1s infinite;
-        }
-        .stat-card .value.vault {
-            color: #ffaa00;
-            animation: securePulse 2s infinite;
-        }
-        .vault-status {
-            background: #1a1a24;
-            border: 2px solid #00ff8844;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .vault-status .vault-label {
-            font-size: 11px;
-            color: #00ff8866;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .vault-status .vault-value {
-            font-size: 20px;
-            font-weight: bold;
-            color: #00ff88;
-        }
-        .vault-status .vault-value .safe {
-            color: #00ff88;
-            animation: securePulse 2s infinite;
-        }
-        .vault-status .vault-value .heat {
-            color: #ffaa00;
-        }
-        .actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-        }
-        .actions button {
-            background: #ffaa0022;
-            border: 1px solid #ffaa00;
-            color: #ffaa00;
-            padding: 10px 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            font-weight: bold;
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 100px;
-        }
-        .actions button:hover {
-            background: #ffaa0044;
-            box-shadow: 0 0 30px #ffaa0022;
-        }
-        .actions button.danger {
-            border-color: #ff3355;
-            color: #ff3355;
-            background: #ff335522;
-        }
-        .actions button.danger:hover {
-            background: #ff335544;
-            box-shadow: 0 0 30px #ff335522;
-        }
-        .actions button.cosmic {
-            border-color: #00ff88;
-            color: #00ff88;
-            background: #00ff8822;
-        }
-        .actions button.cosmic:hover {
-            background: #00ff8844;
-            box-shadow: 0 0 30px #00ff8822;
-        }
-        .actions button.active {
-            border-color: #ff3355;
-            color: #ff3355;
-            background: #ff335522;
-            animation: pulse 1s infinite;
-        }
-        .footer {
-            text-align: center;
-            color: #ffaa0033;
-            font-size: 12px;
-            padding: 20px 0;
-            border-top: 1px solid #ffaa0033;
-        }
-        .footer .owner {
-            color: #00ff88;
-            font-weight: bold;
-        }
-        .rolling-window::-webkit-scrollbar {
-            width: 4px;
-        }
-        .rolling-window::-webkit-scrollbar-track {
-            background: #0a0a0f;
-        }
-        .rolling-window::-webkit-scrollbar-thumb {
-            background: #ffaa0033;
-            border-radius: 2px;
-        }
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-        @keyframes speedPulse {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.7;
-                transform: scale(1.05);
-            }
-        }
-        @keyframes securePulse {
-            0%,
-            100% {
-                opacity: 1;
-                text-shadow: 0 0 20px #00ff8844;
-            }
-            50% {
-                opacity: 0.7;
-                text-shadow: 0 0 40px #00ff8888;
-            }
-        }
-        @media (max-width: 992px) {
-            .dial-heat-grid {
-                grid-template-columns: 1fr;
-            }
-            .node-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .node-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .rolling-window .window-content .block-line {
-                grid-template-columns: 30px 50px 40px 60px 50px 40px 40px;
-                font-size: 9px;
-            }
-            .header h1 {
-                font-size: 28px;
-            }
-            .actions button {
-                min-width: 70px;
-                font-size: 10px;
-                padding: 6px 10px;
-            }
-            .vault-status {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .node-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .rolling-window {
-                max-height: 250px;
-            }
-            .rolling-window .window-content .block-line {
-                grid-template-columns: 20px 40px 30px 50px 40px 30px 30px;
-                font-size: 7px;
-                gap: 2px;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0f; color: #00ff88; font-family: 'Courier New', monospace; padding: 20px; min-height: 100vh; }
+        .container { max-width: 1600px; margin: 0 auto; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ffaa0044; padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
+        .header h1 { font-size: 36px; color: #ffaa00; text-shadow: 0 0 40px #ffaa0044; letter-spacing: 6px; }
+        .header h1 span { color: #00ff88; }
+        .header .subtitle { font-size: 14px; color: #ffaa0066; letter-spacing: 3px; }
+        .header .status { padding: 8px 20px; border-radius: 20px; border: 1px solid #ffaa00; background: #ffaa0022; font-size: 14px; animation: pulse 2s infinite; }
+
+        .license-banner { background: #1a1a24; border: 2px solid #ffaa0044; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; text-align: center; }
+        .license-banner .license-text { font-size: 12px; color: #ffaa0088; letter-spacing: 1px; }
+        .license-banner .license-text strong { color: #ffaa00; }
+        .license-banner .license-text .owner { color: #00ff88; font-weight: bold; }
+
+        .recalled-banner { background: #1a1a24; border: 2px solid #00ff88; border-radius: 8px; padding: 10px 20px; margin-bottom: 25px; text-align: center; display: none; }
+        .recalled-banner .recalled-text { color: #00ff88; font-size: 18px; letter-spacing: 2px; }
+        .recalled-banner .recalled-text span { color: #ffaa00; font-weight: bold; }
+
+        .dial-heat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .clock-dial { background: #1a1a24; border: 2px solid #ffaa0044; border-radius: 12px; padding: 20px; text-align: center; }
+        .clock-dial .dial-label { font-size: 11px; color: #ffaa0066; text-transform: uppercase; letter-spacing: 1px; }
+        .clock-dial .dial-display { font-size: 48px; font-weight: bold; color: #ffaa00; font-family: 'Courier New', monospace; margin: 10px 0; letter-spacing: 4px; text-shadow: 0 0 30px #ffaa0033; }
+        .clock-dial .dial-sub { font-size: 14px; color: #ffaa0088; }
+        .clock-dial .dial-progress { width: 100%; height: 8px; background: #0a0a0f; border-radius: 4px; margin-top: 10px; overflow: hidden; }
+        .clock-dial .dial-progress-bar { height: 100%; background: linear-gradient(90deg, #ffaa00, #00ff88); border-radius: 4px; transition: width 1s ease; width: 0%; }
+
+        .speed-heat { background: #1a1a24; border: 2px solid #00ff8844; border-radius: 12px; padding: 20px; text-align: center; }
+        .speed-heat .heat-label { font-size: 11px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
+        .speed-heat .heat-display { font-size: 48px; font-weight: bold; font-family: 'Courier New', monospace; margin: 10px 0; }
+        .speed-heat .heat-sub { font-size: 14px; color: #00ff8866; }
+        .speed-heat .heat-bar { width: 100%; height: 8px; background: #0a0a0f; border-radius: 4px; margin-top: 10px; overflow: hidden; }
+        .speed-heat .heat-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; width: 0%; }
+
+        .node-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 10px; margin-bottom: 25px; }
+        .node-card { background: #1a1a24; border: 1px solid #ffaa0033; border-radius: 8px; padding: 12px 10px; text-align: center; }
+        .node-card .node-label { font-size: 9px; color: #ffaa0066; text-transform: uppercase; letter-spacing: 1px; }
+        .node-card .node-status { font-size: 20px; margin-top: 4px; }
+        .node-card .node-status.online { color: #00ff88; }
+        .node-card .node-status.offline { color: #ff3355; }
+        .node-card .node-status.mining { color: #ffaa00; animation: pulse 1s infinite; }
+        .node-card .node-blocks { font-size: 10px; color: #ffaa0088; margin-top: 4px; }
+
+        .rolling-window { background: #0a0a0f; border: 2px solid #ffaa0044; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; max-height: 350px; overflow-y: auto; }
+        .rolling-window .window-title { font-size: 11px; color: #ffaa0066; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .rolling-window .window-title .recalled-tag { color: #00ff88; font-weight: bold; display: none; }
+        .rolling-window .window-content { font-size: 11px; color: #ffaa00; font-family: 'Courier New', monospace; line-height: 1.8; }
+        .rolling-window .window-content .block-line { border-bottom: 1px solid #ffaa0011; padding: 4px 0; display: grid; grid-template-columns: 40px 70px 60px 80px 80px 60px 60px; gap: 5px; }
+        .rolling-window .window-content .block-line .idx { color: #ffaa00; font-weight: bold; }
+        .rolling-window .window-content .block-line .pulse { color: #00ff88; }
+        .rolling-window .window-content .block-line .decision.win { color: #00ff88; }
+        .rolling-window .window-content .block-line .decision.lose { color: #ff3355; }
+        .rolling-window .window-content .block-line .hash { color: #ffaa0066; font-size: 9px; }
+        .rolling-window .window-content .block-line .node { color: #8866ff; }
+        .rolling-window .window-content .block-line .time { color: #ffaa0044; font-size: 9px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #1a1a24; border: 1px solid #ffaa0033; border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card .label { font-size: 9px; color: #ffaa0066; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-card .value { font-size: 22px; font-weight: bold; margin-top: 5px; color: #ffaa00; }
+        .stat-card .value.danger { color: #ff3355; }
+        .stat-card .value.warning { color: #ffaa00; }
+        .stat-card .value.speed { color: #00ff88; animation: speedPulse 1s infinite; }
+        .stat-card .value.vault { color: #ffaa00; animation: securePulse 2s infinite; }
+        .stat-card .value.medb { color: #ffaa00; text-shadow: 0 0 20px #ffaa0044; }
+
+        .vault-status { background: #1a1a24; border: 2px solid #00ff8844; border-radius: 8px; padding: 15px 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .vault-status .vault-label { font-size: 11px; color: #00ff8866; text-transform: uppercase; letter-spacing: 1px; }
+        .vault-status .vault-value { font-size: 20px; font-weight: bold; color: #00ff88; }
+        .vault-status .vault-value .safe { color: #00ff88; animation: securePulse 2s infinite; }
+        .vault-status .vault-value .heat { color: #ffaa00; }
+
+        .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
+        .actions button { background: #ffaa0022; border: 1px solid #ffaa00; color: #ffaa00; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold; transition: all 0.3s; flex: 1; min-width: 100px; }
+        .actions button:hover { background: #ffaa0044; box-shadow: 0 0 30px #ffaa0022; }
+        .actions button.danger { border-color: #ff3355; color: #ff3355; background: #ff335522; }
+        .actions button.danger:hover { background: #ff335544; box-shadow: 0 0 30px #ff335522; }
+        .actions button.cosmic { border-color: #00ff88; color: #00ff88; background: #00ff8822; }
+        .actions button.cosmic:hover { background: #00ff8844; box-shadow: 0 0 30px #00ff8822; }
+        .actions button.active { border-color: #ff3355; color: #ff3355; background: #ff335522; animation: pulse 1s infinite; }
+
+        .footer { text-align: center; color: #ffaa0033; font-size: 12px; padding: 20px 0; border-top: 1px solid #ffaa0033; }
+        .footer .owner { color: #00ff88; font-weight: bold; }
+
+        .rolling-window::-webkit-scrollbar { width: 4px; }
+        .rolling-window::-webkit-scrollbar-track { background: #0a0a0f; }
+        .rolling-window::-webkit-scrollbar-thumb { background: #ffaa0033; border-radius: 2px; }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes speedPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
+        @keyframes securePulse { 0%, 100% { opacity: 1; text-shadow: 0 0 20px #00ff8844; } 50% { opacity: 0.7; text-shadow: 0 0 40px #00ff8888; } }
+
+        @media (max-width: 992px) { .dial-heat-grid { grid-template-columns: 1fr; } .node-grid { grid-template-columns: repeat(3, 1fr); } .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } .node-grid { grid-template-columns: repeat(3, 1fr); } .rolling-window .window-content .block-line { grid-template-columns: 30px 50px 40px 60px 50px 40px 40px; font-size: 9px; } .header h1 { font-size: 28px; } .actions button { min-width: 70px; font-size: 10px; padding: 6px 10px; } .vault-status { flex-direction: column; text-align: center; } }
+        @media (max-width: 480px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .node-grid { grid-template-columns: repeat(3, 1fr); } .rolling-window { max-height: 250px; } .rolling-window .window-content .block-line { grid-template-columns: 20px 40px 30px 50px 40px 30px 30px; font-size: 7px; gap: 2px; } }
     </style>
 </head>
 <body>
     <div class="container">
-
-        <!-- HEADER -->
         <div class="header">
-            <div>
-                <h1>⚡ MED<span>US</span>SA</h1>
-                <div class="subtitle">REAL · 9-Node Distributed Blockchain · JSON Powered</div>
-            </div>
+            <div><h1>⚡ MED<span>US</span>SA</h1><div class="subtitle">REAL · 9-Node Distributed Blockchain · JSON Powered</div></div>
             <div class="status" id="statusBadge">● ACTIVE</div>
         </div>
 
-        <!-- LICENSE -->
         <div class="license-banner">
             <div class="license-text">
-                <strong>© 2026 SELIIM AHMED</strong> ·
-                <span class="owner">amit.khanna.1082@gmail.com</span> ·
-                <strong>ALL RIGHTS RESERVED</strong> · 9-Node · Real Sensors
-                <br>
-                <span style="font-size:10px;color:#ffaa0044;">
-                    9 Computers · Distributed Ledger · Real-Time Rolling Window
-                </span>
+                <strong>© 2026 SELIIM AHMED</strong> · <span class="owner">amit.khanna.1082@gmail.com</span> · <strong>ALL RIGHTS RESERVED</strong> · 9-Node · Real Sensors
+                <br><span style="font-size:10px;color:#ffaa0044;">9 Computers · Distributed Ledger · Real-Time Rolling Window</span>
             </div>
         </div>
 
-        <!-- CLOCK + HEAT -->
+        <!-- RECALLED BANNER -->
+        <div class="recalled-banner" id="recalledBanner">
+            <div class="recalled-text">📂 SHA-256 FILE BROWSER — <span id="recalledFileName">RECALLED</span></div>
+        </div>
+
         <div class="dial-heat-grid">
             <div class="clock-dial">
                 <div class="dial-label">⏱️ BLOCKCHAIN CLOCK · 369,000,000 TARGET</div>
                 <div class="dial-display" id="clockDisplay">00:00:00:00</div>
                 <div class="dial-sub" id="clockSub">Days · Hours · Minutes · Seconds</div>
-                <div class="dial-progress">
-                    <div class="dial-progress-bar" id="progressBar" style="width: 0%;"></div>
-                </div>
+                <div class="dial-progress"><div class="dial-progress-bar" id="progressBar" style="width: 0%;"></div></div>
                 <div class="dial-sub" style="margin-top: 8px;" id="progressText">0% Complete · 0 / 369,000,000</div>
             </div>
             <div class="speed-heat">
                 <div class="heat-label">🔥 SPEED HEAT · BLOCKS PER SECOND</div>
                 <div class="heat-display" id="heatDisplay" style="color: #00ff88;">0.0</div>
                 <div class="heat-sub" id="heatSub">Real-time mining speed</div>
-                <div class="heat-bar">
-                    <div class="heat-bar-fill" id="heatBar" style="width: 0%; background: linear-gradient(90deg, #00ff88, #ffaa00, #ff3355);"></div>
-                </div>
+                <div class="heat-bar"><div class="heat-bar-fill" id="heatBar" style="width: 0%; background: linear-gradient(90deg, #00ff88, #ffaa00, #ff3355);"></div></div>
                 <div class="heat-sub" style="margin-top: 8px;" id="heatText">Speed: 0 blocks/second · Heat: 0%</div>
             </div>
         </div>
 
-        <!-- NODES -->
         <div class="node-grid" id="nodeGrid"></div>
 
-        <!-- ROLLING WINDOW -->
         <div class="rolling-window" id="rollingWindow">
-            <div class="window-title">📜 ROLLING BLOCKCHAIN · 9-NODE CONSENSUS</div>
-            <div class="window-content" id="windowContent">
-                <div style="color: #ffaa0044; text-align: center; padding: 20px;">
-                    ⏳ Waiting for blocks from 9 nodes...
-                </div>
-            </div>
+            <div class="window-title"><span>📜 ROLLING BLOCKCHAIN · 9-NODE CONSENSUS</span><span class="recalled-tag" id="recalledTag">📂 RECALLED</span></div>
+            <div class="window-content" id="windowContent"><div style="color:#ffaa0044;text-align:center;padding:20px;">⏳ Waiting for blocks from 9 nodes...</div></div>
         </div>
 
-        <!-- STATS -->
         <div class="stats-grid">
             <div class="stat-card"><div class="label">Total Blocks</div><div class="value vault" id="blockCount">0</div></div>
             <div class="stat-card"><div class="label">Active Nodes</div><div class="value" id="activeNodes">0/9</div></div>
@@ -541,63 +154,42 @@
             <div class="stat-card"><div class="label">Consensus</div><div class="value" id="consensusStatus">100%</div></div>
         </div>
 
-        <!-- VAULT -->
-        <div class="vault-status">
-            <div>
-                <span class="vault-label">📁 VAULT STATUS</span>
-                <span class="vault-value safe" id="vaultStatus">● NEVER REPLACED · REAL DATA</span>
-            </div>
-            <div>
-                <span class="vault-label">📦 BLOCKS SAVED</span>
-                <span class="vault-value" id="vaultSize">0</span>
-            </div>
-            <div>
-                <span class="vault-label">⏳ SESSION</span>
-                <span class="vault-value" id="sessionTime">00:00:00</span>
-            </div>
-            <div>
-                <span class="vault-label">💾 NODES SYNCED</span>
-                <span class="vault-value heat" id="nodesSynced">0/9</span>
-            </div>
+        <!-- ADDED MEDB STAT -->
+        <div class="stats-grid" style="margin-top: -10px;">
+            <div class="stat-card"><div class="label">🪙 MEDB MINED</div><div class="value medb" id="medbCount">0</div></div>
         </div>
 
-        <!-- ACTIONS -->
+        <div class="vault-status">
+            <div><span class="vault-label">📁 VAULT STATUS</span><span class="vault-value safe" id="vaultStatus">● NEVER REPLACED · REAL DATA</span></div>
+            <div><span class="vault-label">📦 BLOCKS SAVED</span><span class="vault-value" id="vaultSize">0</span></div>
+            <div><span class="vault-label">⏳ SESSION</span><span class="vault-value" id="sessionTime">00:00:00</span></div>
+            <div><span class="vault-label">💾 NODES SYNCED</span><span class="vault-value heat" id="nodesSynced">0/9</span></div>
+        </div>
+
         <div class="actions">
             <button id="startBtn" class="cosmic">▶ START 9-NODE</button>
             <button id="pauseBtn" class="warning">⏸ PAUSE</button>
             <button id="exportBtn" class="warning">💾 EXPORT VAULT</button>
+            <button id="loadBtn" class="cosmic">📂 LOAD VAULT</button>
             <button id="clearBtn" class="danger">✕ CLEAR</button>
             <button id="verifyBtn" class="cosmic">🔍 VERIFY</button>
             <button id="resetBtn" class="danger">↻ RESET NODES</button>
         </div>
 
-        <!-- FOOTER -->
         <div class="footer">
-            ⚡ MEDUSSA REAL v3.0 · 9 Nodes · © 2026 SELIIM AHMED ·
-            <span class="owner">amit.khanna.1082@gmail.com</span> ·
-            ALL RIGHTS RESERVED
+            ⚡ MEDUSSA REAL v3.0 · 9 Nodes · © 2026 SELIIM AHMED · <span class="owner">amit.khanna.1082@gmail.com</span> · ALL RIGHTS RESERVED
         </div>
-
     </div>
 
-    <!-- ============================================================
-    LOAD BLOCKCHAIN ENGINE + DATA
-    ============================================================ -->
     <script type="importmap">
-        {
-            "imports": {
-                "./blockchain.js": "./blockchain.js"
-            }
-        }
+        { "imports": { "./blockchain.js": "./blockchain.js" } }
     </script>
 
     <script type="module">
         import { Blockchain } from './blockchain.js';
 
-        // ============================================================
-        // INITIALIZE MEDUSSA
-        // ============================================================
         const medussa = new Blockchain(4);
+        let isRecalled = false; // Track if we are viewing a loaded file
 
         // ============================================================
         // UI UPDATE FUNCTIONS
@@ -609,12 +201,10 @@
 
             document.getElementById('clockDisplay').textContent = formatClock(stats.totalBlocks);
             document.getElementById('progressBar').style.width = `${Math.min(100, progress)}%`;
-            document.getElementById('progressText').textContent =
-                `${progress.toFixed(4)}% Complete · ${stats.totalBlocks} / ${target}`;
+            document.getElementById('progressText').textContent = `${progress.toFixed(4)}% Complete · ${stats.totalBlocks} / ${target}`;
 
             document.getElementById('heatDisplay').textContent = stats.speed.toFixed(1);
-            document.getElementById('heatText').textContent =
-                `Speed: ${stats.speed.toFixed(1)} blocks/second · Heat: ${stats.heat.toFixed(1)}%`;
+            document.getElementById('heatText').textContent = `Speed: ${stats.speed.toFixed(1)} blocks/second · Heat: ${stats.heat.toFixed(1)}%`;
             document.getElementById('heatBar').style.width = `${stats.heat}%`;
 
             document.getElementById('blockCount').textContent = stats.totalBlocks;
@@ -626,6 +216,7 @@
             document.getElementById('vaultSize').textContent = stats.vaulted;
             document.getElementById('sessionTime').textContent = stats.session;
             document.getElementById('nodesSynced').textContent = stats.nodesSynced;
+            document.getElementById('medbCount').textContent = stats.totalMedb || 0;
 
             updateNodeGrid();
             updateRollingWindow();
@@ -668,8 +259,7 @@
             const container = document.getElementById('windowContent');
             const windowBlocks = medussa.getRollingWindow(20);
             if (windowBlocks.length === 0) {
-                container.innerHTML =
-                    `<div style="color:#ffaa0044;text-align:center;padding:20px;">⏳ Waiting for blocks from 9 nodes...</div>`;
+                container.innerHTML = `<div style="color:#ffaa0044;text-align:center;padding:20px;">⏳ No blocks found...</div>`;
                 return;
             }
             let html = '';
@@ -697,6 +287,69 @@
         }
 
         // ============================================================
+        // DISPLAY LOADED DATA (RECALLED)
+        // ============================================================
+        function displayLoadedData(data) {
+            isRecalled = true;
+            // Show recalled banner
+            document.getElementById('recalledBanner').style.display = 'block';
+            document.getElementById('recalledFileName').textContent = 'RECALLED';
+            document.getElementById('recalledTag').style.display = 'inline';
+
+            // Update stats from loaded data
+            document.getElementById('blockCount').textContent = data.totalBlocks || data.chain.length;
+            document.getElementById('totalPulses').textContent = (data.totalPulses || 0).toLocaleString();
+            document.getElementById('vaultedCount').textContent = data.vaulted || data.chain.length;
+            document.getElementById('consensusStatus').textContent = data.consensus || '100%';
+            document.getElementById('sessionTime').textContent = data.session || '00:00:00';
+            document.getElementById('nodesSynced').textContent = data.nodesSynced || '0/9';
+            document.getElementById('medbCount').textContent = data.totalMedb || 0;
+
+            // Update rolling window with loaded chain
+            const container = document.getElementById('windowContent');
+            const chain = data.chain || [];
+            if (chain.length === 0) {
+                container.innerHTML = `<div style="color:#ffaa0044;text-align:center;padding:20px;">📂 Loaded file is empty.</div>`;
+                return;
+            }
+            let html = '';
+            const displayChain = chain.slice(-20);
+            displayChain.forEach(block => {
+                const isGenesis = block.index === 0;
+                const decision = isGenesis ? 'GENESIS' : (block.nonce % 2 === 0 ? 'WIN' : 'LOSE');
+                const node = isGenesis ? 'GENESIS' : (medussa.nodes[block.index % medussa.nodes.length] || 'N/A');
+                const time = new Date(block.timestamp).toLocaleTimeString();
+                const hashShort = block.hash ? block.hash.substring(0, 8) : '00000000';
+                const prevShort = block.previousHash ? block.previousHash.substring(0, 8) : '00000000';
+                const decisionClass = decision === 'WIN' ? 'win' : (decision === 'LOSE' ? 'lose' : '');
+                html += `
+                    <div class="block-line">
+                        <span class="idx">#${String(block.index).padStart(7, '0')}</span>
+                        <span class="decision ${decisionClass}">${decision}</span>
+                        <span class="hash">${prevShort}</span>
+                        <span class="node">${node}</span>
+                        <span class="pulse">AM</span>
+                        <span class="time">${time}</span>
+                        <span class="hash">${hashShort}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // Update progress bar
+            const target = 369000000;
+            const progress = (chain.length / target) * 100;
+            document.getElementById('progressBar').style.width = `${Math.min(100, progress)}%`;
+            document.getElementById('progressText').textContent = `${progress.toFixed(4)}% Complete · ${chain.length} / ${target}`;
+            document.getElementById('clockDisplay').textContent = formatClock(chain.length);
+
+            // Pause mining when viewing recalled data
+            if (medussa.isMining) {
+                pauseMining();
+            }
+        }
+
+        // ============================================================
         // MINING ENGINE
         // ============================================================
         async function mineNextBlock() {
@@ -710,6 +363,11 @@
 
         function startMining() {
             if (medussa.isMining) return;
+            // Clear recalled state
+            isRecalled = false;
+            document.getElementById('recalledBanner').style.display = 'none';
+            document.getElementById('recalledTag').style.display = 'none';
+
             medussa.isMining = true;
             document.getElementById('startBtn').textContent = '⛏️ MINING...';
             document.getElementById('startBtn').classList.add('active');
@@ -729,61 +387,62 @@
         }
 
         // ============================================================
-        // LOAD BLOCKCHAIN FROM FILE
+        // LOAD VAULT (Day-based JSON)
         // ============================================================
-        async function loadBlockchainFromFile() {
-            try {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = '.json';
-                const file = await new Promise((resolve) => {
-                    input.onchange = () => resolve(input.files[0]);
-                    input.click();
-                });
-                if (file) {
-                    const loaded = await medussa.loadFromFile(file);
-                    if (loaded) {
-                        console.log('✅ Blockchain loaded successfully');
-                        updateUI();
-                        return true;
+        async function loadVault() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                try {
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    // Check if it's a valid Medussa vault
+                    if (data.chain && Array.isArray(data.chain)) {
+                        displayLoadedData(data);
+                        // Also load into engine for verification
+                        await medussa.loadFromFile(file);
+                    } else {
+                        alert('❌ Invalid Medussa vault file.');
                     }
+                } catch (err) {
+                    alert('❌ Failed to load file: ' + err.message);
                 }
-                return false;
-            } catch (e) {
-                console.warn('No blockchain.json found — creating new chain');
-                return false;
-            }
+            };
+            input.click();
+        }
+
+        // ============================================================
+        // EXPORT VAULT (Day-based Download)
+        // ============================================================
+        function exportVault() {
+            const data = medussa.toJSON();
+            const date = new Date().toISOString().slice(0, 10);
+            const loc = 'Vilnius';
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `medussa-vault-${date}-${loc}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
         // ============================================================
         // EVENT LISTENERS
         // ============================================================
         document.addEventListener('DOMContentLoaded', async () => {
-            const loaded = await loadBlockchainFromFile();
-            if (!loaded || medussa.chain.length === 0) {
-                await medussa.createGenesis();
-            }
+            await medussa.createGenesis();
             updateUI();
 
-            setTimeout(() => {
-                startMining();
-            }, 1000);
+            setTimeout(() => { startMining(); }, 1000);
 
             document.getElementById('startBtn').addEventListener('click', startMining);
             document.getElementById('pauseBtn').addEventListener('click', pauseMining);
-
-            document.getElementById('exportBtn').addEventListener('click', () => {
-                const data = medussa.toJSON();
-                const date = new Date().toISOString().slice(0, 10);
-                const loc = 'Vilnius';
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `medussa-vault-${date}-${loc}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-            });
+            document.getElementById('exportBtn').addEventListener('click', exportVault);
+            document.getElementById('loadBtn').addEventListener('click', loadVault);
 
             document.getElementById('clearBtn').addEventListener('click', () => {
                 if (confirm('Clear display? (Chain data remains intact)')) {
@@ -805,9 +464,6 @@
             });
         });
 
-        // ============================================================
-        // AUTO-UPDATE EVERY SECOND
-        // ============================================================
         setInterval(updateUI, 1000);
     </script>
 </body>
