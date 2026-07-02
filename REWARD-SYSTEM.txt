@@ -1,0 +1,156 @@
+
+
+📄 REWARD-SYSTEM.txt
+
+Medussa (MEDB) – Reward System (Idiot-Proof Version)
+
+Updated: Base Reward = 0.0003% for Everyone (Buyers & Miners)
+
+---
+
+═══════════════════════════════════════════════════════════════
+SECTION 1: THE ONLY RULES YOU NEED TO KNOW
+═══════════════════════════════════════════════════════════════
+
+1. Gold buyers get a reward that starts high (5%) and decreases over time.
+2. Miners (block creators) get a fixed base reward of 0.0003% on every block they mine.
+3. The reward for gold buyers will never go below 0.0003% — the same as miners.
+4. Everyone wins, but early adopters win more.
+
+═══════════════════════════════════════════════════════════════
+SECTION 2: REWARD FOR GOLD BUYERS (BY PURCHASE NUMBER)
+═══════════════════════════════════════════════════════════════
+
+You are the... Your reward rate
+1st–5th buyer 5.0000%
+6th–20th buyer 3.0000%
+21st–50th buyer 1.5000%
+51st–100th buyer 0.8000%
+101st–500th buyer 0.4000%
+501st–1,000th buyer 0.2000%
+1,001st–5,000th buyer 0.1000%
+5,001st–10,000th buyer 0.0500%
+10,001st–50,000th buyer 0.0100%
+50,001st–100,000th buyer 0.0050%
+100,000th+ buyer 0.0003% (forever)
+
+After 100,000 purchases, the reward stays at 0.0003% forever.
+
+═══════════════════════════════════════════════════════════════
+SECTION 3: REWARD FOR MINERS (BLOCK CREATORS)
+═══════════════════════════════════════════════════════════════
+
+Who Reward
+Every miner (per block) 0.0003% of block reward
+Paid in MEDB (same as everyone)
+Frequency Every block you mine
+
+This reward never decreases — it stays at 0.0003% forever.
+
+═══════════════════════════════════════════════════════════════
+SECTION 4: EXAMPLES (IDIOT-PROOF)
+═══════════════════════════════════════════════════════════════
+
+EXAMPLE 1: GOLD BUYER (EARLY)
+
+· You are the 2nd buyer ever
+· You spend 1,000 MEDB to buy gold
+· Reward = 5% = 50 MEDB (free)
+
+EXAMPLE 2: GOLD BUYER (MID)
+
+· You are the 500th buyer
+· You spend 1,000 MEDB to buy gold
+· Reward = 0.4% = 4 MEDB (free)
+
+EXAMPLE 3: GOLD BUYER (LATE)
+
+· You are the 150,000th buyer
+· You spend 1,000 MEDB to buy gold
+· Reward = 0.0003% = 0.003 MEDB (free, but small)
+
+EXAMPLE 4: MINER
+
+· You mine 1 block
+· Block reward = 1 MEDB
+· Miner reward = 0.0003% × 1 MEDB = 0.000003 MEDB
+
+EXAMPLE 5: MINER (MANY BLOCKS)
+
+· You mine 1,000 blocks
+· Total block reward = 1,000 MEDB
+· Miner reward = 0.0003% × 1,000 = 0.003 MEDB
+
+═══════════════════════════════════════════════════════════════
+SECTION 5: CHEAT SHEET (PRINT THIS)
+═══════════════════════════════════════════════════════════════
+
+GOLD BUYER REWARDS:
+
+Your Purchase # Your Reward %
+1–5 5.0000%
+6–20 3.0000%
+21–50 1.5000%
+51–100 0.8000%
+101–500 0.4000%
+501–1,000 0.2000%
+1,001–5,000 0.1000%
+5,001–10,000 0.0500%
+10,001–50,000 0.0100%
+50,001–100,000 0.0050%
+100,000+ 0.0003%
+
+MINER REWARDS:
+
+What you mine Your reward
+Every block 0.0003% of block reward
+Always Never changes
+
+═══════════════════════════════════════════════════════════════
+SECTION 6: FAQ (FREQUENTLY ASKED QUESTIONS)
+═══════════════════════════════════════════════════════════════
+
+Q: Do gold buyers get a reward?
+A: Yes — starts high, ends at 0.0003%.
+
+Q: Do miners get a reward?
+A: Yes — always 0.0003% per block.
+
+Q: Does the miner reward ever decrease?
+A: No — it's fixed forever.
+
+Q: Does the buyer reward ever go below 0.0003%?
+A: No — that's the floor.
+
+Q: Do I need to do math?
+A: No — the system shows you before you buy/mine.
+
+Q: What if I'm both a miner and a gold buyer?
+A: You get both rewards. They stack.
+
+═══════════════════════════════════════════════════════════════
+SECTION 7: FORMULA (FOR GEEKS ONLY — YOU DON'T NEED THIS)
+═══════════════════════════════════════════════════════════════
+
+Gold buyer reward:
+R = max(0.0003%, 5% / √H)
+Where H = total gold purchases so far
+
+Miner reward:
+R_miner = 0.0003% (fixed)
+
+═══════════════════════════════════════════════════════════════
+SECTION 8: FINAL NOTE
+═══════════════════════════════════════════════════════════════
+
+· Gold buyers get rewarded for being early.
+· Miners get rewarded for securing the network.
+· Both get at least 0.0003% forever.
+· No one gets zero.
+
+═══════════════════════════════════════════════════════════════
+END OF REWARD-SYSTEM.txt
+═══════════════════════════════════════════════════════════════
+
+---
+
