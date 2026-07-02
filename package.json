@@ -1,0 +1,22 @@
+{
+  "name": "medussa-real-blockchain",
+  "version": "3.0.0",
+  "description": "Medussa REAL Blockchain - SHA-256 + ECDSA secp256k1",
+  "main": "medussa-real-blockchain.js",
+  "scripts": {
+    "start": "node medussa-real-blockchain.js",
+    "generate": "node medussa-real-blockchain.js"
+  },
+  "keywords": [
+    "blockchain",
+    "cryptocurrency",
+    "sha256",
+    "ecdsa",
+    "secp256k1"
+  ],
+  "author": "Seliim Ahmed",
+  "license": "MIT",
+  "dependencies": {
+    "elliptic": "^6.5.4"
+  }
+}
