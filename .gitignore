@@ -7,10 +7,13 @@
 # BLOCKCHAIN DATA (CRITICAL — IGNORE TO AVOID CONFLICTS)
 # ============================================================
 blockchain.json
+medussa-vault-*.json
+vault-*.json
 *.json
 !package.json
 !package-lock.json
 !tsconfig.json
+!manifest.json
 
 # ============================================================
 # OS FILES
@@ -103,16 +106,8 @@ error.log
 # ============================================================
 # MEDUSSA SPECIFIC — PREVENT MERGE CONFLICTS
 # ============================================================
-# Ignore all JSON files except the ones we explicitly want
-*.json
-!package.json
-!tsconfig.json
-!manifest.json
-
 # Ignore any local vault exports
 medussa-vault-*.json
 vault-*.json
-
-# Ignore any backup copies
 blockchain-backup-*.json
 chain-backup-*.json
