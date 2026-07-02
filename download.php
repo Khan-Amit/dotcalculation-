@@ -1,51 +1,43 @@
 <?php
 // ============================================
-// MEDUSSA - Download Handler
+// MEDUSA - Download Handler
 // ============================================
-require_once 'config.php';
+define('DATA_DIR', 'medusa_backups/');
+define('FILE_PREFIX', '1000019890_');
+date_default_timezone_set('Asia/Dhaka');
 
-// Get date
+function getLocation() {
+    try {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        if ($ip == '127.0.0.1' || $ip == '::1') return 'Dhaka_BD';
+        $url = "http://ip-api.com/json/{$ip}?fields=city,countryCode";
+        $data = json_decode(file_get_contents($url), true);
+        if (isset($data['city'])) return $data['city'] . '_' . $data['countryCode'];
+    } catch (Exception $e) {}
+    return 'Dhaka_BD';
+}
+
 $date = isset($_GET['date']) ? $_GET['date'] : '';
-if (empty($date)) {
-    die('❌ Error: No date specified.');
+if (!$date || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+    die('❌ Invalid date');
 }
 
-// Validate date
-if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
-    die('❌ Error: Invalid date format.');
-}
+$loc = getLocation();
+$file = DATA_DIR . FILE_PREFIX . $date . '_' . $loc . '.json';
 
-// Find file
-$location = getUserLocation();
-$filename = DATA_DIR . FILE_PREFIX . $date . '_' . $location . '.json';
-
-// Try other locations
-if (!file_exists($filename)) {
+if (!file_exists($file)) {
     $files = glob(DATA_DIR . FILE_PREFIX . $date . '_*.json');
     if (!empty($files)) {
-        $filename = $files[0];
+        $file = $files[0];
     } else {
-        if (isToday($date)) {
-            createTodayFile();
-            $filename = DATA_DIR . FILE_PREFIX . $date . '_' . $location . '.json';
-        } else {
-            die('❌ Error: File not found for this date.');
-        }
+        die('❌ File not found');
     }
 }
 
-// Check again
-if (!file_exists($filename)) {
-    die('❌ Error: File not found.');
-}
-
-// Force download
 header('Content-Type: application/json');
-header('Content-Disposition: attachment; filename="' . basename($filename) . '"');
-header('Content-Length: ' . filesize($filename));
-header('Cache-Control: no-cache, must-revalidate');
-header('Pragma: no-cache');
-
-readfile($filename);
+header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+header('Content-Length: ' . filesize($file));
+header('Cache-Control: no-cache');
+readfile($file);
 exit;
 ?>
