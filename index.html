@@ -6,7 +6,7 @@
     <title>MEDUSSA REAL · 9-Node Blockchain</title>
     <style>
         /* ============================================================
-        STYLES (same as before, compressed for length)
+        STYLES (same as before)
         ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0a0a0f; color: #00ff88; font-family: 'Courier New', monospace; padding: 20px; min-height: 100vh; }
@@ -105,7 +105,6 @@
             </div>
         </div>
 
-        <!-- RECALLED BANNER -->
         <div class="recalled-banner" id="recalledBanner">
             <div class="recalled-text">📂 SHA-256 FILE BROWSER — <span id="recalledFileName">RECALLED</span></div>
         </div>
@@ -170,7 +169,7 @@
     </div>
 
     <!-- ============================================================
-    SELF-CONTAINED BLOCKCHAIN ENGINE (No external imports)
+    SELF-CONTAINED BLOCKCHAIN ENGINE (FIXED)
     ============================================================ -->
     <script>
         // ============================================================
@@ -275,6 +274,9 @@
                     this.totalMedb++;
                     console.log(`🪙 +1 MEDB MINED! (Total: ${this.totalMedb} MEDB)`);
                 }
+                
+                // 🔥 FIXED: Removed auto-download popup (await this.saveToFile();)
+                // Now it only saves when you click "EXPORT VAULT"
             }
 
             updateNodeBlock(nodeName) {
