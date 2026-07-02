@@ -1,30 +1,31 @@
 #!/usr/bin/php
 <?php
-// This file runs automatically at midnight via cron job
-// Path: /usr/bin/php /path/to/create_today.php
-
+// ============================================
+// MEDUSSA - Auto-Create Today's File
+// Run this daily at midnight via cron
+// ============================================
 require_once 'config.php';
 
 $today = date('Y-m-d');
 $location = getUserLocation();
 $filename = DATA_DIR . FILE_PREFIX . $today . '_' . $location . '.json';
 
-// Check if today's file already exists
+// Check if exists
 if (file_exists($filename)) {
-    echo "✅ File already exists: " . basename($filename) . "\n";
+    echo "✅ MEDUSSA: File already exists - " . basename($filename) . "\n";
     exit;
 }
 
-// Create today's file
+// Create file
 $result = createTodayFile();
 
 if ($result) {
-    echo "✅ Created: " . basename($result) . "\n";
+    echo "✅ MEDUSSA: Created - " . basename($result) . "\n";
     echo "📅 Date: $today\n";
     echo "📍 Location: $location\n";
     echo "📁 Path: " . realpath($result) . "\n";
 } else {
-    echo "❌ Failed to create today's file\n";
+    echo "❌ MEDUSSA: Failed to create file\n";
     exit(1);
 }
 ?>
